@@ -3,16 +3,19 @@
   roles:
     - 1password
     - wireguard
-    - role: podman
-      tags: podman
+    - role: containers
+      tags: containers
   tasks:
     - name: Install packages
       ansible.builtin.apt:
         pkg:
+          - curl
           - fail2ban
           - git
+          - lsof
           - make
           - mosh
+          - tmux
         state: present
         update_cache: true
         cache_valid_time: 3600

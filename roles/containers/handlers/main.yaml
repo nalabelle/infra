@@ -1,0 +1,8 @@
+- name: Restart redir-80
+  ansible.builtin.service:
+    name: redir-80
+    state: restarted
+- name: Restart redir-443
+  ansible.builtin.service:
+    name: redir-443
+    state: restarted
