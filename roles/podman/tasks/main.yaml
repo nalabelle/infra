@@ -2,6 +2,33 @@
   ansible.builtin.apt:
     pkg:
       - podman
+      - docker-compose
     state: present
     update_cache: true
     cache_valid_time: 3600
+
+- name: Enable and start podman socket
+  ansible.builtin.service:
+    name: podman.socket
+    state: started
+    enabled: true
+
+- name: Copy redir services
+  ansible.builtin.copy:
+    src: etc/systemd/system/
+    dest: /etc/systemd/system/
+    mode: "0644"
+  notify: Restart Redir
+
+- name: Enable and start redir services
+  block:
+    - name: Enable and start redir-80
+      ansible.builtin.service:
+        name: redir-80
+        state: started
+        enabled: true
+    - name: Enable and start redir-443
+      ansible.builtin.service:
+        name: redir-443
+        state: started
+        enabled: true
