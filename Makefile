@@ -5,38 +5,33 @@ MAKEFLAGS += --no-builtin-rules
 print-%: ; @echo $*=$($*)
 
 ANSIBLE_CACHE:=.ansible-cache
-ANSIBLE_INVENTORY=ansible/inventory
-
-.PHONY: help all clean deps clean-deps clean-cache
 .DEFAULT_GOAL:=help
 
+.PHONY: help
 help:
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) \
+		| sort \
+		| awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
-.PHONY: clean-ansible
-clean-ansible:
-	rm -rf $(ANSIBLE_CACHE)
-	rm inventory/group_vars/all/secrets.yaml
+.PHONY: clean
+clean: clean-deps clean-ansible-cache clean-secrets ## Reset all generated files
+	@true
 
-.PHONY: hetzner
-hetzner:
-	@ansible-playbook plays/infra/hetzner.yaml
+.PHONY: playbook
+playbook: plays/*.yaml vendor secrets
+	@ansible-playbook \
+		plays/hetzner.yaml \
+		plays/server.yaml
 
-.PHONY: server
-server: inventory/group_vars/all/secrets.yaml
-	@ansible-playbook plays/infra/server.yaml
+.PHONY: clean-ansible-cache
+clean-ansible-cache:
+	@rm -rf $(ANSIBLE_CACHE)
 
 .PHONY: inventory
-inventory: $(ANSIBLE_CACHE)/hosts
-
+inventory: $(ANSIBLE_CACHE)/hosts vendor .env.secrets
 $(ANSIBLE_CACHE)/hosts:
 	@mkdir -p $(ANSIBLE_CACHE)
 	@ansible-inventory --list | jq 'with_entries(select(.key != "_meta"))' > $(ANSIBLE_CACHE)/hosts
-
-
-clean: clean-deps clean-ansible ## Reset all generated files
-	@rm .env.secrets
-	@rm -r .bin
 
 # Secret
 .PHONY: secrets clean-secrets

@@ -3,12 +3,14 @@
   roles:
     - 1password
     - wireguard
-    - podman
+    - role: podman
+      tags: podman
   tasks:
     - name: Install packages
       ansible.builtin.apt:
         pkg:
           - fail2ban
+          - git
           - mosh
         state: present
         update_cache: true
