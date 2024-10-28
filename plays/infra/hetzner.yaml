@@ -1,0 +1,76 @@
+- name: Hetzner Setup
+  hosts: localhost
+  tasks:
+    - name: Create SSH Keys
+      hetzner.hcloud.ssh_key:
+        name: "{{ item.name }}"
+        public_key: "{{ item.key }}"
+        state: present
+      loop:
+        - key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINdghZWKTk7678RA/Vt4LMktDd47yLjYSgLalXEP85sh nalabelle@pass
+          name: pass
+        - key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGPz9ltbnqHEz4R/bf6FpKhZ6+SXCB5z3eE/UhyKUu+5 nalabelle@pixel6a
+          name: pixel6a
+        - key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKA6cLlf7cgH5nfp7NA0HJWY7zTTLzJTkaPJ/p+3zICB nalabelle@verne
+          name: verne
+
+    - name: Firewall for SSH
+      hetzner.hcloud.firewall:
+        name: standard
+        state: present
+        rules:
+          - direction: "in"
+            port: "22"
+            protocol: "tcp"
+            source_ips:
+              - 0.0.0.0/0
+              - ::/0
+          - direction: "in"
+            port: "51820"
+            protocol: "udp"
+            source_ips:
+              - 0.0.0.0/0
+              - ::/0
+          - direction: "in"
+            protocol: "icmp"
+            source_ips:
+              - 0.0.0.0/0
+              - ::/0
+
+    - name: Private Network
+      hetzner.hcloud.network:
+        name: private-1
+        ip_range: 10.0.0.0/16
+        state: present
+
+    - name: Private Subnet
+      hetzner.hcloud.subnetwork:
+        network: private-1
+        ip_range: 10.0.3.0/24
+        network_zone: us-west
+        type: cloud
+        state: present
+
+    - name: Initial Instance
+      hetzner.hcloud.server:
+        name: twain
+        server_type: cpx11
+        location: hil
+        image: "ubuntu-24.04"
+        enable_ipv4: true
+        enable_ipv6: true
+        private_networks:
+          - private-1
+        firewalls:
+          - standard
+        ssh_keys:
+          - pass
+          - pixel6a
+          - verne
+        state: present
+      notify:
+        - Refresh Inventory
+
+  handlers:
+    - name: Refresh Inventory
+      ansible.builtin.meta: refresh_inventory

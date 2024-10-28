@@ -1,0 +1,9 @@
+[Unit]
+Description=Redirect tcp port 80 with redir
+
+[Service]
+ExecStartPre=/bin/echo "Starting redir"
+ExecStart=/bin/redir -sn :80 :8000
+
+[Install]
+WantedBy=multi-user.target

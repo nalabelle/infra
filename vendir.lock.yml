@@ -1,0 +1,17 @@
+apiVersion: vendir.k14s.io/v1alpha1
+directories:
+- contents:
+  - git:
+      commitTitle: Release 9.3.0.
+      sha: e4911a02781f3ebf4fe59e26453884ce7740a31c
+      tags:
+      - 9.3.0
+    path: community.general
+  - git:
+      commitTitle: 'chore(main): release 4.2.1 (#562)...'
+      sha: 8503764dd0d773969847d713cf80b6883adb5f6e
+      tags:
+      - 4.2.1
+    path: hetzner.cloud
+  path: vendor/ansible_collection
+kind: LockConfig

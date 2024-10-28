@@ -1,0 +1,15 @@
+apiVersion: vendir.k14s.io/v1alpha1
+kind: Config
+directories:
+  - path: vendor/ansible_collection
+    contents:
+      - path: community.general
+        git:
+          url: https://github.com/ansible-collections/community.general
+          ref: origin/tags/9.3.0
+          depth: 1
+      - path: hetzner.cloud
+        git:
+          url: https://github.com/ansible-collections/hetzner.hcloud
+          ref: origin/tags/4.2.1
+          depth: 1

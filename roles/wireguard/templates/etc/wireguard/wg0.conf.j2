@@ -1,0 +1,20 @@
+#jinja2: trim_blocks:True, lstrip_blocks:True
+{% set config = wireguard.hosts[inventory_hostname | lower] | mandatory %}
+[Interface]
+Address = {{ config.Address }}
+ListenPort = {{ wireguard_port }}
+PrivateKey = {{ config.PrivateKey | mandatory }}
+PostUp = ufw route allow in on wg0 out on eth0; ufw route allow in on eth0 out on wg0; sysctl -w net.ipv4.ip_forward=1; sysctl -w net.ipv6.conf.all.forwarding=1; iptables -A FORWARD -i %i -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+PostDown = ufw route delete allow in on wg0 out on eth0; ufw route delete allow in on eth0 out on wg0; sysctl -w net.ipv4.ip_forward=0; sysctl -w net.ipv6.conf.all.forwarding=0; iptables -D FORWARD -i %i -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
+
+
+{% for peer in config.peers %}
+  {% set peerConfig = config.peers[peer] %}
+[Peer]
+PublicKey = {{ peerConfig.PublicKey }}
+    {% if 'PresharedKey' in peerConfig %}
+PresharedKey = {{ peerConfig.PresharedKey }}
+    {% endif %}
+AllowedIPs = {{ peerConfig.AllowedIPs }}
+
+{% endfor %}

@@ -1,0 +1,25 @@
+- name: Install packages
+  ansible.builtin.apt:
+    pkg:
+      - wireguard
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: Firewall
+  ansible.builtin.import_tasks:
+    file: firewall.yaml
+
+- name: Config
+  ansible.builtin.template:
+    src: etc/wireguard/wg0.conf.j2
+    dest: /etc/wireguard/wg0.conf
+    mode: "0600"
+  notify:
+    - Restart Wireguard
+
+- name: Enable and start Wireguard service
+  ansible.builtin.service:
+    name: wg-quick@wg0
+    state: started
+    enabled: true

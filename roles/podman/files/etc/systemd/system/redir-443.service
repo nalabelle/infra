@@ -1,0 +1,9 @@
+[Unit]
+Description=Redirect tcp port 443 with redir
+
+[Service]
+ExecStartPre=/bin/echo "Starting redir"
+ExecStart=/bin/redir -sn :443 :4430
+
+[Install]
+WantedBy=multi-user.target

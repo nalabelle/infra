@@ -1,0 +1,27 @@
+- name: Allow SSH
+  community.general.ufw:
+    rule: allow
+    proto: tcp
+    port: "22"
+
+- name: Allow Wireguard
+  community.general.ufw:
+    rule: allow
+    proto: udp
+    port: "{{ wireguard_port }}"
+
+- name: Set ufw logging
+  community.general.ufw:
+    logging: "on"
+
+- name: Allow Traffic on Wireguard
+  community.general.ufw:
+    rule: allow
+    proto: any
+    interface_in: "wg0"
+
+- name: Reject everything and enable UFW
+  community.general.ufw:
+    state: enabled
+    policy: reject
+    log: true

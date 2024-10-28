@@ -1,0 +1,10 @@
+- name: Copy install script
+  ansible.builtin.copy:
+    src: usr/local/bin/1password-install
+    dest: /usr/local/bin/1password-install
+    mode: "0755"
+
+- name: Run install
+  ansible.builtin.command:
+    cmd: /usr/local/bin/1password-install
+    creates: /etc/apt/sources.list.d/1password.list

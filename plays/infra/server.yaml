@@ -1,0 +1,33 @@
+- name: Servers
+  hosts: hcloud
+  roles:
+    - 1password
+    - wireguard
+    - podman
+  tasks:
+    - name: Install packages
+      ansible.builtin.apt:
+        pkg:
+          - fail2ban
+          - mosh
+        state: present
+        update_cache: true
+        cache_valid_time: 3600
+    - name: Use NextDNS
+      ansible.builtin.blockinfile:
+        path: /etc/systemd/resolved.conf
+        backup: true
+        block: |
+          [Resolve]
+          DNS=45.90.28.0#{{ inventory_hostname | lower }}-{{ nextdns_id }}.dns.nextdns.io
+          DNS=2a07:a8c0::#{{ inventory_hostname | lower }}-{{ nextdns_id }}.dns.nextdns.io
+          DNS=45.90.30.0#{{ inventory_hostname | lower }}-{{ nextdns_id }}.dns.nextdns.io
+          DNS=2a07:a8c1::#{{ inventory_hostname | lower }}-{{ nextdns_id }}.dns.nextdns.io
+          DNSOverTLS=yes
+          DNSStubListenerExtra=0.0.0.0
+      notify: Restart DNS Resolver
+  handlers:
+    - name: Restart DNS Resolver
+      ansible.builtin.systemd_service:
+        name: systemd-resolved.service
+        state: restarted

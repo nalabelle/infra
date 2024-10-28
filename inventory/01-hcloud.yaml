@@ -1,0 +1,10 @@
+plugin: hetzner.hcloud.hcloud
+cache: true
+cache_connection: .ansible-cache/inventory/
+cache_prefix: ""
+cache_plugin: community.general.yaml
+keyed_groups:
+  - key: labels.service
+    prefix: service
+compose:
+  ansible_host: "'{{ ipv6 }}'"

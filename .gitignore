@@ -1,0 +1,7 @@
+/.devbox
+/.ansible-cache
+/vendor
+/.vscode
+
+/.env.secrets
+secrets.yaml
