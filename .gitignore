@@ -3,5 +3,5 @@
 /vendor
 /.vscode
 
-/.env.secrets
+.env.secrets
 secrets.yaml
