@@ -71,6 +71,15 @@
       notify:
         - Refresh Inventory
 
+    - name: Create a Volume
+      hetzner.hcloud.volume:
+        name: twain-data
+        server: twain
+        format: ext4
+        automount: true
+        size: 20
+        state: present
+
   handlers:
     - name: Refresh Inventory
       ansible.builtin.meta: refresh_inventory
