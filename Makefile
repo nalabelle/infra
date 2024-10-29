@@ -35,15 +35,20 @@ $(ANSIBLE_CACHE)/hosts:
 
 # Secret
 .PHONY: secrets clean-secrets
-secrets: .env.secrets inventory/group_vars/all/secrets.yaml
+secrets: .env.secrets inventory/group_vars/all/secrets.yaml .secrets/hosts
 	@true
 clean-secrets:
-	@rm -f .env.secrets
+# Clean this up manually
+# @rm -f .env.secrets
 	@rm -f inventory/group_vars/all/secrets.yaml
 inventory/group_vars/all/secrets.yaml: inventory/group_vars/all/secrets.yaml.tpl
 	@op inject -f -i $< -o $@
 .env.secrets: .env.secrets.tpl
 	@op inject -f -i $< -o $@
+.secrets/hosts: .secrets
+	op read -o .secrets/hosts op://Applications/HOSTS/file
+.secrets:
+	mkdir -p .secrets
 
 # Vendor
 .PHONY: clean-vendor

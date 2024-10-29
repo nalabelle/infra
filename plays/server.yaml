@@ -2,35 +2,44 @@
   hosts: hcloud
   roles:
     - 1password
-    - wireguard
+    - role: wireguard
+      tags: wireguard
     - role: containers
       tags: containers
   tasks:
-    - name: Install packages
-      ansible.builtin.apt:
-        pkg:
-          - curl
-          - fail2ban
-          - git
-          - lsof
-          - make
-          - mosh
-          - tmux
-        state: present
-        update_cache: true
-        cache_valid_time: 3600
-    - name: Use NextDNS
-      ansible.builtin.blockinfile:
-        path: /etc/systemd/resolved.conf
-        backup: true
-        block: |
-          DNS=45.90.28.0#{{ inventory_hostname | lower }}-{{ nextdns_id }}.dns.nextdns.io
-          DNS=2a07:a8c0::#{{ inventory_hostname | lower }}-{{ nextdns_id }}.dns.nextdns.io
-          DNS=45.90.30.0#{{ inventory_hostname | lower }}-{{ nextdns_id }}.dns.nextdns.io
-          DNS=2a07:a8c1::#{{ inventory_hostname | lower }}-{{ nextdns_id }}.dns.nextdns.io
-          DNSOverTLS=yes
-          DNSStubListenerExtra=0.0.0.0
-      notify: Restart DNS Resolver
+    - name: Basic setup
+      tags: basic
+      block:
+        - name: Install packages
+          ansible.builtin.apt:
+            pkg:
+              - curl
+              - fail2ban
+              - git
+              - lsof
+              - make
+              - mosh
+              - tmux
+            state: present
+            update_cache: true
+            cache_valid_time: 3600
+        - name: Use NextDNS
+          ansible.builtin.blockinfile:
+            path: /etc/systemd/resolved.conf
+            backup: true
+            block: |
+              DNS=45.90.28.0#{{ inventory_hostname | lower }}-{{ nextdns_id }}.dns.nextdns.io
+              DNS=2a07:a8c0::#{{ inventory_hostname | lower }}-{{ nextdns_id }}.dns.nextdns.io
+              DNS=45.90.30.0#{{ inventory_hostname | lower }}-{{ nextdns_id }}.dns.nextdns.io
+              DNS=2a07:a8c1::#{{ inventory_hostname | lower }}-{{ nextdns_id }}.dns.nextdns.io
+              DNSOverTLS=yes
+              DNSStubListenerExtra=0.0.0.0
+          notify: Restart DNS Resolver
+        - name: Hosts file
+          ansible.builtin.blockinfile:
+            path: /etc/hosts
+            block: "{{ lookup('ansible.builtin.file', inventory_dir + '/../.secrets/hosts') }}"
+            backup: true
   handlers:
     - name: Restart DNS Resolver
       ansible.builtin.systemd_service:
