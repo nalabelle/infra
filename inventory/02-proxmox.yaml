@@ -1,0 +1,16 @@
+plugin: community.general.proxmox
+cache: true
+cache_connection: .ansible-cache/inventory/
+cache_prefix: ""
+cache_plugin: community.general.yaml
+url: "{{ lookup('ansible.builtin.env', 'PROXMOX_URL') }}"
+user: "{{ lookup('ansible.builtin.env', 'PROXMOX_USER') }}"
+token_id: "{{ lookup('ansible.builtin.env', 'PROXMOX_TOKEN_ID') }}"
+token_secret: "{{ lookup('ansible.builtin.env', 'PROXMOX_TOKEN_SECRET') }}"
+keyed_groups:
+  - key: proxmox_tags_parsed
+    separator: "_"
+    prefix: service
+want_facts: true
+timeout: 30
+want_proxmox_nodes_ansible_host: false

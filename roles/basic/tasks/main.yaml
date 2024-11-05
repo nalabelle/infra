@@ -1,0 +1,14 @@
+- name: Install packages
+  ansible.builtin.apt:
+    pkg:
+      - curl
+      - fail2ban
+      - git
+      - lsof
+      - make
+      - mosh
+      - tmux
+      - vim
+    state: present
+    update_cache: true
+    cache_valid_time: 3600

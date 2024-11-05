@@ -21,7 +21,8 @@ clean: clean-deps clean-ansible-cache clean-secrets ## Reset all generated files
 playbook: plays/*.yaml vendor secrets
 	@ansible-playbook \
 		plays/hetzner.yaml \
-		plays/server.yaml
+		plays/hetzner_server.yaml \
+		plays/compose_hosts.yaml
 
 .PHONY: clean-ansible-cache
 clean-ansible-cache:
