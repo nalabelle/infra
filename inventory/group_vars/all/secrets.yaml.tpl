@@ -20,3 +20,10 @@ wireguard:
           PublicKey: op://Applications/WIREGUARD_TRAVEL/username
           PresharedKey: op://Applications/WIREGUARD_TRAVEL/PRESHAREDKEY/TWAIN
           AllowedIPs: op://Applications/WIREGUARD_TRAVEL/AllowedIPs
+bulk_storage:
+  username: op://Applications/BULK_STORAGE/username
+  password: op://Applications/BULK_STORAGE/password
+  local_path: op://Applications/BULK_STORAGE/local_path
+  remote_path: op://Applications/BULK_STORAGE/remote_path
+  type: op://Applications/BULK_STORAGE/type
+  options: op://Applications/BULK_STORAGE/options

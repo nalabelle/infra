@@ -1,28 +1,12 @@
-- name: Servers
+- name: Hetzner Servers
   hosts: hcloud
   roles:
-    - 1password
     - role: wireguard
       tags: wireguard
-    - role: containers
-      tags: containers
   tasks:
     - name: Basic setup
       tags: basic
       block:
-        - name: Install packages
-          ansible.builtin.apt:
-            pkg:
-              - curl
-              - fail2ban
-              - git
-              - lsof
-              - make
-              - mosh
-              - tmux
-            state: present
-            update_cache: true
-            cache_valid_time: 3600
         - name: Use NextDNS
           ansible.builtin.blockinfile:
             path: /etc/systemd/resolved.conf
@@ -40,6 +24,34 @@
             path: /etc/hosts
             block: "{{ lookup('ansible.builtin.file', inventory_dir + '/../.secrets/hosts') }}"
             backup: true
+    - name: Mounts
+      tags: mount
+      block:
+        - name: Install packages
+          ansible.builtin.apt:
+            pkg:
+              - sshfs
+              - gocryptfs
+            state: present
+            update_cache: true
+            cache_valid_time: 3600
+        - name: Allow fuse drives to be shared with docker
+          ansible.builtin.lineinfile:
+            path: /etc/fuse.conf
+            line: user_allow_other
+            backup: true
+        - name: Create mount path
+          ansible.builtin.file:
+            path: "{{ bulk_storage.local_path }}"
+            state: directory
+            mode: "0755"
+        - name: Set up mount
+          ansible.posix.mount:
+            path: "{{ bulk_storage.local_path }}"
+            src: "{{ bulk_storage.remote_path }}"
+            fstype: "{{ bulk_storage.type }}"
+            opts: "{{ bulk_storage.options }}"
+            state: mounted
   handlers:
     - name: Restart DNS Resolver
       ansible.builtin.systemd_service:
