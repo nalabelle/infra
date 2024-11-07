@@ -13,3 +13,13 @@ directories:
           url: https://github.com/ansible-collections/hetzner.hcloud
           ref: origin/tags/4.2.1
           depth: 1
+  - path: vendor/ansible_roles
+    contents:
+      - path: unattended_upgrades
+        git:
+          url: https://github.com/hifis-net/ansible-collection-toolkit
+          ref: origin/tags/v4.7.0
+          depth: 1
+        includePaths:
+          - roles/unattended_upgrades/**/*
+        newRootPath: roles/unattended_upgrades

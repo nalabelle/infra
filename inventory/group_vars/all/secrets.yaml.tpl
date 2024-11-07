@@ -27,3 +27,7 @@ bulk_storage:
   remote_path: op://Applications/BULK_STORAGE/remote_path
   type: op://Applications/BULK_STORAGE/type
   options: op://Applications/BULK_STORAGE/options
+email:
+  mta: op://Applications/MAILX/password
+  domain: op://Applications/MAILX/domain
+unattended_mail: "unattended-upgrades@{{ op://Applications/MAILX/domain }}"

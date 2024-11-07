@@ -1,0 +1,11 @@
+# Unattended Upgrades
+# https://github.com/hifis-net/ansible-collection-toolkit
+# https://github.com/hifis-net/ansible-collection-toolkit/blob/main/roles/unattended_upgrades/README.md
+unattended_mail_only_on_error: true
+unattended_remove_unused_dependencies: true
+unattended_update_package_list: 7
+unattended_automatic_reboot: false
+unattended_clean_interval: 30
+unattended_systemd_timer_override: true
+unattended_origins_patterns:
+  - "origin=*"

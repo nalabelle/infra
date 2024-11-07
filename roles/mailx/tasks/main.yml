@@ -1,0 +1,24 @@
+---
+- name: Mailx
+  block:
+    - name: Install required packages
+      ansible.builtin.apt:
+        pkg: s-nail
+        state: present
+
+    - name: Configure mailx for the root user
+      ansible.builtin.template:
+        src: mailrc.j2
+        dest: /root/.mailrc
+        mode: "0600"
+
+    - name: Create mail link
+      community.general.alternatives:
+        name: mailx
+        link: /usr/bin/mailx
+        path: /usr/bin/s-nail
+        priority: 55
+        subcommands:
+          - name: mail
+            link: /usr/bin/mail
+            path: /usr/bin/s-nail

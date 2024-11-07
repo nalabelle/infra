@@ -1,0 +1,9 @@
+- name: Unattended Upgrades
+  hosts: hcloud proxmox_all_qemu
+  tags:
+    - unattended-upgrades
+  roles:
+    - role: mailx
+      tags:
+        - mailx
+    - role: unattended_upgrades

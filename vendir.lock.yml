@@ -14,4 +14,12 @@ directories:
       - 4.2.1
     path: hetzner.cloud
   path: vendor/ansible_collection
+- contents:
+  - git:
+      commitTitle: 'Merge pull request #304 from tobiashuste/prepare-4-7-0...'
+      sha: 6f1f945becbd7fa540642c70a93a23c8cc876718
+      tags:
+      - v4.7.0
+    path: unattended_upgrades
+  path: vendor/ansible_roles
 kind: LockConfig
