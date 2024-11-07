@@ -2,12 +2,17 @@
   ansible.builtin.apt:
     pkg:
       - curl
+      - dnsutils
       - fail2ban
       - git
+      - iputils-ping
       - lsof
       - make
       - mosh
+      - net-tools
+      - rsync
       - tmux
+      - traceroute
       - vim
     state: present
     update_cache: true
