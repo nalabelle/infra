@@ -1,6 +1,7 @@
 - name: Install packages
   ansible.builtin.apt:
     pkg:
+      - bash-completion
       - curl
       - dnsutils
       - fail2ban

@@ -1,8 +1,6 @@
 - name: Compose Hosts
   hosts: hcloud service_compose
   roles:
-    - role: basic
-      tags: basic
     - role: containers
       tags: containers
     - role: 1password

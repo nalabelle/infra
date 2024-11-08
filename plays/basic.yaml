@@ -1,0 +1,5 @@
+- name: Basic Setup
+  hosts: hcloud service_compose proxmox_nodes
+  roles:
+    - role: basic
+      tags: basic
