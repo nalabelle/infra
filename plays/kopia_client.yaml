@@ -1,5 +1,5 @@
-- name: File Servers
-  hosts: proxmox_nodes
+- name: Kopia Client
+  hosts: proxmox_nodes service_dev
   roles:
     - role: kopia_client
       tags: kopia-client

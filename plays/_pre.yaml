@@ -14,8 +14,8 @@
           delegate_to: localhost
           run_once: true
 
-- name: Fileservers
-  hosts: proxmox_nodes
+- name: Secrets
+  hosts: proxmox_nodes service_dev
   tasks:
     - name: Generate kopia-client secrets
       ansible.builtin.command:
