@@ -62,3 +62,7 @@ vendor:
 	@vendir sync
 clean-vendor:
 	rm -rf vendor
+
+.PHONY: lintfix
+lintfix:
+	@pre-commit run --all-files
