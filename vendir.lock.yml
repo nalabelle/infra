@@ -16,10 +16,10 @@ directories:
   path: vendor/ansible_collection
 - contents:
   - git:
-      commitTitle: 'Merge pull request #313 from tobiashuste/prepare-4-8-0...'
-      sha: 9717a3d27b6e842148d2d9860d51488467135c27
+      commitTitle: 'Merge pull request #338 from tobiashuste/prepare-5-1-0...'
+      sha: d4e72c80996c41b93b92b0ed54b4f24c36676211
       tags:
-      - v4.8.0
+      - v5.1.0
     path: unattended_upgrades
   path: vendor/ansible_roles
 kind: LockConfig
