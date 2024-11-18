@@ -1,0 +1,17 @@
+[Unit]
+Description=Kopia Maintenance
+After=network-online.target
+Wants=kopia-maintenance.timer
+
+[Service]
+Type=simple
+User=backup
+Group=backup
+PermissionsStartOnly=true
+EnvironmentFile=/mnt/backup/kopia/kopia-env
+PassEnvironment=KOPIA_CONFIG_PATH KOPIA_CACHE_DIRECTORY
+ExecStartPre=/usr/bin/chown -R backup:backup /mnt/backup/kopia/cache /mnt/backup/kopia/repository
+ExecStart=/usr/local/bin/kopia-maintenance
+
+[Install]
+WantedBy=multi-user.target

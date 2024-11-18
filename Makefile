@@ -44,9 +44,11 @@ clean-secrets:
 	@rm -f inventory/group_vars/all/secrets.yaml
 inventory/host_vars/%.yaml: inventory/host_vars/_host.yaml.tpl
 	@HOSTNAME=$(basename $(notdir $@)) op inject -f -i $< -o $@
-
 inventory/group_vars/all/secrets.yaml: inventory/group_vars/all/secrets.yaml.tpl
 	@op inject -f -i $< -o $@
+inventory/group_vars/%.yaml: inventory/group_vars/_%.yaml.tpl
+	@op inject -f -i $< -o $@
+
 .env.secrets: .env.secrets.tpl
 	@op inject -f -i $< -o $@
 .secrets/hosts: .secrets

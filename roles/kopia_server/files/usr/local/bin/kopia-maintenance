@@ -1,0 +1,16 @@
+#!/bin/bash
+set -o pipefail
+set -eu
+
+if [ "$USER" != "backup" ]; then
+  echo "Can only run as backup user, exiting"
+  exit 1
+fi
+
+if [ -z "$KOPIA_CONFIG_PATH" ] || [ -z "$KOPIA_CACHE_DIRECTORY" ]; then
+  echo "Env not set, exiting"
+  exit 2
+fi
+
+kopia maintenance run --full
+kopia content stats

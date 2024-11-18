@@ -13,6 +13,16 @@
             - "'is up to date' not in group_secrets.stdout"
           delegate_to: localhost
           run_once: true
+        - name: Generate group secrets
+          ansible.builtin.command:
+            chdir: "{{ inventory_dir }}/.."
+            cmd: make inventory/group_vars/service_kopia.yaml
+          register: result
+          changed_when:
+            - result.rc == 0
+            - "'is up to date' not in result.stdout"
+          delegate_to: localhost
+          run_once: true
 
 - name: Secrets
   hosts: proxmox_nodes service_dev

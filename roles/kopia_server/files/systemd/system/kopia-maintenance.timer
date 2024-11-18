@@ -1,0 +1,11 @@
+[Unit]
+Description=Run Kopia maintenance
+Requires=kopia-maintenance.service
+
+[Timer]
+Unit=kopia-maintenance.service
+OnCalendar=daily
+Persistent=true
+
+[Install]
+WantedBy=timers.target

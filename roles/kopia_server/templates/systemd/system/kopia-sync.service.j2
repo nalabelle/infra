@@ -1,0 +1,20 @@
+[Unit]
+Description=Kopia Sync
+After=network-online.target
+Wants=kopia-sync.timer
+
+[Service]
+Type=simple
+User=backup
+Group=backup
+EnvironmentFile=/mnt/backup/kopia/kopia-env
+PassEnvironment=KOPIA_CONFIG_PATH KOPIA_CACHE_DIRECTORY
+ExecStart=/usr/bin/kopia \
+        repository sync-to b2 \
+        --bucket={{ kopia_server.sync.bucket }} \
+        --key-id={{ kopia_server.sync.key_id }} \
+        --key={{ kopia_server.sync.key }} \
+        --delete
+
+[Install]
+WantedBy=multi-user.target

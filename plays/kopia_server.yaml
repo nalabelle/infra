@@ -1,0 +1,4 @@
+- name: Kopia Server
+  hosts: service_kopia
+  roles:
+    - role: kopia_server
