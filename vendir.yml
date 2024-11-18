@@ -18,7 +18,7 @@ directories:
       - path: unattended_upgrades
         git:
           url: https://github.com/hifis-net/ansible-collection-toolkit
-          ref: v4.8.0
+          ref: v5.1.0
           depth: 1
         includePaths:
           - roles/unattended_upgrades/**/*
