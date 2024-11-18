@@ -1,5 +1,5 @@
 - name: Unattended Upgrades
-  hosts: hcloud proxmox_all_qemu
+  hosts: hcloud proxmox_all_qemu proxmox_nodes proxmox_all_lxc
   tags:
     - unattended-upgrades
   roles:
