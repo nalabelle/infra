@@ -1,0 +1,32 @@
+- name: Prerequisites
+  hosts: proxmox_nodes
+  tasks:
+    - name: General
+      block:
+        - name: Generate group secrets
+          ansible.builtin.command:
+            chdir: "{{ inventory_dir }}/.."
+            cmd: make inventory/group_vars/all/secrets.yaml
+          register: group_secrets
+          changed_when:
+            - group_secrets.rc == 0
+            - "'is up to date' not in group_secrets.stdout"
+          delegate_to: localhost
+          run_once: true
+
+- name: Fileservers
+  hosts: proxmox_nodes
+  tasks:
+    - name: Generate kopia-client secrets
+      ansible.builtin.command:
+        chdir: "{{ inventory_dir }}/.."
+        cmd: make inventory/host_vars/{{ inventory_hostname }}.yaml
+      delegate_to: localhost
+      register: result
+      changed_when:
+        - result.rc == 0
+        - "'is up to date' not in result.stdout"
+
+  handlers:
+    - name: Refresh Inventory
+      ansible.builtin.meta: refresh_inventory

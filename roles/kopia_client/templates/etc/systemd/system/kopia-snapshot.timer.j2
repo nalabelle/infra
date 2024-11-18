@@ -1,0 +1,10 @@
+[Unit]
+Description=Run Kopia on Schedule
+
+[Timer]
+OnCalendar={{ kopia_client__backup_schedule | default('*-*-* 02:30:00 America/Los_Angeles') }}
+Persistent=true
+WakeSystem=true
+
+[Install]
+WantedBy=timers.target
