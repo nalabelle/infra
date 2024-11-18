@@ -1,15 +1,64 @@
-- name: Install packages
-  ansible.builtin.apt:
-    pkg:
-      - docker.io
-      - docker-compose-v2
-      - redir
-    state: present
-    update_cache: true
-    cache_valid_time: 3600
-
-- name: Copy redir services
+- name: Install Docker
   block:
+    - name: Install required packages
+      ansible.builtin.apt:
+        pkg:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+        state: present
+        update_cache: true
+        cache_valid_time: 3600
+    - name: Add Docker GPG apt Key
+      ansible.builtin.get_url:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        dest: /etc/apt/keyrings/docker.asc
+        checksum: sha256:1500c1f56fa9e26b9b8f42452a553675796ade0807cdce11975eb98170b3a570
+    - name: Add Docker Repository
+      ansible.builtin.apt_repository:
+        repo: deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
+        state: present
+    - name: Remove conflicting packages
+      ansible.builtin.apt:
+        pkg:
+          - docker.io
+          - docker-compose-v2
+          - docker-compose
+          - containerd
+          - docker-doc
+          - podman-docker
+          - runc
+        state: absent
+        purge: true
+    - name: Update apt and install docker-ce
+      ansible.builtin.apt:
+        pkg:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-buildx-plugin
+          - docker-compose-plugin
+        state: present
+        update_cache: true
+
+- name: Enable memory cgroup
+  ansible.builtin.lineinfile:
+    path: /etc/default/grub
+    regexp: "^GRUB_CMDLINE_LINUX="
+    line: GRUB_CMDLINE_LINUX="cgroup_enable=memory"
+    backup: true
+  notify: Update Grub
+
+- name: Configure redir
+  block:
+    - name: Install packages
+      ansible.builtin.apt:
+        pkg:
+          - redir
+        state: present
+        update_cache: true
+        cache_valid_time: 3600
+
     - name: Copy redir-80
       ansible.builtin.copy:
         src: etc/systemd/system/redir-80.service
@@ -24,8 +73,6 @@
         mode: "0644"
       notify: Restart redir-443
 
-- name: Enable and start redir services
-  block:
     - name: Enable and start redir-80
       ansible.builtin.service:
         name: redir-80

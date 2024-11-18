@@ -6,3 +6,5 @@
   ansible.builtin.service:
     name: redir-443
     state: restarted
+- name: Update Grub
+  ansible.builtin.command: update-grub2
