@@ -8,10 +8,10 @@ directories:
       - 10.0.1
     path: community.general
   - git:
-      commitTitle: 'chore(main): release 4.2.1 (#562)...'
-      sha: 8503764dd0d773969847d713cf80b6883adb5f6e
+      commitTitle: 'chore(main): release 4.2.2 (#571)...'
+      sha: 098883454c45a5b644a2e86890c04fb3c7beef29
       tags:
-      - 4.2.1
+      - 4.2.2
     path: hetzner.cloud
   path: vendor/ansible_collection
 - contents:
