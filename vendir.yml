@@ -11,7 +11,7 @@ directories:
       - path: hetzner.cloud
         git:
           url: https://github.com/ansible-collections/hetzner.hcloud
-          ref: origin/tags/4.2.1
+          ref: 4.2.2
           depth: 1
   - path: vendor/ansible_roles
     contents:
