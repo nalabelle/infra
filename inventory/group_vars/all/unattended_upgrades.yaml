@@ -13,3 +13,15 @@ unattended_apt_daily_upgrade_randomizeddelaysec: "2h"
 unattended_systemd_timer_override: true
 unattended_origins_patterns:
   - "origin=*"
+
+unattended_upgrades__op_vault: "Applications"
+unattended_upgrades__op_key: "MAILX"
+unattended_mail: |-
+  unattended-upgrades@{{
+      lookup(
+        'community.general.onepassword',
+        unattended_upgrades__op_key,
+        vault=unattended_upgrades__op_vault,
+        field='domain'
+      )
+  }}

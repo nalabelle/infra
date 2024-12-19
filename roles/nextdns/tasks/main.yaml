@@ -3,10 +3,10 @@
     path: /etc/systemd/resolved.conf
     backup: true
     block: |
-      DNS=45.90.28.0#{{ inventory_hostname | lower }}-{{ nextdns_id }}.dns.nextdns.io
-      DNS=2a07:a8c0::#{{ inventory_hostname | lower }}-{{ nextdns_id }}.dns.nextdns.io
-      DNS=45.90.30.0#{{ inventory_hostname | lower }}-{{ nextdns_id }}.dns.nextdns.io
-      DNS=2a07:a8c1::#{{ inventory_hostname | lower }}-{{ nextdns_id }}.dns.nextdns.io
+      DNS=45.90.28.0#{{ inventory_hostname | lower }}-{{ nextdns__id }}.dns.nextdns.io
+      DNS=2a07:a8c0::#{{ inventory_hostname | lower }}-{{ nextdns__id }}.dns.nextdns.io
+      DNS=45.90.30.0#{{ inventory_hostname | lower }}-{{ nextdns__id }}.dns.nextdns.io
+      DNS=2a07:a8c1::#{{ inventory_hostname | lower }}-{{ nextdns__id }}.dns.nextdns.io
       DNSOverTLS=yes
       DNSStubListenerExtra=0.0.0.0
   notify: Restart DNS Resolver

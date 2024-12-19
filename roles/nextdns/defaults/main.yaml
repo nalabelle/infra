@@ -1,0 +1,12 @@
+nextdns__op_vault: "Applications"
+nextdns__op_key: "NextDNS"
+
+nextdns__id: |-
+  {{
+      lookup(
+        'community.general.onepassword',
+        nextdns__op_key,
+        vault=nextdns__op_vault,
+        field='ID'
+      )
+  }}

@@ -2,11 +2,11 @@ SHELL := bash
 .SHELLFLAGS := -eu -o pipefail -c
 MAKEFLAGS += --warn-undefined-variables
 MAKEFLAGS += --no-builtin-rules
-print-%: ; @echo $*=$($*)
 
 ANSIBLE_CACHE:=.ansible-cache
-.DEFAULT_GOAL:=help
 
+.DEFAULT_GOAL:=help
+print-%: ; @echo $*=$($*)
 .PHONY: help
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) \
@@ -36,25 +36,12 @@ $(ANSIBLE_CACHE)/hosts:
 
 # Secret
 .PHONY: secrets clean-secrets
-secrets: .env.secrets inventory/group_vars/all/secrets.yaml .secrets/hosts
+secrets: .env.secrets
 	@true
 clean-secrets:
-# Clean this up manually
-# @rm -f .env.secrets
-	@rm -f inventory/group_vars/all/secrets.yaml
-inventory/host_vars/%.yaml: inventory/host_vars/_host.yaml.tpl
-	@HOSTNAME=$(basename $(notdir $@)) op inject -f -i $< -o $@
-inventory/group_vars/all/secrets.yaml: inventory/group_vars/all/secrets.yaml.tpl
-	@op inject -f -i $< -o $@
-inventory/group_vars/%.yaml: inventory/group_vars/_%.yaml.tpl
-	@op inject -f -i $< -o $@
-
+	@rm -f .env.secrets
 .env.secrets: .env.secrets.tpl
 	@op inject -f -i $< -o $@
-.secrets/hosts: .secrets
-	op read -o .secrets/hosts op://Applications/HOSTS/file
-.secrets:
-	mkdir -p .secrets
 
 # Vendor
 .PHONY: clean-vendor

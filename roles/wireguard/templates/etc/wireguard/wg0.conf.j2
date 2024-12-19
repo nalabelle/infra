@@ -1,20 +1,32 @@
 #jinja2: trim_blocks:True, lstrip_blocks:True
-{% set config = wireguard.hosts[inventory_hostname | lower] | mandatory %}
 [Interface]
-Address = {{ config.Address }}
-ListenPort = {{ wireguard_port }}
-PrivateKey = {{ config.PrivateKey | mandatory }}
-PostUp = ufw route allow in on wg0 out on eth0; ufw route allow in on eth0 out on wg0; sysctl -w net.ipv4.ip_forward=1; sysctl -w net.ipv6.conf.all.forwarding=1; iptables -A FORWARD -i %i -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
-PostDown = ufw route delete allow in on wg0 out on eth0; ufw route delete allow in on eth0 out on wg0; sysctl -w net.ipv4.ip_forward=0; sysctl -w net.ipv6.conf.all.forwarding=0; iptables -D FORWARD -i %i -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
+Address = {{ wireguard__address }}
+ListenPort = {{ wireguard__port }}
+PrivateKey = {{ wireguard__private_key }}
+PostUp = ufw route allow in on wg0 out on eth0
+PostUp = ufw route allow in on eth0 out on wg0
+PostUp = sysctl -w net.ipv4.ip_forward=1
+PostUp = sysctl -w net.ipv6.conf.all.forwarding=
+PostUp = iptables -A FORWARD -i %i -j ACCEPT
+PostUp = ip6tables -A FORWARD -i %i -j ACCEPT
+PostUp = iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+PostDown = iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
+PostDown = ip6tables -D FORWARD -i %i -j ACCEPT
+PostDown = iptables -D FORWARD -i %i -j ACCEPT
+PostDown = sysctl -w net.ipv6.conf.all.forwarding=0
+PostDown = sysctl -w net.ipv4.ip_forward=0
+PostDown = ufw route delete allow in on eth0 out on wg0
+PostDown = ufw route delete allow in on wg0 out on eth0
 
 
-{% for peer in config.peers %}
-  {% set peerConfig = config.peers[peer] %}
+{% for peer in peers %}
 [Peer]
-PublicKey = {{ peerConfig.PublicKey }}
-    {% if 'PresharedKey' in peerConfig %}
-PresharedKey = {{ peerConfig.PresharedKey }}
-    {% endif %}
-AllowedIPs = {{ peerConfig.AllowedIPs }}
+# {{ peer.name }}
+PublicKey = {{ peer.public_key }}
+PresharedKey = {{ peer.preshared_key }}
+AllowedIPs = {{ peer.allowed_ips }}
+{% if peer.endpoint and peer.endpoint != '' %}
+Endpoint = {{ peer.endpoint }}
+{% endif %}
 
 {% endfor %}

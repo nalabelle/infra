@@ -10,9 +10,9 @@ EnvironmentFile=/mnt/backup/kopia/kopia-env
 PassEnvironment=KOPIA_CONFIG_PATH KOPIA_CACHE_DIRECTORY
 AmbientCapabilities=CAP_NET_BIND_SERVICE
 ExecStart=/usr/bin/kopia server start \
-  --tls-cert-file {{ kopia_server.ssl.cert }} \
-  --tls-key-file {{ kopia_server.ssl.key }} \
-  --server-username {{ kopia_server.username }} \
+  --tls-cert-file {{ kopia_server__ssl_cert }} \
+  --tls-key-file {{ kopia_server__ssl_key }} \
+  --server-username {{ kopia_server__username }} \
   --address https://0.0.0.0:443
 
 [Install]

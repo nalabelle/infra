@@ -4,8 +4,4 @@
 /.vscode
 
 .env.secrets
-secrets.yaml
 /.secrets
-
-/inventory/host_vars/*.yaml
-/inventory/group_vars/*.yaml
