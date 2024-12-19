@@ -1,0 +1,5 @@
+[[overrides]]
+files = ["*.yaml", ".yml"]
+[overrides.options]
+trailingComma = "none"
+bracketSpacing = false
