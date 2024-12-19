@@ -1,0 +1,55 @@
+- name: Install required packages
+  ansible.builtin.apt:
+    pkg:
+      - gpg
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+- name: Add Grafana GPG apt Key
+  ansible.builtin.get_url:
+    url: https://apt.grafana.com/gpg.key
+    dest: /etc/apt/keyrings/grafana.asc
+    checksum: sha256:58052c148058ace26dbd01ce057afa5709fb9d39c8a8ab16800be3f42fc02ab2
+    mode: "0644"
+- name: Add Grafana Repository
+  ansible.builtin.apt_repository:
+    repo: deb [signed-by=/etc/apt/keyrings/grafana.asc] https://apt.grafana.com stable main
+    state: present
+- name: Update apt and install alloy
+  ansible.builtin.apt:
+    pkg:
+      - alloy
+    state: present
+    update_cache: true
+- name: Enable and start alloy
+  ansible.builtin.service:
+    name: alloy
+    state: started
+    enabled: true
+- name: Add alloy to docker
+  ansible.builtin.user:
+    name: alloy
+    groups: docker
+    append: true
+  notify: Restart alloy
+- name: Add overrides
+  ansible.builtin.copy:
+    src: alloy-override.conf
+    dest: /etc/systemd/system/alloy.service.d/override.conf
+    mode: "0644"
+  notify: Restart alloy
+- name: Add config
+  ansible.builtin.template:
+    src: etc/alloy/config.alloy
+    dest: /etc/alloy/config.alloy
+    mode: "0644"
+    backup: true
+  notify: Restart alloy
+- name: Add API Key
+  ansible.builtin.template:
+    src: etc/alloy/api-key
+    dest: /etc/alloy/api-key
+    mode: "0600"
+    backup: true
+    owner: alloy
+  notify: Restart alloy

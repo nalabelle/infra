@@ -1,0 +1,21 @@
+alloy__op_vault: "Applications"
+alloy__op_key: "GrafanaCloud"
+
+alloy__username: |-
+  {{
+      lookup(
+        'community.general.onepassword',
+        alloy__op_key,
+        vault=alloy__op_vault,
+        field='username'
+      )
+  }}
+alloy__password: |-
+  {{
+      lookup(
+        'community.general.onepassword',
+        alloy__op_key,
+        vault=alloy__op_vault,
+        field='password'
+      )
+  }}
