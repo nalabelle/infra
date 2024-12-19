@@ -6,6 +6,7 @@
       - dnsutils
       - fail2ban
       - git
+      - htop
       - iputils-ping
       - lsof
       - make
