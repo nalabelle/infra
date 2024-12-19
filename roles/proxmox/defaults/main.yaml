@@ -1,0 +1,3 @@
+proxmox__enable_exporters: false
+proxmox__enable_pcie: false
+proxmox__enable_sanoid: false
