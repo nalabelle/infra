@@ -21,5 +21,33 @@ directories:
       tags:
       - v5.1.0
     path: unattended_upgrades
+  - git:
+      commitTitle: 'Merge pull request #3 from wandansible/argument-new-lines...'
+      sha: 1dfa9c2260897e9ecac56862db1d4f4c86649047
+    path: ctrld
   path: vendor/ansible_roles
+- contents:
+  - git:
+      commitTitle: Update README
+      sha: 2228634e9215dc08a28ca4249ecfed13ed094220
+      tags:
+      - v04
+    path: .
+  path: vendor/pve-nag-buster
+- contents:
+  - git:
+      commitTitle: Prepare release 3.4.4 (#275)
+      sha: 0a5ddf2209a918a2871b9d1cd05e0f5bdab7e7d8
+      tags:
+      - v3.4.4
+    path: pve_exporter
+  - git:
+      commitTitle: 'nvme_metrics: support nvme-cli v2.11+ verbose JSON output (#227)...'
+      sha: a2b43e19be1e64c31b626ca827506977cac93488
+    path: textfile-collector-scripts
+  - githubRelease:
+      tag: v0.6.1
+      url: https://api.github.com/repos/natrontech/pbs-exporter/releases/164421897
+    path: pbs-exporter
+  path: vendor/exporters
 kind: LockConfig

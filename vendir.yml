@@ -23,3 +23,43 @@ directories:
         includePaths:
           - roles/unattended_upgrades/**/*
         newRootPath: roles/unattended_upgrades
+      - path: ctrld
+        git:
+          url: https://github.com/wandansible/ctrld
+          ref: origin/main
+          depth: 1
+  - path: vendor/pve-nag-buster
+    contents:
+      - path: .
+        git:
+          url: https://github.com/foundObjects/pve-nag-buster
+          ref: origin/master
+          depth: 1
+  - path: vendor/exporters
+    contents:
+      - path: pve_exporter
+        git:
+          url: https://github.com/prometheus-pve/prometheus-pve-exporter
+          ref: origin/tags/v3.4.4
+          depth: 1
+        includePaths:
+          - src/pve_exporter/**/*
+        newRootPath: src/pve_exporter
+      - path: textfile-collector-scripts
+        git:
+          url: https://github.com/prometheus-community/node-exporter-textfile-collector-scripts
+          ref: origin/master
+          depth: 1
+        includePaths:
+          - zfs*
+      - path: pbs-exporter
+        # https://github.com/natrontech/pbs-exporter
+        githubRelease:
+          slug: natrontech/pbs-exporter
+          tag: v0.6.1
+          checksums:
+            pbs-exporter_v0.6.1_linux_amd64.tar.gz: 3221dd0e1e2dcba520061af8114eb424ef255c68f0cd93133cfcf5f608be239c
+          assetNames:
+            - "pbs-exporter_v0.6.1_linux_amd64.tar.gz"
+          unpackArchive:
+            path: "pbs-exporter_v0.6.1_linux_amd64.tar.gz"

@@ -1,0 +1,52 @@
+- name: Install node collector packages
+  ansible.builtin.apt:
+    pkg:
+      - prometheus-node-exporter
+      - prometheus-node-exporter-collectors
+      - python3-prometheus-client
+      - python3-proxmoxer
+    state: present
+
+- name: Ensure local collector path exists
+  ansible.builtin.file:
+    path: /usr/local/share/prometheus-node-exporter-collectors
+    state: "directory"
+    mode: "0755"
+
+- name: Copy proxmox_ve collector vendor modules
+  ansible.builtin.copy:
+    src: "{{ inventory_dir }}/../exporters/pve_exporter"
+    dest: /usr/local/share/prometheus-node-exporter-collectors/pve_exporter/
+    mode: "0755"
+
+- name: Copy proxmox_ve collector
+  ansible.builtin.copy:
+    src: usr/local/share/prometheus-node-exporter-collectors/pve_exporter.py
+    dest: /usr/local/share/prometheus-node-exporter-collectors/pve_exporter.py
+    mode: "0755"
+
+- name: Copy pve service
+  ansible.builtin.template:
+    src: etc/systemd/system/prometheus-node-exporter-pve.service.j2
+    dest: /etc/systemd/system/prometheus-node-exporter-pve.service
+    mode: "0644"
+  notify: Reload systemd
+
+- name: Copy pve timer
+  ansible.builtin.copy:
+    src: etc/systemd/system/prometheus-node-exporter-pve.timer
+    dest: /etc/systemd/system/prometheus-node-exporter-pve.timer
+    mode: "0644"
+  notify: Reload systemd
+
+- name: Enable pve timer
+  ansible.builtin.systemd_service:
+    name: prometheus-node-exporter-pve.timer
+    enabled: true
+    state: started
+
+- name: Enable node collector service
+  ansible.builtin.systemd_service:
+    name: prometheus-node-exporter
+    enabled: true
+    state: started

@@ -1,0 +1,52 @@
+- name: Proxmox Remove subscription
+  block:
+    - name: Copy pve-nag-buster
+      ansible.builtin.copy:
+        src: "{{ inventory_dir }}/../vendor/pve-nag-buster/install.sh"
+        dest: "/opt/pve-nag-buster"
+        mode: "0755"
+
+    - name: Run pve-nag-buster
+      ansible.builtin.command:
+        cmd: "/opt/pve-nag-buster"
+        creates: "/etc/apt/sources.list.d/pve-no-subscription.list"
+
+    - name: Remove ceph repo
+      ansible.builtin.command:
+        cmd: mv /etc/apt/sources.list.d/ceph.list /etc/apt/sources.list.d/ceph.disabled
+        removes: /etc/apt/sources.list.d/ceph.list
+        creates: /etc/apt/sources.list.d/ceph.disabled
+
+- name: PCIE Passthrough
+  ansible.builtin.import_tasks: pcie_passthrough.yaml
+  when: proxmox__enable_pcie
+
+- name: Proxmox
+  # This mostly exists to ensure we can migrate lxc containers host-to-host
+  # since it's not supported by default on zfs encrypted volumes
+  # The zfs send fails due to encryption keys
+  # https://forum.proxmox.com/threads/replication-migration-encrypted-zfs-datasets.70572/
+  # https://forum.proxmox.com/threads/replication-not-possible-on-encrypted-data-pool.78470/
+  # https://bugzilla.proxmox.com/show_bug.cgi?id=2350
+  when: proxmox__enable_sanoid
+  block:
+    - name: Install packages
+      ansible.builtin.apt:
+        pkg:
+          - lzop
+          - mbuffer
+          - pv
+          - rsync
+          - sanoid
+          - sudo
+        state: present
+
+    - name: Copy scripts
+      ansible.builtin.copy:
+        src: usr/local/bin/
+        dest: /usr/local/bin/
+        mode: "755"
+
+- name: Include Exporters
+  ansible.builtin.import_tasks: exporters.yaml
+  when: proxmox__enable_exporters

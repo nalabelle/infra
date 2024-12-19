@@ -1,0 +1,11 @@
+[Unit]
+Description=Collect Proxmox VE metrics for prometheus-node-exporter
+
+[Service]
+Type=oneshot
+Environment=PVE_USER="root@pam"
+Environment=PVE_TOKEN_NAME="node_collector"
+Environment=PVE_TOKEN_VALUE="{{ proxmox.node_collector.token }}"
+Environment=PVE_HOST="proxmox.{{ network.domain }}"
+Environment=TMPDIR=/var/lib/prometheus/node-exporter
+ExecStart=/bin/bash -c "/usr/local/share/prometheus-node-exporter-collectors/pve_exporter.py | sponge /var/lib/prometheus/node-exporter/pve_exporter.prom"

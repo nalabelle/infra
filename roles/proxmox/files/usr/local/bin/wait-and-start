@@ -1,0 +1,21 @@
+#!/bin/bash
+set -o pipefail
+set -eu
+
+CONTAINER="$1"
+LXC_CONF="/etc/pve/lxc/$CONTAINER.conf"
+
+TIMEOUT=90
+SECONDS=0
+until [ -s "$LXC_CONF" ]; do
+  if (( SECONDS >= TIMEOUT )); then
+    print "Timed out waiting for config %s" "$LXC_CONF" >&2
+    exit 1
+  fi
+  sleep 3;
+done
+
+pct start "$CONTAINER"
+
+zfs list -r -t snapshot tank/subvol-104-disk-1 | \
+  tail -n +2 | cut -f1 -d' ' | grep syncoid_ | xargs -n1 zfs destroy

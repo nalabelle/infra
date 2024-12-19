@@ -1,0 +1,34 @@
+#!/bin/bash
+set -o pipefail
+set -eu
+
+CONTAINER="$1"
+DEST_HOST="$2"
+
+LXC_CONF="/etc/pve/lxc/$CONTAINER.conf"
+REAL_LXC_CONF="$(readlink -f "$LXC_CONF")"
+DEST_HOST_LXC="/etc/pve/nodes/$DEST_HOST/lxc"
+
+if [ ! -f "$LXC_CONF" ]; then
+  printf "ERROR: Could not find container %s at %s" "$CONTAINER" "$LXC_CONF" >&2
+  exit 1
+fi
+
+if [ ! -d "$DEST_HOST_LXC" ]; then
+  printf "ERROR: Could not destination host %s in config %s" "$DEST_HOST" "$DEST_HOST_LXC" >&2
+  exit 1
+fi
+
+
+SOURCE="$(perl -wne '/^rootfs: (?<zpool>[^:]+):(?<dataset>[^,]+)/i && print "$+{zpool}/$+{dataset}\n"' "$LXC_CONF")"
+
+syncoid "$SOURCE" "$DEST_HOST:$SOURCE"
+set -x
+pct stop "$CONTAINER"
+syncoid "$SOURCE" "$DEST_HOST:$SOURCE"
+mv "$REAL_LXC_CONF" "$DEST_HOST_LXC"
+# shellcheck disable=SC2029
+ssh "$DEST_HOST" "wait-and-start \"$CONTAINER\""
+
+echo "Destroying source volume"
+zfs destroy -r "$SOURCE"
