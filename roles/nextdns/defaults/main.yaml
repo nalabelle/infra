@@ -7,6 +7,6 @@ nextdns__id: |-
         'community.general.onepassword',
         nextdns__op_key,
         vault=nextdns__op_vault,
-        field='ID'
+        field='prefix'
       )
   }}

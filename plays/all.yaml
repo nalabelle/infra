@@ -3,20 +3,34 @@
   roles:
     - role: basic
       tags: basic
-- name: Compose Hosts
-  hosts: hcloud service_compose service_dev servers
+- name: NextDNS
+  hosts: all
+  tags: nextdns
   roles:
     - role: nextdns
-      tags: nextdns
-      when: nextdns_enabled is defined and nextdns_enabled
+      when: nextdns__enabled is defined and nextdns__enabled
+- name: Wireguard
+  hosts: hcloud servers
+  tags: wireguard
+  roles:
+    - role: wireguard
+- name: 1Password
+  hosts: all
+  tags: 1password
+  roles:
+    - role: 1password
+- name: Compose Hosts
+  hosts: hcloud service_compose service_dev
+  roles:
     - role: containers
       tags: containers
     - role: 1password
       tags: 1password
-    - role: wireguard
-      tags: wireguard
-      when:
-        - not ansible_hostname in groups['service_dev']
+- name: Proxmox
+  hosts: proxmox_nodes
+  tags: proxmox
+  roles:
+    - role: proxmox
 - name: Guest Agent
   hosts: proxmox_all_qemu
   tags:
