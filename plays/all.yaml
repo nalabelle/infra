@@ -1,0 +1,50 @@
+- name: Basic Setup
+  hosts: hcloud service_compose proxmox_nodes servers
+  roles:
+    - role: basic
+      tags: basic
+- name: Compose Hosts
+  hosts: hcloud service_compose service_dev servers
+  roles:
+    - role: nextdns
+      tags: nextdns
+      when: nextdns_enabled is defined and nextdns_enabled
+    - role: containers
+      tags: containers
+    - role: 1password
+      tags: 1password
+    - role: wireguard
+      tags: wireguard
+      when:
+        - not ansible_hostname in groups['service_dev']
+- name: Guest Agent
+  hosts: proxmox_all_qemu
+  tags:
+    - guest-agent
+  tasks:
+    - name: Install guest agent
+      ansible.builtin.apt:
+        pkg: qemu-guest-agent
+        state: present
+        update_cache: true
+        cache_valid_time: 3600
+- name: Unattended Upgrades
+  hosts: hcloud proxmox_all_qemu proxmox_nodes proxmox_all_lxc servers
+  tags:
+    - unattended-upgrades
+  roles:
+    - role: unattended_upgrades
+- name: Kopia Server
+  hosts: service_kopia
+  tags:
+    - kopia-server
+    - kopia
+  roles:
+    - role: kopia_server
+- name: Kopia Client
+  hosts: proxmox_nodes service_dev
+  tags:
+    - kopia-client
+    - kopia
+  roles:
+    - role: kopia_client
