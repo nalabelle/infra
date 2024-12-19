@@ -4,7 +4,7 @@
     - role: basic
       tags: basic
 - name: NextDNS
-  hosts: all
+  hosts: hcloud servers
   tags: nextdns
   roles:
     - role: nextdns
@@ -14,11 +14,6 @@
   tags: wireguard
   roles:
     - role: wireguard
-- name: 1Password
-  hosts: all
-  tags: 1password
-  roles:
-    - role: 1password
 - name: Compose Hosts
   hosts: hcloud service_compose service_dev
   roles:
