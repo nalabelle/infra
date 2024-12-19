@@ -40,7 +40,7 @@ directories:
       - path: pve_exporter
         git:
           url: https://github.com/prometheus-pve/prometheus-pve-exporter
-          ref: origin/tags/v3.4.4
+          ref: v3.4.7
           depth: 1
         includePaths:
           - src/pve_exporter/**/*

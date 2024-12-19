@@ -36,10 +36,10 @@ directories:
   path: vendor/pve-nag-buster
 - contents:
   - git:
-      commitTitle: Prepare release 3.4.4 (#275)
-      sha: 0a5ddf2209a918a2871b9d1cd05e0f5bdab7e7d8
+      commitTitle: Prepare release 3.4.7 (#310)
+      sha: 68b15f2fa55925885e2c567db842cb8dea1df698
       tags:
-      - v3.4.4
+      - v3.4.7
     path: pve_exporter
   - git:
       commitTitle: 'nvme_metrics: support nvme-cli v2.11+ verbose JSON output (#227)...'
