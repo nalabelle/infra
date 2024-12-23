@@ -5,6 +5,16 @@ proxmox__enable_sanoid: false
 proxmox__op_vault: "Applications"
 proxmox__op_key: "PROXMOX"
 
+proxmox__network_domain: |-
+  {{
+      lookup(
+        'community.general.onepassword',
+        'network',
+        vault=proxmox__op_vault,
+        field='domain'
+      )
+  }}
+
 proxmox__node_collector_token: |-
   {{
       lookup(

@@ -6,6 +6,6 @@ Type=oneshot
 Environment=PVE_USER="root@pam"
 Environment=PVE_TOKEN_NAME="node_collector"
 Environment=PVE_TOKEN_VALUE="{{ proxmox__node_collector_token }}"
-Environment=PVE_HOST="localhost"
+Environment=PVE_HOST="{{ inventory_hostname }}.{{ proxmox__network_domain }}"
 Environment=TMPDIR=/var/lib/prometheus/node-exporter
 ExecStart=/bin/bash -c "/usr/local/share/prometheus-node-exporter-collectors/pve_exporter.py | sponge /var/lib/prometheus/node-exporter/pve_exporter.prom"
