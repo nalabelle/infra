@@ -1,0 +1,49 @@
+- name: Look up item info
+  ansible.builtin.set_fact:
+    peers: |-
+      {{
+        peers | default([]) + [
+          {
+            'name': item,
+            'public_key': lookup('community.general.onepassword', 'WIREGUARD_' + item, vault=wireguard__op_vault, field='username'),
+            'preshared_key': lookup(
+              'community.general.onepassword',
+              wireguard__op_key,
+              vault=wireguard__op_vault,
+              section='PRESHAREDKEY',
+              field=item
+            ),
+            'allowed_ips': lookup('community.general.onepassword', 'WIREGUARD_' + item, vault=wireguard__op_vault, field='AllowedIPs'),
+            'endpoint': lookup('community.general.onepassword', 'WIREGUARD_' + item, vault=wireguard__op_vault, field='Endpoint'),
+          }
+        ]
+      }}
+  loop: "{{ wireguard__peers | split(',') | map('trim') }}"
+
+- name: Config tool
+  ansible.builtin.template:
+    src: data/wireguard/configure.j2
+    dest: /data/wireguard/configure
+    mode: "0755"
+
+- name: Config
+  ansible.builtin.template:
+    src: data/wireguard/wgsrv1.conf.j2
+    dest: /data/wireguard/wgsrv1.conf
+    mode: "0600"
+  notify:
+    - Configure Wireguard
+
+- name: Install service
+  ansible.builtin.copy:
+    src: etc/systemd/system/wireguard-config.service
+    dest: /etc/systemd/system/wireguard-config.service
+    mode: "0644"
+  notify:
+    - Reload systemd
+
+- name: Enable service
+  ansible.builtin.systemd:
+    name: wireguard-config.service
+    state: started
+    enabled: true

@@ -1,0 +1,6 @@
+- name: Configure Wireguard
+  ansible.builtin.command:
+    cmd: /data/wireguard/configure
+- name: Reload systemd
+  ansible.builtin.systemd_service:
+    daemon_reload: true

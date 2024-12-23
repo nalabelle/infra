@@ -1,0 +1,27 @@
+#jinja2: trim_blocks:True, lstrip_blocks:True
+####################################################
+# Interface settings, not used by `wg`             #
+# Only used for reference and detection of changes #
+# in the configuration                             #
+####################################################
+# Address = {{ wireguard__address }}
+# DNS =
+# MTU = 1420
+# disableroutes = 0
+# gateway =
+
+[Interface]
+PrivateKey = {{ wireguard__private_key }}
+ListenPort = {{ wireguard__port }}
+
+{% for peer in peers %}
+[Peer]
+# friendly_name = {{ peer.name | upper }}
+PublicKey = {{ peer.public_key }}
+PresharedKey = {{ peer.preshared_key }}
+AllowedIPs = {{ peer.allowed_ips }}
+{% if peer.endpoint and peer.endpoint != '' %}
+Endpoint = {{ peer.endpoint }}
+{% endif %}
+
+{% endfor %}

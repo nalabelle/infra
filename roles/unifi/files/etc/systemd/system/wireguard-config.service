@@ -1,0 +1,11 @@
+[Unit]
+Description=Advanced WireGuard configuration
+ConditionFileIsExecutable=/data/wireguard/configure
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+ExecStart=/data/wireguard/configure
+
+[Install]
+WantedBy=multi-user.target

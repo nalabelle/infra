@@ -57,3 +57,9 @@
     - kopia
   roles:
     - role: kopia_client
+- name: unifi
+  hosts: unifi
+  tags:
+    - unifi
+  roles:
+    - role: unifi
