@@ -124,10 +124,10 @@ class Host:
         ansible_hostname = fields.get("url", "")
         ansible_vars = yaml.safe_load(fields.get("ansible", "")) or {}
         if ansible_hostname:
-            ansible_vars["ansible_hostname"] = ansible_hostname
+            ansible_vars["ansible_host"] = ansible_hostname
         groups = [
             group.strip()
-            for group in fields.get("group", "").split(",")
+            for group in fields.get("groups", "").split(",")
             if len(group.strip()) > 0
         ]
         return Host(name, ansible_vars, groups)
@@ -143,13 +143,13 @@ class Host:
             if "section" in field:
                 section_id = field["section"]["id"]
                 if section_id == "add more":
-                    result[field["label"]] = field.get("value", "")
+                    result[field["label"].lower()] = field.get("value", "")
                     continue
                 if section_id not in sections:
                     sections[section_id] = {}
-                sections[section_id][field["id"]] = field.get("value", "")
+                sections[section_id][field["label"].lower()] = field.get("value", "")
             else:
-                result[field["id"]] = field.get("value", "")
+                result[field["label"].lower()] = field.get("value", "")
 
         # Add sections to main result
         result.update(sections)
