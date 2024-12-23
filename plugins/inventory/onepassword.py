@@ -6,9 +6,6 @@ from subprocess import Popen, PIPE
 
 from ansible.plugins.inventory import BaseInventoryPlugin, Constructable, Cacheable
 from ansible.utils.display import Display
-from ansible_collections.community.general.plugins.plugin_utils.unsafe import (
-    make_unsafe,
-)
 from ansible.errors import AnsibleError
 
 __metaclass__ = type
