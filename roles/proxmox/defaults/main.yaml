@@ -1,3 +1,16 @@
-proxmox__enable_exporters: false
+proxmox__enable_exporters: true
 proxmox__enable_pcie: false
 proxmox__enable_sanoid: false
+
+proxmox__op_vault: "Applications"
+proxmox__op_key: "PROXMOX"
+
+proxmox__node_collector_token: |-
+  {{
+      lookup(
+        'community.general.onepassword',
+        proxmox__op_key,
+        vault=proxmox__op_vault,
+        field='node-collector'
+      )
+  }}

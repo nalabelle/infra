@@ -15,7 +15,7 @@
 
 - name: Copy proxmox_ve collector vendor modules
   ansible.builtin.copy:
-    src: "{{ inventory_dir }}/../exporters/pve_exporter"
+    src: "{{ inventory_dir }}/../vendor/exporters/pve_exporter"
     dest: /usr/local/share/prometheus-node-exporter-collectors/pve_exporter/
     mode: "0755"
 
