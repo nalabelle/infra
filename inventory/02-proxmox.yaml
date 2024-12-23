@@ -1,12 +1,44 @@
 plugin: community.general.proxmox
 cache: true
-cache_connection: .ansible-cache/inventory/
+cache_connection: .ansible-cache/proxmox-inventory/
 cache_prefix: ""
 cache_plugin: community.general.yaml
-url: "{{ lookup('ansible.builtin.env', 'PROXMOX_URL') }}"
-user: "{{ lookup('ansible.builtin.env', 'PROXMOX_USER') }}"
-token_id: "{{ lookup('ansible.builtin.env', 'PROXMOX_TOKEN_ID') }}"
-token_secret: "{{ lookup('ansible.builtin.env', 'PROXMOX_TOKEN_SECRET') }}"
+url: |-
+  {{
+      lookup(
+        'community.general.onepassword',
+        'proxmox',
+        vault='Applications',
+        field='url'
+      )
+  }}
+user: |-
+  {{
+      lookup(
+        'community.general.onepassword',
+        'proxmox',
+        vault='Applications',
+        field='username'
+      )
+  }}
+token_id: |-
+  {{
+      lookup(
+        'community.general.onepassword',
+        'proxmox',
+        vault='Applications',
+        field='token_id'
+      )
+  }}
+token_secret: |-
+  {{
+      lookup(
+        'community.general.onepassword',
+        'proxmox',
+        vault='Applications',
+        field='token_secret'
+      )
+  }}
 keyed_groups:
   - key: proxmox_tags_parsed
     separator: "_"

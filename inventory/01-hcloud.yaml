@@ -1,6 +1,6 @@
 plugin: hetzner.hcloud.hcloud
 cache: true
-cache_connection: .ansible-cache/inventory/
+cache_connection: .ansible-cache/hcloud-inventory/
 cache_prefix: ""
 cache_plugin: community.general.yaml
 keyed_groups:

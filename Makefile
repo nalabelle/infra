@@ -14,7 +14,7 @@ help:
 		| awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 .PHONY: clean
-clean: clean-deps clean-ansible-cache clean-secrets ## Reset all generated files
+clean: clean-ansible-cache clean-secrets ## Reset all generated files
 	@true
 
 .PHONY: playbook

@@ -5,3 +5,7 @@
 
 .env.secrets
 /.secrets
+/vendir.lock.json
+
+/.venv
+__pycache__
