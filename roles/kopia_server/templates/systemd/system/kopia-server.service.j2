@@ -13,6 +13,9 @@ ExecStart=/usr/bin/kopia server start \
   --tls-cert-file {{ kopia_server__ssl_cert }} \
   --tls-key-file {{ kopia_server__ssl_key }} \
   --server-username {{ kopia_server__username }} \
+  {% if kopia_server__max_upload_rate_bytes_per_second is defined -%}
+  --max-upload-rate-bytes-per-second {{ kopia_server__max_upload_rate_bytes_per_second }} \
+  {% endif -%}
   --address https://0.0.0.0:443
 
 [Install]

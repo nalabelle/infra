@@ -1,6 +1,9 @@
 kopia_server__op_vault: "Applications"
 kopia_server__op_key: "KOPIA_SERVER"
 
+# 125000 Bytes in a Megabit
+kopia_server__max_upload_rate_bytes_per_second: "{{ 10 * 125000 }}"
+
 kopia_server__username: |-
   {{
       lookup(
