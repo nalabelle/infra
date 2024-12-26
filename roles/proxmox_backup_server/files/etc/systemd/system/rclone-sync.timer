@@ -1,0 +1,11 @@
+[Unit]
+Description=Run Rclone Sync
+Requires=rclone-sync.service
+
+[Timer]
+Unit=rclone-sync.service
+OnCalendar=*-*-* 02:00:00 America/Los_Angeles
+Persistent=true
+
+[Install]
+WantedBy=timers.target

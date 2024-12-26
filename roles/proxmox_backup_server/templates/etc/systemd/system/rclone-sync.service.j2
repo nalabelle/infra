@@ -1,0 +1,14 @@
+[Unit]
+Description=Rclone Sync
+After=network-online.target
+Wants=rclone-sync.timer
+
+[Service]
+Type=simple
+Environment=RCLONE_TRANSFERS=5
+Environment=RCLONE_FAST_LIST=1
+Environment=RCLONE_CONFIG=/etc/rclone.conf
+ExecStart=/usr/bin/rclone sync /media/backups/ {{ proxmox_backup_server__rclone_destination }}
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,15 @@
+[Unit]
+Description=PBS Exporter
+After=network-online.target
+
+[Service]
+Type=simple
+Environment=PBS_ENDPOINT="https://{{ inventory_hostname }}.{{ proxmox_backup_server__network_domain }}:8007"
+Environment=PBS_LOGLEVEL="debug"
+Environment=PBS_INSECURE="true"
+Environment=PBS_API_TOKEN="{{ proxmox_backup_server__exporter_token }}"
+Environment=PBS_API_TOKEN_NAME="pbs-exporter"
+ExecStart=/usr/local/bin/pbs-exporter
+
+[Install]
+WantedBy=multi-user.target

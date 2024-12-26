@@ -1,0 +1,39 @@
+- name: Ensure rclone conf exists
+  ansible.builtin.file:
+    path: /etc/rclone.conf
+    state: "file"
+
+- name: Copy rclone service for systemd
+  ansible.builtin.template:
+    src: etc/systemd/system/rclone-sync.service.j2
+    dest: /etc/systemd/system/rclone-sync.service
+    mode: "0644"
+  notify:
+    - Systemd Reload
+
+- name: Enable rclone timer
+  ansible.builtin.systemd_service:
+    name: rclone-sync.timer
+    enabled: true
+    state: started
+
+# CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w"
+- name: Copy pbs-exporter
+  ansible.builtin.copy:
+    src: "{{ inventory_dir }}/../vendor/exporters/pbs-exporter/pbs-exporter-linux-amd64"
+    dest: /usr/local/bin/pbs-exporter
+    mode: "0755"
+
+- name: Copy pbs-exporter service
+  ansible.builtin.template:
+    src: etc/systemd/system/pbs-exporter.service.j2
+    dest: /etc/systemd/system/pbs-exporter.service
+    mode: "0644"
+  notify:
+    - Systemd Reload
+
+- name: Enable pbs-exporter service
+  ansible.builtin.systemd_service:
+    name: pbs-exporter
+    enabled: true
+    state: started

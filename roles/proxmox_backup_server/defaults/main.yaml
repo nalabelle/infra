@@ -1,0 +1,32 @@
+proxmox_backup_server__op_vault: "Applications"
+proxmox_backup_server__op_key: "ProxmoxBackupServer"
+
+proxmox_backup_server__rclone_destination: |-
+  {{
+      lookup(
+        'community.general.onepassword',
+        proxmox_backup_server__op_key,
+        vault=proxmox_backup_server__op_vault,
+        field='rclone_destination'
+      ) | very_mandatory
+  }}
+
+proxmox_backup_server__exporter_token: |-
+  {{
+      lookup(
+        'community.general.onepassword',
+        proxmox_backup_server__op_key,
+        vault=proxmox_backup_server__op_vault,
+        field='pbs_exporter_token'
+      ) | very_mandatory
+  }}
+
+proxmox_backup_server__network_domain: |-
+  {{
+      lookup(
+        'community.general.onepassword',
+        'network',
+        vault=proxmox_backup_server__op_vault,
+        field='domain'
+      ) | very_mandatory
+  }}
