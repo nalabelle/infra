@@ -19,3 +19,7 @@
     state: present
     update_cache: true
     cache_valid_time: 3600
+- name: Set default editor
+  ansible.builtin.alternatives:
+    name: editor
+    path: /usr/bin/vim
