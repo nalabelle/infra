@@ -10,7 +10,8 @@
     "_1password@latest",
     "python312Packages.hcloud@latest",
     "vendir@latest",
-    "nodePackages.prettier@latest"
+    "nodePackages.prettier@latest",
+    "glibcLocales@latest"
   ],
   "shell": {
     "init_hook": ["echo 'Welcome to devbox!' > /dev/null"],
