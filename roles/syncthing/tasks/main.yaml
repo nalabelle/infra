@@ -1,0 +1,26 @@
+- name: Install syncthing
+  ansible.builtin.include_tasks:
+    file: install.yaml
+
+- name: Create <service>.service.d directory
+  ansible.builtin.file:
+    path: /etc/systemd/system/syncthing@.service.d/
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Copy <service>.service drop-in
+  ansible.builtin.copy:
+    src: etc/systemd/system/syncthing@.service.d/override.conf
+    dest: /etc/systemd/system/syncthing@.service.d/override.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: Reload systemd
+
+- name: Configure syncthing
+  ansible.builtin.systemd_service:
+    name: syncthing@{{ syncthing__user }}.service
+    state: started
+    enabled: true

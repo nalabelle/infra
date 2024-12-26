@@ -1,0 +1,7 @@
+apt_key: "https://syncthing.net/release-key.gpg"
+apt_key_dest: "/etc/apt/keyrings/syncthing-archive-keyring.gpg"
+apt_key_checksum: "sha256:c38853d2ccb890ae428e1fbf05d8c8fe0ba6f560bd050e161fb4e5324cdb4a9b"
+apt_repo: "deb [signed-by=/etc/apt/keyrings/syncthing-archive-keyring.gpg] https://apt.syncthing.net/ syncthing stable"
+apt_pkgs:
+  - syncthing
+syncthing__user: "files"

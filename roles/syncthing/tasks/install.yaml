@@ -1,0 +1,23 @@
+- name: Install required packages
+  ansible.builtin.apt:
+    pkg:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+- name: Add apt key
+  ansible.builtin.get_url:
+    url: "{{ apt_key }}"
+    dest: "{{ apt_key_dest }}"
+    checksum: "{{ apt_key_checksum }}"
+- name: Add apt repository
+  ansible.builtin.apt_repository:
+    repo: "{{ apt_repo }}"
+    state: present
+- name: Update apt and install
+  ansible.builtin.apt:
+    pkg: "{{ apt_pkgs }}"
+    state: present
+    update_cache: true
