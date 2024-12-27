@@ -1,0 +1,36 @@
+- name: Install ZFS packages
+  ansible.builtin.apt:
+    pkg:
+      - zfsutils-linux
+    state: present
+
+- name: Install ZFS storage key
+  ansible.builtin.copy:
+    content: "{{ zfs__encryption_key }}"
+    dest: /etc/zfs/zpool.key
+    mode: "0600"
+
+# This isn't used, but ubuntu fails if it doesn't exist
+- name: Ensure ZFS exports lock folder exists
+  ansible.builtin.file:
+    path: /etc/exports.d
+    state: "directory"
+    mode: "0755"
+
+
+- name: Copy zfs-load-key service
+  ansible.builtin.copy:
+    src: etc/systemd/system/zfs-load-key.service
+    dest: /etc/systemd/system/zfs-load-key.service
+    mode: "0644"
+  notify: Reload systemd
+
+- name: Enable zfs-load-key
+  ansible.builtin.systemd_service:
+    name: zfs-load-key
+    enabled: true
+    state: started
+
+- name: ZFS Node Exporters
+  ansible.builtin.include_tasks:
+    file: exporters.yaml

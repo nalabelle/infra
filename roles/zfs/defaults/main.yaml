@@ -1,0 +1,11 @@
+zfs__op_vault: "Applications"
+zfs__op_key: "zfs"
+zfs__encryption_key: |-
+  {{
+      lookup(
+        'community.general.onepassword',
+        zfs__op_key,
+        vault=zfs__op_vault,
+        field='password'
+      )
+  }}

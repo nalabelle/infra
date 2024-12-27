@@ -1,0 +1,46 @@
+- name: Install node collector packages
+  ansible.builtin.apt:
+    pkg:
+      - prometheus-node-exporter
+      - prometheus-node-exporter-collectors
+    state: present
+
+- name: Ensure local collector path exists
+  ansible.builtin.file:
+    path: /usr/local/share/prometheus-node-exporter-collectors
+    state: "directory"
+    mode: "0755"
+
+- name: Copy zfs-snapshots collector
+  ansible.builtin.copy:
+    src: "{{ inventory_dir }}/../vendor/exporters/textfile-collector-scripts/zfs-snapshots.py"
+    dest: /usr/local/share/prometheus-node-exporter-collectors/zfs-snapshots.py
+    mode: "0755"
+
+- name: Copy zfs-zpool collector
+  ansible.builtin.copy:
+    src: "{{ inventory_dir }}/../vendor/exporters/textfile-collector-scripts/zfs_zpool.sh"
+    dest: /usr/local/share/prometheus-node-exporter-collectors/zfs_zpool.sh
+    mode: "0755"
+
+- name: Copy zfs services
+  ansible.builtin.copy:
+    src: "etc/systemd/system/{{ item }}"
+    dest: /etc/systemd/system/
+    mode: "0644"
+  loop:
+    - prometheus-node-exporter-zfs-snapshots.timer
+    - prometheus-node-exporter-zfs-snapshots.service
+    - prometheus-node-exporter-zfs-zpool.timer
+    - prometheus-node-exporter-zfs-zpool.service
+  notify: Reload systemd
+
+- name: Enable services
+  ansible.builtin.systemd_service:
+    name: "{{ item }}"
+    enabled: true
+    state: started
+  loop:
+    - prometheus-node-exporter-zfs-snapshots.timer
+    - prometheus-node-exporter-zfs-zpool.timer
+    - prometheus-node-exporter

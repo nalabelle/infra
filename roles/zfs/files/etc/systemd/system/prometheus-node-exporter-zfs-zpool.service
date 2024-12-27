@@ -1,0 +1,7 @@
+[Unit]
+Description=Collect zfs zpool metrics for prometheus-node-exporter
+
+[Service]
+Type=oneshot
+Environment=TMPDIR=/var/lib/prometheus/node-exporter
+ExecStart=/bin/bash -c "/usr/local/share/prometheus-node-exporter-collectors/zfs_zpool.sh | sponge /var/lib/prometheus/node-exporter/zfs_zpool.prom"
