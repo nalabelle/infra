@@ -1,0 +1,30 @@
+plex__op_vault: "Applications"
+plex__op_key: "Plex"
+
+plex__fileserver: |-
+  {{
+      lookup(
+        'community.general.onepassword',
+        plex__op_key,
+        vault=plex__op_vault,
+        field='fileserver'
+      ) | very_mandatory
+  }}
+plex__domain: |-
+  {{
+      lookup(
+        'community.general.onepassword',
+        plex__op_key,
+        vault=plex__op_vault,
+        field='domain'
+      ) | very_mandatory
+  }}
+plex__cloudflare_api_token: |-
+  {{
+      lookup(
+        'community.general.onepassword',
+        plex__op_key,
+        vault=plex__op_vault,
+        field='cloudflare_api_token'
+      ) | very_mandatory
+  }}

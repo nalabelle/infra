@@ -1,0 +1,54 @@
+- name: Install Caddy repo
+  deb822_repository:
+    name: caddy
+    types: deb
+    uris: https://dl.cloudsmith.io/public/caddy/stable/deb/debian
+    suites: any-version
+    components: main
+    architectures: amd64
+    signed_by: https://dl.cloudsmith.io/public/caddy/stable/gpg.key
+
+- name: Update apt and install
+  ansible.builtin.apt:
+    pkg: caddy
+    state: present
+    update_cache: true
+
+- name: Divert caddy
+  community.general.dpkg_divert:
+    path: /usr/bin/caddy
+    divert: /usr/bin/caddy.default
+    rename: true
+
+- name: Download caddy with cloudflare dns provider
+  ansible.builtin.get_url:
+    url: "https://caddyserver.com/api/download?os=linux&arch=amd64&p=github.com%2Fcaddy-dns%2Fcloudflare&p=github.com%2Fcaddy-dns%2Fporkbun&idempotency=50009107736059"
+    dest: "/usr/local/bin/caddy.custom"
+    checksum: "sha256:24f4a909aeacada615bf878c3ede431855aeaddf1ac30b978acbcf1796262a43"
+    mode: "0755"
+
+- name: Setup caddy default
+  community.general.alternatives:
+    name: caddy
+    path: /usr/bin/caddy.default
+    priority: 10
+    state: present
+
+- name: Setup caddy alt
+  community.general.alternatives:
+    name: caddy
+    path: /usr/local/bin/caddy.custom
+    priority: 50
+    state: auto
+
+- name: Setup caddy config
+  ansible.builtin.template:
+    src: etc/caddy/Caddyfile.j2
+    dest: /etc/caddy/Caddyfile
+    mode: "0644"
+
+- name: Enable caddy service
+  ansible.builtin.systemd_service:
+    name: caddy.service
+    state: started
+    enabled: true

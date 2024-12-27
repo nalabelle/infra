@@ -1,0 +1,47 @@
+- name: Install nfs-client
+  ansible.builtin.apt:
+    pkg: nfs-common
+    state: present
+    update_cache: true
+
+- name: Create paths for network mounts
+  ansible.builtin.file:
+    path: "/media/{{ item }}"
+    state: directory
+    mode: "0755"
+  loop:
+    - internet
+    - movies
+    - music
+    - television
+
+- name: Create network mounts
+  ansible.builtin.blockinfile:
+    block: "{{ lookup('ansible.builtin.template', 'etc/fstab.j2') }}"
+    path: /etc/fstab
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+    backup: true
+    prepend_newline: true
+  notify:
+    - Reload systemctl
+    - Remote-fs
+
+- name: Install Plex repo
+  deb822_repository:
+    name: plex
+    types: deb
+    uris: https://downloads.plex.tv/repo/deb/
+    suites: public
+    components: main
+    architectures: amd64
+    signed_by: https://downloads.plex.tv/plex-keys/PlexSign.key
+
+- name: Install Plex
+  ansible.builtin.apt:
+    pkg: plexmediaserver
+    state: present
+    update_cache: true
+
+- name: Install Caddy
+  ansible.builtin.include_tasks:
+    file: caddy.yaml

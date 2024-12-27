@@ -1,0 +1,5 @@
+# <file system>                           <mount point>       <type>  <options>      <dump> <pass>
+{{ plex__fileserver }}:/internet          /media/internet     nfs    vers=4.1,noatime,nodiratime,noauto,x-systemd.automount,x-systemd.idle-timeout="15min",x-systemd.required-by=plexmediaserver.service 0 0
+{{ plex__fileserver }}:/movies            /media/movies       nfs    vers=4.1,noatime,nodiratime,noauto,x-systemd.automount,x-systemd.idle-timeout="15min",x-systemd.required-by=plexmediaserver.service 0 0
+{{ plex__fileserver }}:/music             /media/music        nfs    vers=4.1,noatime,nodiratime,noauto,x-systemd.automount,x-systemd.idle-timeout="15min",x-systemd.required-by=plexmediaserver.service 0 0
+{{ plex__fileserver }}:/television        /media/television   nfs    vers=4.1,noatime,nodiratime,noauto,x-systemd.automount,x-systemd.idle-timeout="15min",x-systemd.required-by=plexmediaserver.service 0 0

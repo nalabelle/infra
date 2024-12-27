@@ -1,0 +1,15 @@
+*.{{ plex__domain }} {
+	tls {
+		dns cloudflare  {{ plex__cloudflare_api_token }}
+	}
+
+	@plex host plex.{{ plex__domain }}
+	handle @plex {
+		reverse_proxy localhost:32400
+	}
+
+  # Fallback for otherwise unhandled domains
+	handle {
+		abort
+	}
+}
