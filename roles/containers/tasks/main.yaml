@@ -48,3 +48,8 @@
     line: GRUB_CMDLINE_LINUX="cgroup_enable=memory"
     backup: true
   notify: Update Grub
+
+- name: Redir
+  ansible.builtin.import_tasks:
+    file: redir.yaml
+  when: containers__redir_enabled is defined and containers__redir_enabled
