@@ -56,7 +56,7 @@ directories:
         # https://github.com/natrontech/pbs-exporter
         githubRelease:
           slug: natrontech/pbs-exporter
-          tag: v0.6.1
+          tag: v0.6.3
           checksums:
             pbs-exporter_v0.6.1_linux_amd64.tar.gz: 3221dd0e1e2dcba520061af8114eb424ef255c68f0cd93133cfcf5f608be239c
           assetNames:
