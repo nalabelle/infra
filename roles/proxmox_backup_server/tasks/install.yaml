@@ -1,0 +1,51 @@
+- name: Install python3-debian
+  ansible.builtin.apt:
+    pkg: python3-debian
+    state: present
+
+- name: Configure repo
+  deb822_repository:
+    name: proxmox-backup-server
+    types: deb
+    uris: http://download.proxmox.com/debian/pbs
+    # ubuntu 24.04 is on trixie, but I don't see a trixie dist for pbs.
+    suites: bookworm
+    components: pbs-no-subscription
+    architectures: amd64
+    signed_by: https://enterprise.proxmox.com/debian/proxmox-release-bookworm.gpg
+
+- name: Install
+  ansible.builtin.apt:
+    pkg: proxmox-backup-server
+    state: present
+    update_cache: true
+
+- name: Proxmox Remove subscription
+  block:
+    - name: Copy pve-nag-buster
+      ansible.builtin.copy:
+        src: "{{ inventory_dir }}/../vendor/pve-nag-buster/install.sh"
+        dest: "/opt/pve-nag-buster"
+        mode: "0755"
+
+    - name: Run pve-nag-buster
+      ansible.builtin.command:
+        cmd: "/opt/pve-nag-buster"
+        creates: "/etc/apt/apt.conf.d/86pve-nags"
+
+    - name: Remove pve repo
+      ansible.builtin.command:
+        cmd: mv /etc/apt/sources.list.d/pve-no-subscription.list /etc/apt/sources.list.d/pve-no-subscription.list.disabled
+        removes: /etc/apt/sources.list.d/pve-no-subscription.list
+        creates: /etc/apt/sources.list.d/pve-no-subscription.list.disabled
+
+- name: Remove ceph repo
+  ansible.builtin.command:
+    cmd: mv /etc/apt/sources.list.d/ceph.list /etc/apt/sources.list.d/ceph.disabled
+    removes: /etc/apt/sources.list.d/ceph.list
+    creates: /etc/apt/sources.list.d/ceph.disabled
+
+- name: Remove pbs-enterprise source
+  ansible.builtin.file:
+    path: /etc/apt/sources.list.d/pbs-enterprise.list
+    state: absent

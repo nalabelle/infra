@@ -1,0 +1,30 @@
+- name: Install rclone
+  ansible.builtin.apt:
+    pkg: rclone
+    state: present
+
+- name: Configure rclone
+  ansible.builtin.template:
+    src: etc/rclone.conf.j2
+    dest: /etc/rclone.conf
+    mode: "0644"
+
+- name: Copy timer
+  ansible.builtin.copy:
+    src: etc/systemd/system/rclone-sync.timer
+    dest: /etc/systemd/system/rclone-sync.timer
+    mode: "0644"
+
+- name: Copy rclone service for systemd
+  ansible.builtin.template:
+    src: etc/systemd/system/rclone-sync.service.j2
+    dest: /etc/systemd/system/rclone-sync.service
+    mode: "0644"
+  notify:
+    - Systemd Reload
+
+- name: Enable rclone timer
+  ansible.builtin.systemd_service:
+    name: rclone-sync.timer
+    enabled: true
+    state: started

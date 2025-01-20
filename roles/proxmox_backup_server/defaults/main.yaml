@@ -30,3 +30,23 @@ proxmox_backup_server__network_domain: |-
         field='domain'
       ) | very_mandatory
   }}
+
+proxmox_backup_server__sync_account: |-
+  {{
+      lookup(
+        'community.general.onepassword',
+        proxmox_backup_server__op_key,
+        vault=proxmox_backup_server__op_vault,
+        field='sync_account'
+      ) | very_mandatory
+  }}
+
+proxmox_backup_server__sync_key: |-
+  {{
+      lookup(
+        'community.general.onepassword',
+        proxmox_backup_server__op_key,
+        vault=proxmox_backup_server__op_vault,
+        field='sync_key'
+      ) | very_mandatory
+  }}
