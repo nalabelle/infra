@@ -1,5 +1,5 @@
 zfs__op_vault: "Applications"
-zfs__op_key: "zfs"
+zfs__op_key: "{{ 'ZFS_' + inventory_hostname }}"
 zfs__encryption_key: |-
   {{
       lookup(
