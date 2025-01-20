@@ -1,0 +1,46 @@
+- name: Install certbot
+  community.general.snap:
+    name:
+      - certbot
+    classic: true
+    options:
+      - "trust-plugin-with-root=ok"
+
+- name: Install certbot plugins
+  community.general.snap:
+    name:
+      - certbot-dns-cloudflare
+    classic: true
+
+- name: Create config directory
+  ansible.builtin.file:
+    path: /etc/letsencrypt
+    state: directory
+    mode: "0755"
+
+- name: Create config file
+  ansible.builtin.template:
+    src: etc/letsencrypt/cloudflare.ini.j2
+    dest: /etc/letsencrypt/cloudflare.ini
+    mode: "0600"
+
+- name: Run certbot
+  ansible.builtin.shell:
+    cmd: |-
+      certbot certonly \
+      -d *.{{ kopia_server__domain }} \
+      --dns-cloudflare \
+      --dns-cloudflare-credentials /etc/letsencrypt/cloudflare.ini \
+      --non-interactive \
+      --agree-tos \
+      --email {{ kopia_server__letsencrypt_email }} \
+      && touch /etc/letsencrypt/configured
+    creates: /etc/letsencrypt/configured
+
+- name: Set permissions
+  ansible.builtin.file:
+    path: "/etc/letsencrypt/{{ item }}"
+    mode: "0755"
+  loop:
+    - live
+    - archive

@@ -1,48 +1,86 @@
-- name: Kopia Server
-  block:
-    - name: Install node collector packages
-      ansible.builtin.apt:
-        pkg:
-          - prometheus-node-exporter
-          - moreutils
-        state: present
+- name: Install kopia
+  ansible.builtin.include_tasks:
+    file: install.yaml
 
-    - name: Enable node collector service
-      ansible.builtin.systemd_service:
-        name: prometheus-node-exporter
-        enabled: true
-        state: started
+- name: Certbot
+  ansible.builtin.include_tasks:
+    file: certbot.yaml
 
-    - name: Copy kopia services
-      ansible.builtin.copy:
-        src: systemd/system/
-        dest: /etc/systemd/system/
-        mode: "0644"
-      notify: Reload systemd
+- name: Kopia config directory
+  ansible.builtin.file:
+    path: /var/backups/.config/kopia
+    state: "directory"
+    mode: "0755"
+    owner: backup
+    group: backup
 
-    - name: Copy kopia service templates
-      ansible.builtin.template:
-        src: "systemd/system/{{ item }}.service.j2"
-        dest: /etc/systemd/system/
-        mode: "0644"
-      loop:
-        - kopia-server
-        - kopia-sync
-      notify: Reload systemd
+- name: Kopia config
+  ansible.builtin.template:
+    src: var/backups/.config/kopia/repository.config.j2
+    dest: /var/backups/.config/kopia/repository.config
+    mode: "0600"
+    owner: backup
+    group: backup
 
-    - name: Copy kopia executables
-      ansible.builtin.copy:
-        src: usr/local/bin/
-        dest: /usr/local/bin/
-        mode: "0755"
+- name: Kopia encryption key
+  ansible.builtin.template:
+    src: var/backups/.config/kopia/repository.config.kopia-password.j2
+    dest: /var/backups/.config/kopia/repository.config.kopia-password
+    mode: "0600"
+    owner: backup
+    group: backup
 
-    - name: Enable kopia services
-      ansible.builtin.systemd_service:
-        name: "{{ item }}"
-        enabled: true
-        state: started
-      loop:
-        - kopia-maintenance.timer
-        - kopia-exporter.timer
-        - kopia-sync.timer
-        - kopia-server.service
+- name: Kopia server connection info
+  ansible.builtin.blockinfile:
+    path: /etc/environment
+    block: |
+      KOPIA_SERVER_ADDRESS=https://{{ ansible_hostname }}.{{ kopia_server__domain }}:443
+      KOPIA_SERVER_USERNAME={{ kopia_server__username }}
+      KOPIA_SERVER_PASSWORD={{ kopia_server__password }}
+    state: present
+
+- name: Copy kopia services
+  ansible.builtin.copy:
+    src: systemd/system/
+    dest: /etc/systemd/system/
+    mode: "0644"
+  notify: Reload systemd
+
+- name: Allow user to write to /var/backups
+  ansible.builtin.file:
+    path: /var/backups
+    state: "directory"
+    mode: "0775"
+    owner: backup
+    group: backup
+
+- name: Copy kopia service templates
+  ansible.builtin.template:
+    src: "systemd/system/{{ item }}.service.j2"
+    dest: "/etc/systemd/system/{{ item }}.service"
+    mode: "0644"
+  loop:
+    - kopia-server
+    - kopia-sync
+  notify: Reload systemd
+
+- name: Copy kopia executables
+  ansible.builtin.copy:
+    src: usr/local/bin/
+    dest: /usr/local/bin/
+    mode: "0755"
+
+- name: Enable kopia services
+  ansible.builtin.systemd_service:
+    name: "{{ item }}"
+    enabled: true
+    state: started
+  loop:
+    - kopia-maintenance.timer
+    - kopia-exporter.timer
+    - kopia-sync.timer
+    - kopia-server.service
+
+- name: Node collector
+  ansible.builtin.include_tasks:
+    file: collector.yaml

@@ -2,7 +2,7 @@ kopia_server__op_vault: "Applications"
 kopia_server__op_key: "KOPIA_SERVER"
 
 # 125000 Bytes in a Megabit
-kopia_server__max_upload_rate_bytes_per_second: "{{ 10 * 125000 }}"
+#kopia_server__max_upload_rate_bytes_per_second: "{{ 10 * 125000 }}"
 
 kopia_server__username: |-
   {{
@@ -11,28 +11,27 @@ kopia_server__username: |-
         kopia_server__op_key,
         vault=kopia_server__op_vault,
         field='username'
-      )
+      ) | very_mandatory
   }}
-kopia_server__ssl_cert: |-
+kopia_server__password: |-
   {{
       lookup(
         'community.general.onepassword',
         kopia_server__op_key,
         vault=kopia_server__op_vault,
-        section='ssl',
-        field='cert'
-      )
+        field='password'
+      ) | very_mandatory
   }}
-kopia_server__ssl_key: |-
+kopia_server__encryption_key: |-
   {{
       lookup(
         'community.general.onepassword',
         kopia_server__op_key,
         vault=kopia_server__op_vault,
-        section='ssl',
-        field='key'
-      )
+        field='encryption_key'
+      ) | very_mandatory
   }}
+
 kopia_server__sync_bucket: |-
   {{
       lookup(
@@ -62,4 +61,33 @@ kopia_server__sync_key: |-
         section='sync',
         field='key'
       )
+  }}
+kopia_server__cloudflare_api_token: |-
+  {{
+      lookup(
+        'community.general.onepassword',
+        kopia_server__op_key,
+        vault=kopia_server__op_vault,
+        section='ssl',
+        field='cloudflare_api_token'
+      ) | very_mandatory
+  }}
+kopia_server__domain: |-
+  {{
+      lookup(
+        'community.general.onepassword',
+        kopia_server__op_key,
+        vault=kopia_server__op_vault,
+        field='domain'
+      ) | very_mandatory
+  }}
+kopia_server__letsencrypt_email: |-
+  {{
+      lookup(
+        'community.general.onepassword',
+        kopia_server__op_key,
+        vault=kopia_server__op_vault,
+        section='ssl',
+        field='email'
+      ) | very_mandatory
   }}

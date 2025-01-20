@@ -1,0 +1,20 @@
+- name: Install python3-debian
+  ansible.builtin.apt:
+    pkg: python3-debian
+    state: present
+
+- name: Configure repo
+  ansible.builtin.deb822_repository:
+    name: kopia
+    types: deb
+    uris: http://packages.kopia.io/apt/
+    suites: stable
+    components: main
+    architectures: amd64
+    signed_by: https://kopia.io/signing-key
+
+- name: Install
+  ansible.builtin.apt:
+    pkg: kopia
+    state: present
+    update_cache: true

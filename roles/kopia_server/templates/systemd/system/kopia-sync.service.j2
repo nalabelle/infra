@@ -7,14 +7,17 @@ Wants=kopia-sync.timer
 Type=simple
 User=backup
 Group=backup
-EnvironmentFile=/mnt/backup/kopia/kopia-env
-PassEnvironment=KOPIA_CONFIG_PATH KOPIA_CACHE_DIRECTORY
 ExecStart=/usr/bin/kopia \
         repository sync-to b2 \
         --bucket={{ kopia_server__sync_bucket }} \
         --key-id={{ kopia_server__sync_key_id }} \
         --key={{ kopia_server__sync_key }} \
         --delete
+ExecStartPost=/usr/bin/kopia \
+        snapshot verify \
+        --verify-files-percent=5 \
+        --file-parallelism=10 \
+        --parallel=10
 
 [Install]
 WantedBy=multi-user.target
