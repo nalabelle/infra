@@ -1,0 +1,69 @@
+- name: Add system group
+  ansible.builtin.group:
+    name: ctrld
+    system: true
+    state: present
+  when: ctrld__manage_user
+
+- name: Add system user
+  ansible.builtin.user:
+    name: ctrld
+    group: ctrld
+    system: true
+    shell: /usr/sbin/nologin
+    home: /run/ctrld
+    createhome: false
+    state: present
+  when: ctrld__manage_user
+
+- name: Config directory
+  ansible.builtin.file:
+    path: /etc/controld
+    state: directory
+    mode: 0755
+
+- name: Config file
+  ansible.builtin.template:
+    src: etc/controld/ctrld.conf.j2
+    dest: /etc/controld/ctrld.conf
+    mode: "0644"
+    owner: "{{ 'ctrld' if ctrld__manage_user else 'root' }}"
+    group: "{{ 'ctrld' if ctrld__manage_user else 'root' }}"
+
+- name: Source directory
+  ansible.builtin.file:
+    path: /usr/local/src/ctrld
+    state: directory
+    mode: 0755
+
+- name: Download ctrld
+  ansible.builtin.get_url:
+    url: https://github.com/Control-D-Inc/ctrld/releases/download/v1.3.11/ctrld_1.3.11_linux_amd64.tar.gz
+    dest: /usr/local/src/ctrld/ctrld.tar.gz
+    checksum: "sha256:6c411fecec4b99104c66c7351d86b69167e27a23429a64be6ef385883c3765d9"
+    mode: "0700"
+
+- name: Extract files from archive
+  ansible.builtin.unarchive:
+    src: /usr/local/src/ctrld/ctrld.tar.gz
+    remote_src: true
+    dest: /usr/local/bin
+    extra_opts:
+      - --strip-components=2
+      - --wildcards
+      - --no-anchored
+      - ctrld
+  notify: Restart ctrld
+
+- name: Copy ctrld service
+  ansible.builtin.copy:
+    src: etc/systemd/system/ctrld.service
+    dest: /etc/systemd/system/ctrld.service
+    mode: "0644"
+  notify: Reload systemd
+
+- name: Enable ctrld service
+  ansible.builtin.systemd_service:
+    name: ctrld.service
+    enabled: true
+    state: started

@@ -21,10 +21,6 @@ directories:
       tags:
       - v5.1.0
     path: unattended_upgrades
-  - git:
-      commitTitle: 'Merge pull request #3 from wandansible/argument-new-lines...'
-      sha: 1dfa9c2260897e9ecac56862db1d4f4c86649047
-    path: ctrld
   path: vendor/ansible_roles
 - contents:
   - git:
@@ -42,8 +38,8 @@ directories:
       - v3.4.7
     path: pve_exporter
   - git:
-      commitTitle: 'nvme_metrics: support nvme-cli v2.11+ verbose JSON output (#227)...'
-      sha: a2b43e19be1e64c31b626ca827506977cac93488
+      commitTitle: '[yum.sh] Explicitly disable "running kernel"-check (#232)...'
+      sha: b36a2eadfc88f711588085b83f0ecbdbc5f288c3
     path: textfile-collector-scripts
   - githubRelease:
       tag: v0.6.1

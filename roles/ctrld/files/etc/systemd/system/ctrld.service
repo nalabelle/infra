@@ -1,0 +1,44 @@
+[Unit]
+Description=ctrld
+ConditionFileIsExecutable=/usr/local/bin/ctrld
+StartLimitIntervalSec=0
+
+Wants=network-online.target
+After=network-online.target
+Wants=nss-lookup.target
+After=nss-lookup.target
+
+[Service]
+User=ctrld
+Group=ctrld
+WorkingDirectory=/etc/controld
+RuntimeDirectory=ctrld
+ExecStart=/usr/local/bin/ctrld run \
+  --homedir=/run/ctrld \
+  --config=/etc/controld/ctrld.toml
+ExecReload=/bin/kill -USR1 ${MAINPID}
+Restart=on-failure
+RestartSec=120
+
+AmbientCapabilities=CAP_NET_BIND_SERVICE
+CapabilityBoundingSet=CAP_NET_BIND_SERVICE
+DeviceAllow=/dev/null rw
+DevicePolicy=strict
+LimitMEMLOCK=0
+LockPersonality=true
+NoNewPrivileges=true
+PrivateDevices=true
+PrivateTmp=true
+ProtectControlGroups=true
+ProtectHome=true
+ProtectKernelModules=true
+ProtectKernelTunables=true
+ProtectSystem=full
+ReadWritePaths=/etc/controld
+RemoveIPC=true
+RestrictNamespaces=true
+RestrictRealtime=true
+SystemCallArchitectures=native
+
+[Install]
+WantedBy=multi-user.target

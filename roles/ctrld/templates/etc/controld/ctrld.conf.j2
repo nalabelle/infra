@@ -1,0 +1,10 @@
+[listener]
+  [listener.0]
+    ip = '0.0.0.0'
+    port = 53
+
+[upstream]
+  [upstream.0]
+    type = 'doh3'
+    endpoint = 'https://dns.nextdns.io/{{ ctrld__nextdns_prefix }}'
+    timeout = 5000

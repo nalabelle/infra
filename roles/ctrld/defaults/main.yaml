@@ -1,0 +1,12 @@
+ctrld__op_vault: "Applications"
+
+ctrld__manage_user: true
+ctrld__nextdns_prefix: |-
+  {{
+      lookup(
+        'community.general.onepassword',
+        'NextDNS',
+        vault=ctrld__op_vault,
+        field='prefix'
+      ) | very_mandatory
+  }}

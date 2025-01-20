@@ -23,11 +23,6 @@ directories:
         includePaths:
           - roles/unattended_upgrades/**/*
         newRootPath: roles/unattended_upgrades
-      - path: ctrld
-        git:
-          url: https://github.com/wandansible/ctrld
-          ref: origin/main
-          depth: 1
   - path: vendor/pve-nag-buster
     contents:
       - path: .
