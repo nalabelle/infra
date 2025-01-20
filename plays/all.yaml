@@ -1,31 +1,9 @@
+## BASIC
 - name: Basic Setup
-  hosts: service_compose proxmox_nodes servers
+  hosts: proxmox_nodes servers proxmox_all_qemu proxmox_all_lxc
   roles:
     - role: basic
       tags: basic
-- name: NextDNS
-  hosts: servers
-  tags: nextdns
-  roles:
-    - role: nextdns
-      when: nextdns__enabled is defined and nextdns__enabled
-- name: Wireguard
-  hosts: servers
-  tags: wireguard
-  roles:
-    - role: wireguard
-- name: Compose Hosts
-  hosts: service_compose service_dev
-  roles:
-    - role: containers
-      tags: containers
-    - role: 1password
-      tags: 1password
-- name: Proxmox
-  hosts: proxmox_nodes
-  tags: proxmox
-  roles:
-    - role: proxmox
 - name: Guest Agent
   hosts: proxmox_all_qemu
   tags:
@@ -37,12 +15,79 @@
         state: present
         update_cache: true
         cache_valid_time: 3600
+- name: NextDNS
+  hosts: servers
+  tags: nextdns
+  roles:
+    - role: nextdns
+      when: nextdns__enabled is defined and nextdns__enabled
+- name: Ctrld
+  hosts: servers
+  tags: ctrld
+  roles:
+    - role: ctrld
+      when: ctrld__enabled is defined and ctrld__enabled
+- name: Wireguard
+  hosts: servers
+  tags: wireguard
+  roles:
+    - role: wireguard
+- name: Compose Hosts
+  hosts: service_compose
+  roles:
+    - role: containers
+      tags: containers
+    - role: 1password
+      tags: 1password
+- name: Proxmox
+  hosts: proxmox_nodes
+  tags: proxmox
+  roles:
+    - role: proxmox
 - name: Unattended Upgrades
   hosts: proxmox_all_qemu proxmox_nodes proxmox_all_lxc servers
   tags:
     - unattended-upgrades
   roles:
     - role: unattended_upgrades
+- name: unifi
+  hosts: unifi
+  tags:
+    - unifi
+    - wireguard
+  roles:
+    - role: unifi
+- name: zfs
+  hosts: service_zpool
+  tags:
+    - zfs
+  roles:
+    - role: zfs
+- name: fileserver
+  hosts: service_files
+  tags:
+    - fileserver
+  roles:
+    - role: fileserver
+## APPS
+- name: Syncthing
+  hosts: service_files
+  tags:
+    - syncthing
+  roles:
+    - role: syncthing
+- name: Proxmox Backup Server
+  hosts: service_proxmox_backup_server
+  tags:
+    - proxmox-backup-server
+  roles:
+    - role: proxmox_backup_server
+- name: Plex
+  hosts: service_plex
+  tags:
+    - plex
+  roles:
+    - role: plex
 - name: Kopia Server
   hosts: service_kopia
   tags:
@@ -51,16 +96,9 @@
   roles:
     - role: kopia_server
 - name: Kopia Client
-  hosts: proxmox_nodes service_dev
+  hosts: proxmox_nodes
   tags:
     - kopia-client
     - kopia
   roles:
     - role: kopia_client
-- name: unifi
-  hosts: unifi
-  tags:
-    - unifi
-    - wireguard
-  roles:
-    - role: unifi
