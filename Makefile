@@ -14,11 +14,11 @@ help:
 		| awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 .PHONY: clean
-clean: clean-ansible-cache clean-secrets ## Reset all generated files
+clean: clean-ansible-cache clean-vendor ## Reset all generated files
 	@true
 
 .PHONY: playbook
-playbook: plays/*.yaml vendor secrets
+playbook: plays/*.yaml vendor
 	@ansible-playbook \
 		plays/hetzner.yaml \
 		plays/hetzner_server.yaml \
@@ -29,19 +29,10 @@ clean-ansible-cache:
 	@rm -rf $(ANSIBLE_CACHE)
 
 .PHONY: inventory
-inventory: $(ANSIBLE_CACHE)/hosts vendor .env.secrets
+inventory: $(ANSIBLE_CACHE)/hosts vendor
 $(ANSIBLE_CACHE)/hosts:
 	@mkdir -p $(ANSIBLE_CACHE)
 	@ansible-inventory --list | jq 'with_entries(select(.key != "_meta"))' > $(ANSIBLE_CACHE)/hosts
-
-# Secret
-.PHONY: secrets clean-secrets
-secrets: .env.secrets
-	@true
-clean-secrets:
-	@rm -f .env.secrets
-.env.secrets: .env.secrets.tpl
-	@op inject -f -i $< -o $@
 
 # Vendor
 .PHONY: clean-vendor
