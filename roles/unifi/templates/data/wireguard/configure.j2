@@ -1,13 +1,28 @@
 #!/usr/bin/env bash
-set -eux
+set -eu
 set -o pipefail
 
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-wg setconf wgsrv1 "$DIR/wgsrv1.conf"
-wg show wgsrv1
+config_file="/etc/wireguard/wgsrv1.conf"
 
-ip6=$(ip -o -6 addr show wgsrv1 scope global | awk '{split($4,ip,"/"); print ip[1]}')
+set_config() {
+  echo "Setting wireguard config to $config_file"
+  wg setconf wgsrv1 "$config_file"
 
-if [ -z "$ip6" ]; then
-  ip -6 addr add "{{ wireguard__ipv6 }}" dev wgsrv1
-fi
+  ip6=$(ip -o -6 addr show wgsrv1 scope global | awk '{split($4,ip,"/"); print ip[1]}')
+
+  if [ -z "$ip6" ]; then
+    ip -6 addr add "{{ wireguard__ipv6 }}" dev wgsrv1
+  fi
+}
+
+check_peers() {
+  local active_peers expected_peers
+  active_peers=$(wg show wgsrv1 peers | wc -l)
+  expected_peers=$(grep -c 'PublicKey' "$config_file")
+
+  if [ "$active_peers" -ne "$expected_peers" ]; then
+    set_config
+  fi
+}
+
+check_peers

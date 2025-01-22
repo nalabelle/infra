@@ -11,3 +11,7 @@ repos:
       - id: check-shebang-scripts-are-executable
       - id: check-symlinks
       - id: check-toml
+  - repo: https://github.com/Jarmos-san/shellcheck-precommit
+    rev: v0.1.0
+    hooks:
+      - id: shellcheck-system

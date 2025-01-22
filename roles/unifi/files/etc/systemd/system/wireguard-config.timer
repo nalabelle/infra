@@ -1,0 +1,9 @@
+[Unit]
+Description=Run WireGuard config on Schedule
+
+[Timer]
+OnBootSec=15s
+OnUnitActiveSec=3m
+
+[Install]
+WantedBy=timers.target

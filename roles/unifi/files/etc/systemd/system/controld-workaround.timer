@@ -1,0 +1,9 @@
+[Unit]
+Description=Workaround for Controld bug
+
+[Timer]
+OnBootSec=15s
+OnUnitActiveSec=3m
+
+[Install]
+WantedBy=timers.target

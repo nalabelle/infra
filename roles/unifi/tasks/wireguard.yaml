@@ -42,8 +42,16 @@
   notify:
     - Reload systemd
 
-- name: Enable service
+- name: Install timer
+  ansible.builtin.copy:
+    src: etc/systemd/system/wireguard-config.timer
+    dest: /etc/systemd/system/wireguard-config.timer
+    mode: "0644"
+  notify:
+    - Reload systemd
+
+- name: Enable timer
   ansible.builtin.systemd:
-    name: wireguard-config.service
+    name: wireguard-config.timer
     state: started
     enabled: true

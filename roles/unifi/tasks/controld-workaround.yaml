@@ -1,0 +1,33 @@
+- name: Config tool
+  ansible.builtin.copy:
+    src: data/controld/configure
+    dest: /data/controld/configure
+    mode: "0755"
+
+- name: Config
+  ansible.builtin.copy:
+    src: data/controld/zzzctrld.conf
+    dest: /data/controld/zzzctrld.conf
+    mode: "0600"
+
+- name: Install service
+  ansible.builtin.copy:
+    src: etc/systemd/system/controld-workaround.service
+    dest: /etc/systemd/system/controld-workaround.service
+    mode: "0644"
+  notify:
+    - Reload systemd
+
+- name: Install timer
+  ansible.builtin.copy:
+    src: etc/systemd/system/controld-workaround.timer
+    dest: /etc/systemd/system/controld-workaround.timer
+    mode: "0644"
+  notify:
+    - Reload systemd
+
+- name: Enable timer
+  ansible.builtin.systemd:
+    name: controld-workaround.timer
+    state: started
+    enabled: true

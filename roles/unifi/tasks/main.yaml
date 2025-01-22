@@ -1,3 +1,6 @@
 - name: Wireguard
   ansible.builtin.import_tasks:
     file: wireguard.yaml
+- name: Controld workaround
+  ansible.builtin.import_tasks:
+    file: controld-workaround.yaml
