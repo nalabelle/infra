@@ -1,0 +1,43 @@
+- name: Install samba packages
+  ansible.builtin.apt:
+    pkg:
+      - samba
+      - smbclient
+      - wsdd2
+    state: present
+
+- name: Create samba users
+  ansible.builtin.shell:
+    cmd: >
+      set -e -o pipefail && (pdbedit --user={{ item.username }} 2>&1 > /dev/null) || (echo '{{
+      item.password }}'; echo '{{ item.password }}') | smbpasswd -s -a {{ item.username }}
+    executable: /bin/bash
+  register: samba_create_users
+  changed_when: "'Added user' in samba_create_users.stdout"
+  loop: "{{ fileserver__users }}"
+
+- name: Set samba passwords
+  ansible.builtin.shell:
+    cmd: >
+      set -e -o pipefail && (smbclient -U {{ item.username }}%"{{ item.password }}" -L 127.0.0.1
+      2>&1 > /dev/null) || (echo '{{ item.password }}'; echo '{{ item.password }}') | smbpasswd {{
+      item.username }}
+    executable: /bin/bash
+  register: samba_set_password
+  changed_when: "'New SMB password' in samba_set_password.stdout"
+  loop: "{{ fileserver__users }}"
+
+- name: Copy samba config
+  ansible.builtin.template:
+    src: etc/samba/smb.conf.j2
+    dest: /etc/samba/smb.conf
+    mode: "0644"
+
+- name: Enable services
+  ansible.builtin.systemd_service:
+    name: "{{ item }}.service"
+    enabled: true
+    state: started
+  loop:
+    - wsdd2
+    - smbd

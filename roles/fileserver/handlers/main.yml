@@ -1,0 +1,17 @@
+- name: Systemctl
+  ansible.builtin.systemd_service:
+    daemon_reload: true
+
+- name: Exportfs
+  ansible.builtin.command:
+    argv:
+      - exportfs
+      - -rav
+  changed_when: false
+
+- name: Mount
+  ansible.builtin.command:
+    argv:
+      - mount
+      - -a
+  changed_when: false

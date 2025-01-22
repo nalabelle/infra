@@ -1,0 +1,14 @@
+- name: Configure users
+  ansible.builtin.user:
+    name: "{{ item.username }}"
+    uid: "{{ item.uid }}"
+    group: "{{ item.group }}"
+  loop: "{{ fileserver__users | community.general.remove_keys(target='password') }}"
+
+- name: NFS
+  ansible.builtin.include_tasks:
+    file: nfs.yaml
+
+- name: Samba
+  ansible.builtin.include_tasks:
+    file: samba.yaml

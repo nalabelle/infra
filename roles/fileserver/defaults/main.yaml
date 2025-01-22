@@ -1,0 +1,42 @@
+fileserver__op_vault: "Applications"
+fileserver__op_key: "{{ 'FILESERVER_' + inventory_hostname }}"
+fileserver__pools: |-
+  {{
+      lookup(
+        'community.general.onepassword',
+        fileserver__op_key,
+        vault=fileserver__op_vault,
+        field='pools'
+      )
+  | split(',') | map('trim')
+  }}
+fileserver__users: |-
+  {{
+      lookup(
+        'community.general.onepassword',
+        fileserver__op_key,
+        vault=fileserver__op_vault,
+        field='users'
+      )
+  | from_json
+  }}
+fileserver__samba_shares: |-
+  {{
+      lookup(
+        'community.general.onepassword',
+        'FILESERVER_SAMBA_SHARES',
+        vault=fileserver__op_vault,
+        field='notesPlain'
+      )
+  | from_markdown | very_mandatory
+  }}
+fileserver__export_binds: |-
+  {{
+      lookup(
+        'community.general.onepassword',
+        'FILESERVER_EXPORT_BINDS',
+        vault=fileserver__op_vault,
+        field='notesPlain'
+      )
+  | from_markdown | very_mandatory
+  }}

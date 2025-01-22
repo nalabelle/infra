@@ -1,0 +1,36 @@
+# NOTE: Whenever you modify this file you should run the command
+# "testparm" to check that you have not made any basic syntactic
+# errors.
+
+[global]
+  workgroup = WORKGROUP
+  server string = %h (Samba, Ubuntu)
+  deadtime = 20
+  veto files = /Thumbs.db/.DS_Store/._.DS_Store/.apdisk/
+  delete veto files = yes
+
+#### Debugging/Accounting ####
+  log file = /var/log/samba/log.%m
+  max log size = 1000
+  logging = file
+  panic action = /usr/share/samba/panic-action %d
+
+####### Authentication #######
+  server role = standalone server
+  security = user
+  obey pam restrictions = yes
+  unix password sync = no
+  map to guest = bad user
+
+# no printing
+  load printers = no
+  disable spoolss = yes
+  show add printer wizard = no
+  printcap name = /dev/null
+
+# defaults
+  create mask = 0664
+  directory mask = 2775
+  force group = +users
+
+{{ fileserver__samba_shares }}

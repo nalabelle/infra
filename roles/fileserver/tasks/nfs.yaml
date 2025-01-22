@@ -1,0 +1,41 @@
+- name: Install nfs packages
+  ansible.builtin.apt:
+    pkg: nfs-kernel-server
+    state: present
+
+- name: Ensure exports path exists
+  ansible.builtin.file:
+    path: /exports
+    state: "directory"
+    mode: "0755"
+
+- name: Ensure exports mount paths exist
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: "directory"
+    mode: "0775"
+  loop: "{{ fileserver__export_binds | fstab_extract_mounts | list }}"
+
+- name: Copy export binds
+  ansible.builtin.blockinfile:
+    block: "{{ fileserver__export_binds }}"
+    path: /etc/fstab
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+    backup: true
+    prepend_newline: true
+  notify:
+    - Systemctl
+    - Mount
+
+- name: Copy exports
+  ansible.builtin.copy:
+    src: etc/exports
+    dest: /etc/exports
+    mode: "0644"
+  notify: Exportfs
+
+- name: Enable services
+  ansible.builtin.systemd_service:
+    name: nfs-kernel-server
+    enabled: true
+    state: started
