@@ -12,3 +12,7 @@
 - name: Samba
   ansible.builtin.include_tasks:
     file: samba.yaml
+
+- name: Sanoid
+  ansible.builtin.include_tasks:
+    file: sanoid.yaml

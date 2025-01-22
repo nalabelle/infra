@@ -1,0 +1,7 @@
+#!/bin/bash
+set -eu
+set -o pipefail
+
+{% for item in fileserver__syncoid_config -%}
+syncoid --no-sync-snap {{ item.from }} {{ item.to }}
+{% endfor %}

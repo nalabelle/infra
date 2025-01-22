@@ -1,0 +1,33 @@
+{{ fileserver__sanoid_config }}
+
+# These are backed up by Kopia as well
+[template_apps]
+  frequently = 2
+  hourly = 6
+  daily = 6
+  monthly = 6
+  yearly = 0
+  autosnap = yes
+  autoprune = yes
+
+# Files is standard storage pool config
+# Generally these are also covered by Kopia, but it's not guaranteed
+[template_files]
+  frequently = 2
+  hourly = 3
+  daily = 3
+  monthly = 3
+  yearly = 0
+  autosnap = yes
+  autoprune = yes
+
+# Media gets used for volumes that would be expensive to keep
+# long term archives for
+[template_media]
+  frequently = 2
+  hourly = 5
+  daily = 5
+  monthly = 1
+  yearly = 0
+  autosnap = yes
+  autoprune = yes
