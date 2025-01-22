@@ -96,7 +96,7 @@
   roles:
     - role: kopia_server
 - name: Kopia Client
-  hosts: proxmox_nodes
+  hosts: proxmox_nodes service_files
   tags:
     - kopia-client
     - kopia
