@@ -1,3 +1,8 @@
+[service]
+  log_level = "info"
+  cache_enable = true
+  cache_size = 4096
+
 [listener]
   [listener.0]
     ip = '0.0.0.0'
@@ -5,6 +10,7 @@
 
 [upstream]
   [upstream.0]
+    bootstrap_ip = '45.90.28.113'
     type = 'doh3'
     endpoint = 'https://dns.nextdns.io/{{ ctrld__nextdns_prefix }}'
     timeout = 5000
