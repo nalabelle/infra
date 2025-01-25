@@ -2,10 +2,10 @@ apiVersion: vendir.k14s.io/v1alpha1
 directories:
 - contents:
   - git:
-      commitTitle: Release 10.1.0.
-      sha: 770bae70db4eb9005593089852d68e6d68d27b59
+      commitTitle: Release 10.2.0.
+      sha: be5b4adf5bebe3ac110905d938e93c7105d48a90
       tags:
-      - 10.1.0
+      - 10.2.0
     path: community.general
   - git:
       commitTitle: 'chore(main): release 4.2.2 (#571)...'
@@ -16,10 +16,10 @@ directories:
   path: vendor/ansible_collection
 - contents:
   - git:
-      commitTitle: 'Merge pull request #338 from tobiashuste/prepare-5-1-0...'
-      sha: d4e72c80996c41b93b92b0ed54b4f24c36676211
+      commitTitle: Update Changelog with release PR
+      sha: f46e7e8a4917b24c692b5b6112a875f32837552e
       tags:
-      - v5.1.0
+      - v5.2.1
     path: unattended_upgrades
   path: vendor/ansible_roles
 - contents:
@@ -32,18 +32,18 @@ directories:
   path: vendor/pve-nag-buster
 - contents:
   - git:
-      commitTitle: Prepare release 3.4.7 (#310)
-      sha: 68b15f2fa55925885e2c567db842cb8dea1df698
+      commitTitle: Prepare release 3.5.1 (#316)
+      sha: f0457337866c248a62a12d6bc9df6b05629d064e
       tags:
-      - v3.4.7
+      - v3.5.1
     path: pve_exporter
   - git:
       commitTitle: '[yum.sh] Explicitly disable "running kernel"-check (#232)...'
       sha: b36a2eadfc88f711588085b83f0ecbdbc5f288c3
     path: textfile-collector-scripts
   - githubRelease:
-      tag: v0.6.1
-      url: https://api.github.com/repos/natrontech/pbs-exporter/releases/164421897
+      tag: v0.6.4
+      url: https://api.github.com/repos/natrontech/pbs-exporter/releases/192583796
     path: pbs-exporter
   path: vendor/exporters
 kind: LockConfig

@@ -52,9 +52,9 @@ directories:
         githubRelease:
           slug: natrontech/pbs-exporter
           tag: v0.6.4
-          checksums:
-            pbs-exporter_v0.6.1_linux_amd64.tar.gz: 3221dd0e1e2dcba520061af8114eb424ef255c68f0cd93133cfcf5f608be239c
+          # Can't sync checksums with variable release tags...
+          disableAutoChecksumValidation: true
           assetNames:
-            - "pbs-exporter_v0.6.1_linux_amd64.tar.gz"
+            - "pbs-exporter_v*_linux_amd64.tar.gz"
           unpackArchive:
-            path: "pbs-exporter_v0.6.1_linux_amd64.tar.gz"
+            path: "pbs-exporter_v0.6.4_linux_amd64.tar.gz"
