@@ -1,40 +1,22 @@
 wireguard__op_vault: "Applications"
-wireguard__op_key: "{{ 'WIREGUARD_' + inventory_hostname }}"
 wireguard__port: 51820
-wireguard__address: |-
+wireguard__config_wgsrv1: |
   {{
       lookup(
         'community.general.onepassword',
-        wireguard__op_key,
+        'WIREGUARD_' + inventory_hostname + '_WGSRV1',
         vault=wireguard__op_vault,
-        field='Address'
+        field='notesPlain'
       )
-  }}
-wireguard__private_key: |-
-  {{
-      lookup(
-        'community.general.onepassword',
-        wireguard__op_key,
-        vault=wireguard__op_vault,
-        field='password'
-      )
-  }}
-wireguard__peers: |-
-  {{
-      lookup(
-        'community.general.onepassword',
-        wireguard__op_key,
-        vault=wireguard__op_vault,
-        field='peers'
-      )
+  | from_markdown | very_mandatory
   }}
 # Special field for unifi
 wireguard__ipv6: |-
   {{
       lookup(
         'community.general.onepassword',
-        wireguard__op_key,
+        'WIREGUARD_' + inventory_hostname + '_WGSRV1',
         vault=wireguard__op_vault,
         field='ipv6'
-      )
+      ) | very_mandatory
   }}

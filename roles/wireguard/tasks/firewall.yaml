@@ -6,13 +6,6 @@
     update_cache: true
     cache_valid_time: 3600
 
-- name: Allow SSH
-  community.general.ufw:
-    rule: allow
-    proto: tcp
-    port: "22"
-  when: wireguard__allow_ssh is not defined or wireguard__allow_ssh
-
 - name: Allow Wireguard
   community.general.ufw:
     rule: allow
@@ -28,6 +21,17 @@
     rule: allow
     proto: any
     interface_in: "wg0"
+
+- name: Allow forwarding sysctl
+  ansible.builtin.blockinfile:
+    path: /etc/ufw/sysctl.conf
+    append_newline: true
+    prepend_newline: true
+    block: |
+      net/ipv4/ip_forward=1
+      net/ipv6/conf/default/forwarding=1
+      net/ipv6/conf/all/forwarding=1
+    state: present
 
 - name: Reject everything and enable UFW
   community.general.ufw:
