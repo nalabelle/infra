@@ -1,0 +1,34 @@
+# Manually join network
+# ansible servers -a "tailscale up --auth-key=tskey-auth-... --advertise-exit-node --accept-dns=false --accept-routes=false"
+
+- name: Install
+  block:
+    - name: Set up keyring
+      ansible.builtin.apt_key:
+        url: https://pkgs.tailscale.com/stable/ubuntu/noble.noarmor.gpg
+        keyring: /etc/apt/keyrings/tailscale-archive-keyring.gpg
+
+    - name: Set up apt sources
+      ansible.builtin.apt_repository:
+        repo:
+          "deb [signed-by=/etc/apt/keyrings/tailscale-archive-keyring.gpg] https://pkgs.tailscale.com/stable/ubuntu noble main"
+        filename: tailscale
+
+    - name: Install packages
+      ansible.builtin.apt:
+        update_cache: true
+        pkg:
+          - tailscale
+        state: present
+
+- name: Configure udp
+  ansible.builtin.copy:
+    src: etc/networkd-dispatcher/routable.d/50-tailscale
+    dest: /etc/networkd-dispatcher/routable.d/50-tailscale
+    mode: "0755"
+
+- name: Allow Traffic
+  community.general.ufw:
+    rule: allow
+    proto: any
+    interface_in: "tailscale0"
