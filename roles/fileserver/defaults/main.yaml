@@ -40,6 +40,16 @@ fileserver__export_binds: |-
       )
   | from_markdown | very_mandatory
   }}
+fileserver__exports: |-
+  {{
+      lookup(
+        'community.general.onepassword',
+        'FILESERVER_EXPORTS',
+        vault=fileserver__op_vault,
+        field='notesPlain'
+      )
+  | from_markdown | very_mandatory
+  }}
 fileserver__sanoid_config: |-
   {{
       lookup(

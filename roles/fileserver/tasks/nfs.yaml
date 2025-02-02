@@ -29,7 +29,7 @@
 
 - name: Copy exports
   ansible.builtin.copy:
-    src: etc/exports
+    content: "{{ fileserver__exports }}"
     dest: /etc/exports
     mode: "0644"
   notify: Exportfs
