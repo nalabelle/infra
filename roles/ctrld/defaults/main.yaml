@@ -1,6 +1,7 @@
 ctrld__op_vault: "Applications"
 
 ctrld__manage_user: true
+ctrld__port: 53
 ctrld__nextdns_prefix: |-
   {{
       lookup(

@@ -20,3 +20,14 @@ wireguard__ipv6: |-
         field='ipv6'
       ) | very_mandatory
   }}
+# ctrld runs behind dnsmasq on unifi
+ctrld__port: 5354
+ctrld__nextdns_prefix: |-
+  {{
+      lookup(
+        'community.general.onepassword',
+        'NextDNS',
+        vault=wireguard__op_vault,
+        field='prefix'
+      ) | very_mandatory
+  }}

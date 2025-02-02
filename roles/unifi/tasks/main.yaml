@@ -1,6 +1,14 @@
 - name: Wireguard
   ansible.builtin.import_tasks:
     file: wireguard.yaml
+
+- name: Controld Config
+  ansible.builtin.template:
+    # TODO: Fix this hack. I want this template in both roles
+    src: "{{ inventory_dir }}/../roles/ctrld/templates/etc/controld/ctrld.toml.j2"
+    dest: /data/controld/ctrld.toml
+    mode: "0644"
+
 - name: Controld workaround
   ansible.builtin.import_tasks:
     file: controld-workaround.yaml
