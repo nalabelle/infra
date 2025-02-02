@@ -9,7 +9,7 @@ def from_markdown(a, msg=None) -> str:
         a = a[3:]
     if a.endswith("~~~"):
         a = a[:-3]
-    a = a.strip()
+    a = a.strip() + "\n"
     return a
 
 
