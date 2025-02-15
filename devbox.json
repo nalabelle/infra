@@ -1,16 +1,16 @@
 {
   "$schema": "https://raw.githubusercontent.com/jetify-com/devbox/0.13.4/.schema/devbox.schema.json",
   "packages": [
-    "ansible@latest",
-    "ansible-lint@latest",
-    "pre-commit@latest",
-    "shellcheck@latest",
-    "shfmt@latest",
-    "gnumake@latest",
-    "_1password@latest",
-    "python312Packages.hcloud@latest",
-    "vendir@latest",
-    "nodePackages.prettier@latest",
+    "ansible@2.18.1",
+    "ansible-lint@4.3.7",
+    "pre-commit@2.20.0",
+    "shellcheck@0.10.0",
+    "shfmt@3.10.0",
+    "gnumake@4.4.1",
+    "_1password@1.12.2",
+    "python312Packages.hcloud@1.35.0",
+    "vendir@0.43.0",
+    "nodePackages.prettier@2.8.8",
     "glibcLocales@latest"
   ],
   "shell": {
