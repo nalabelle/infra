@@ -1,0 +1,11 @@
+[Unit]
+Description=Run Kopia maintenance (Full)
+Requires=kopia-maintenance-full.service
+
+[Timer]
+Unit=kopia-maintenance-full.service
+OnCalendar=*-*-* 04:00:00 America/Los_Angeles
+Persistent=true
+
+[Install]
+WantedBy=timers.target

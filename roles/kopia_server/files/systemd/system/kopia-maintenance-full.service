@@ -1,0 +1,18 @@
+[Unit]
+Description=Kopia Maintenance (Full)
+After=network-online.target
+Wants=kopia-maintenance.timer
+
+[Service]
+Type=exec
+User=backup
+Group=backup
+PermissionsStartOnly=true
+#ExecStartPre=/usr/bin/chown -R backup:backup /mnt/backup/kopia/cache /mnt/backup/kopia/repository
+ExecStart=/usr/local/bin/kopia-maintenance-full
+ExecStopPost=/bin/bash -c "[ $SERVICE_RESULT = success ] && touch %t/kopia-exporter.trigger"
+ExecStopPost=/bin/bash -c "[ $SERVICE_RESULT = success ] && touch %t/kopia-sync.trigger"
+
+
+[Install]
+WantedBy=multi-user.target

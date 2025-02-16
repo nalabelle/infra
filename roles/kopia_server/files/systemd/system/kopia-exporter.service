@@ -1,15 +1,13 @@
 [Unit]
 Description=Kopia Prometheus Text File Collector
 After=network-online.target
-Wants=kopia-maintenance.timer
+Wants=network-online.target
 
 [Service]
 Type=oneshot
 User=backup
 Group=backup
 PermissionsStartOnly=true
-EnvironmentFile=/mnt/backup/kopia/kopia-env
-PassEnvironment=KOPIA_CONFIG_PATH KOPIA_CACHE_DIRECTORY
 ExecStart=/usr/local/bin/kopia-export /tmp/kopia_exporter.prom
 # We need to move the file as root or chmod the destination...
 ExecStopPost=/usr/bin/mv /tmp/kopia_exporter.prom \

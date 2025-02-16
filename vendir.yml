@@ -58,3 +58,14 @@ directories:
             - "pbs-exporter_v*_linux_amd64.tar.gz"
           unpackArchive:
             path: "pbs-exporter_v0.6.4_linux_amd64.tar.gz"
+      - path: kopia-exporter
+        # https://github.com/nalabelle/kopia-exporter
+        githubRelease:
+          slug: nalabelle/kopia-exporter
+          tag: v0.3.37
+          # I should really add these..
+          disableAutoChecksumValidation: true
+          assetNames:
+            - "kopia-exporter_null_x86_64-unknown-linux-musl.tar.gz"
+          unpackArchive:
+            path: "kopia-exporter_null_x86_64-unknown-linux-musl.tar.gz"

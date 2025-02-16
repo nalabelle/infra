@@ -4,7 +4,8 @@ Requires=kopia-maintenance.service
 
 [Timer]
 Unit=kopia-maintenance.service
-OnCalendar=daily
+OnBootSec=1min
+OnUnitActiveSec=3h
 Persistent=true
 
 [Install]

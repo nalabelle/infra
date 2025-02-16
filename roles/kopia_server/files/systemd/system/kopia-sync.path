@@ -1,0 +1,10 @@
+[Unit]
+Description=Run Kopia Sync on trigger
+Requires=kopia-sync.service
+
+[Path]
+# %t is /run
+PathChanged=%t/kopia-sync.trigger
+Unit=kopia-sync.service
+TriggerLimitIntervalSec=6h
+TriggerLimitBurst=1

@@ -1,0 +1,15 @@
+[Unit]
+Description=Kopia Sync
+Wants=kopia-sync.timer
+After=network-online.target
+Requires=network-online.target
+
+
+[Service]
+Type=exec
+User=backup
+Group=backup
+ExecStart=/usr/local/bin/kopia-sync
+
+[Install]
+WantedBy=multi-user.target

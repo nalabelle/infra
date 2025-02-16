@@ -5,6 +5,12 @@
       - moreutils
     state: present
 
+- name: Copy kopia-exporter
+  ansible.builtin.copy:
+    src: "{{ inventory_dir }}/../vendor/exporters/kopia-exporter/kopia-exporter"
+    dest: /usr/local/bin/kopia-exporter
+    mode: "0755"
+
 - name: Enable node collector service
   ansible.builtin.systemd_service:
     name: prometheus-node-exporter

@@ -45,5 +45,9 @@ directories:
       tag: v0.6.4
       url: https://api.github.com/repos/natrontech/pbs-exporter/releases/192583796
     path: pbs-exporter
+  - githubRelease:
+      tag: v0.3.37
+      url: https://api.github.com/repos/nalabelle/kopia-exporter/releases/200517223
+    path: kopia-exporter
   path: vendor/exporters
 kind: LockConfig

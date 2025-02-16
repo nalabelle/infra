@@ -1,0 +1,8 @@
+[Unit]
+Description=Run Kopia Exporter on trigger
+Requires=kopia-exporter.service
+
+[Path]
+# %t is /run
+PathChanged=%t/kopia-exporter.trigger
+Unit=kopia-exporter.service

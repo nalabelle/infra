@@ -7,7 +7,9 @@ if [ "$USER" != "backup" ]; then
   exit 1
 fi
 
-PREFIX="Kopia-Maintenance:"
+PREFIX="Kopia-Maintenance-Full:"
 echo "${PREFIX} Starting"
-kopia maintenance run
+kopia maintenance run --full
+echo "${PREFIX} Gathering stats"
+kopia content stats
 echo "${PREFIX} Done"
