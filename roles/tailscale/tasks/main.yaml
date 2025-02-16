@@ -1,5 +1,11 @@
 # Manually join network
-# ansible servers -a "tailscale up --auth-key=tskey-auth-... --advertise-exit-node --accept-dns=false --accept-routes=false"
+# On the first connection, use this
+# --auth-key=tskey-auth-...
+# For exit nodes
+# --advertise-exit-node
+# If the host has routes
+# --advertise-routes=192.168.210.0/24
+# ansible servers -a "tailscale up --accept-dns=false --accept-routes=false"
 
 - name: Install
   block:
@@ -27,8 +33,16 @@
     dest: /etc/networkd-dispatcher/routable.d/50-tailscale
     mode: "0755"
 
-- name: Allow Traffic
-  community.general.ufw:
-    rule: allow
-    proto: any
-    interface_in: "tailscale0"
+- block:
+  - name: Check if ufw is installed
+    shell: command -v ufw
+    register: ufw_installed
+    changed_when: false
+    failed_when: false
+
+  - name: Allow Traffic
+    community.general.ufw:
+      rule: allow
+      proto: any
+      interface_in: "tailscale0"
+    when: ufw_installed.rc == 0

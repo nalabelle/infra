@@ -33,7 +33,9 @@
   roles:
     - role: wireguard
 - name: Tailscale
-  hosts: servers
+  hosts:
+    - servers
+    - service_compose
   tags: tailscale
   roles:
     - role: tailscale
