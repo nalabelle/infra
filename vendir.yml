@@ -18,7 +18,7 @@ directories:
       - path: unattended_upgrades
         git:
           url: https://github.com/hifis-net/ansible-collection-toolkit
-          ref: v5.2.1
+          ref: v5.3.0
           depth: 1
         includePaths:
           - roles/unattended_upgrades/**/*
@@ -35,7 +35,7 @@ directories:
       - path: pve_exporter
         git:
           url: https://github.com/prometheus-pve/prometheus-pve-exporter
-          ref: v3.5.1
+          ref: v3.5.2
           depth: 1
         includePaths:
           - src/pve_exporter/**/*
