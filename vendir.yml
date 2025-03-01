@@ -6,7 +6,7 @@ directories:
       - path: community.general
         git:
           url: https://github.com/ansible-collections/community.general
-          ref: 10.3.1
+          ref: 10.4.0
           depth: 1
       - path: hetzner.cloud
         git:
