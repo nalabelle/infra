@@ -3,7 +3,7 @@
   "packages": [
     "ansible@2.18.2",
     "ansible-lint@4.3.7",
-    "pre-commit@2.20.0",
+    "pre-commit@4.0.1",
     "shellcheck@0.10.0",
     "shfmt@3.10.0",
     "gnumake@4.4.1",
