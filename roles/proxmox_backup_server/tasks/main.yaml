@@ -9,3 +9,9 @@
 - name: Exporter
   ansible.builtin.include_tasks:
     file: exporter.yaml
+
+- name: Set up cert renewal hooks
+  ansible.builtin.copy:
+    src: etc/letsencrypt/renewal-hooks/deploy/proxmox-proxy
+    dest: /etc/letsencrypt/renewal-hooks/deploy/proxmox-proxy
+    mode: "0755"

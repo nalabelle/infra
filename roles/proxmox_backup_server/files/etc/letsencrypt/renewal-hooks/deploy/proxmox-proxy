@@ -1,0 +1,9 @@
+#!/bin/bash
+set -eu
+set -o pipefail
+
+cp "$RENEWED_LINEAGE/fullchain.pem" /etc/proxmox-backup/proxy.pem
+cp "$RENEWED_LINEAGE/privkey.pem" /etc/proxmox-backup/proxy.key
+chmod 640 /etc/proxmox-backup/proxy.{key,pem}
+chgrp backup /etc/proxmox-backup/proxy.{key,pem}
+systemctl reload proxmox-backup-proxy.service

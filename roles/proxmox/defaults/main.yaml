@@ -24,3 +24,13 @@ proxmox__node_collector_token: |-
         field='node-collector'
       )
   }}
+
+proxmox__cloudflare_api_token: |-
+  {{
+      lookup(
+        'community.general.onepassword',
+        'CF_DNS_API_TOKEN',
+        vault=proxmox__op_vault,
+        field='password'
+      )
+  }}
