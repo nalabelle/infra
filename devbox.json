@@ -8,7 +8,7 @@
     "shfmt@3.10.0",
     "gnumake@4.4.1",
     "_1password@1.12.2",
-    "python312Packages.hcloud@1.35.0",
+    "python312Packages.hcloud@2.3.0",
     "vendir@0.43.0",
     "nodePackages.prettier@2.8.8",
     "glibcLocales@latest"
