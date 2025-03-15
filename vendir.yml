@@ -51,7 +51,7 @@ directories:
         # https://github.com/natrontech/pbs-exporter
         githubRelease:
           slug: natrontech/pbs-exporter
-          tag: v0.6.4
+          tag: v0.6.5
           # Can't sync checksums with variable release tags...
           disableAutoChecksumValidation: true
           assetNames:
@@ -62,7 +62,7 @@ directories:
         # https://github.com/nalabelle/kopia-exporter
         githubRelease:
           slug: nalabelle/kopia-exporter
-          tag: v0.3.37
+          tag: v0.3.40
           # I should really add these..
           disableAutoChecksumValidation: true
           assetNames:

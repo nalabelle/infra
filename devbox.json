@@ -2,14 +2,14 @@
   "$schema": "https://raw.githubusercontent.com/jetify-com/devbox/0.13.4/.schema/devbox.schema.json",
   "packages": [
     "ansible@2.18.2",
-    "ansible-lint@24.9.2",
+    "ansible-lint@24.12.2",
     "pre-commit@4.0.1",
     "shellcheck@0.10.0",
-    "shfmt@3.10.0",
+    "shfmt@3.11.0",
     "gnumake@4.4.1",
     "_1password-cli@2.30.3",
     "vendir@0.43.0",
-    "nodePackages.prettier@3.3.3",
+    "nodePackages.prettier@3.5.2",
     "glibcLocales@latest"
   ],
   "shell": {
