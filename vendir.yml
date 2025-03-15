@@ -69,3 +69,16 @@ directories:
             - "kopia-exporter_null_x86_64-unknown-linux-musl.tar.gz"
           unpackArchive:
             path: "kopia-exporter_null_x86_64-unknown-linux-musl.tar.gz"
+  - path: .pulumi/bin
+    contents:
+    # Download pulumi through vendir because nix/devbox versions have problems:
+    # Warnings about using plugins from $PATH
+    # Can't write import cache files because /nix is immutable
+      - path: .
+        http:
+          url: https://get.pulumi.com/releases/sdk/pulumi-v3.156.0-linux-x64.tar.gz
+          sha256: ""
+          disableAutoChecksumValidation: true
+        unpackArchive:
+          path: "pulumi-v3.156.0-linux-x64.tar.gz"
+        newRootPath: pulumi

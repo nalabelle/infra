@@ -10,12 +10,8 @@
     "_1password-cli@2.30.3",
     "vendir@0.43.0",
     "nodePackages.prettier@3.5.2",
-    "glibcLocales@latest"
-  ],
-  "shell": {
-    "init_hook": ["echo 'Welcome to devbox!' > /dev/null"],
-    "scripts": {
-      "test": ["echo \"Error: no test specified\" && exit 1"]
-    }
-  }
+    "glibcLocales@latest",
+    "uv@0.6.6",
+    "stdenv.cc.cc.lib"
+  ]
 }

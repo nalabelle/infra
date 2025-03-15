@@ -1,11 +1,16 @@
 /.devbox
 /.ansible-cache
-/vendor
 /.vscode
+
+/.vendir
+/vendor
+
+/.pulumi
 
 .env.secrets
 /.secrets
-/vendir.lock.json
 
 /.venv
+venv/
+*.pyc
 __pycache__

@@ -50,4 +50,12 @@ directories:
       url: https://api.github.com/repos/nalabelle/kopia-exporter/releases/200517223
     path: kopia-exporter
   path: vendor/exporters
+- contents:
+  - http: {}
+    path: .
+  path: .vendir/pulumi/bin
+- contents:
+  - http: {}
+    path: .
+  path: .pulumi/bin
 kind: LockConfig

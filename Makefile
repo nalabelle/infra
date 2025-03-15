@@ -36,11 +36,24 @@ $(ANSIBLE_CACHE)/hosts:
 
 # Vendor
 .PHONY: clean-vendor
-vendor:
-	@vendir sync
 clean-vendor:
 	rm -rf vendor
+vendor: vendir.yml vendir.lock.yml
+	@vendir sync -d vendor
 
 .PHONY: lintfix
 lintfix:
 	@pre-commit run --all-files
+
+# Pulumi
+.pulumi/bin: vendir.yml vendir.lock.yml
+	@vendir sync -d .pulumi/bin
+	@chmod +x .pulumi/bin/*
+
+.PHONY: pulumi
+pulumi: .pulumi/bin Pulumi.yaml pulumi.py
+	@pulumi up
+
+.PHONY: clean-pulumi
+clean-pulumi:
+	rm -rf .pulumi
