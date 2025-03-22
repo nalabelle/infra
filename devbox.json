@@ -1,7 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/jetify-com/devbox/0.13.4/.schema/devbox.schema.json",
   "packages": [
-    "ansible@2.18.2",
+    "ansible@2.18.3",
     "ansible-lint@24.12.2",
     "pre-commit@4.0.1",
     "shellcheck@0.10.0",
