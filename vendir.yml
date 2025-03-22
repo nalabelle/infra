@@ -11,7 +11,7 @@ directories:
       - path: hetzner.cloud
         git:
           url: https://github.com/ansible-collections/hetzner.hcloud
-          ref: 4.2.2
+          ref: 4.3.0
           depth: 1
   - path: vendor/ansible_roles
     contents:
@@ -62,7 +62,7 @@ directories:
         # https://github.com/nalabelle/kopia-exporter
         githubRelease:
           slug: nalabelle/kopia-exporter
-          tag: v0.3.40
+          tag: v0.3.41
           # I should really add these..
           disableAutoChecksumValidation: true
           assetNames:
