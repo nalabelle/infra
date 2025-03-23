@@ -6,9 +6,24 @@
   ansible.builtin.template:
     # TODO: Fix this hack. I want this template in both roles
     src: "{{ inventory_dir }}/../roles/ctrld/templates/etc/controld/ctrld.toml.j2"
-    dest: /data/controld/ctrld.toml
+    dest: /etc/controld/ctrld.toml
     mode: "0644"
+  notify:
+    - Restart ctrld
 
-- name: Controld workaround
-  ansible.builtin.import_tasks:
-    file: controld-workaround.yaml
+
+- name: Tailscale Forwarding
+  block:
+    - name: Install service
+      ansible.builtin.copy:
+        src: etc/systemd/system/tailscale-forwarding.service
+        dest: /etc/systemd/system/tailscale-forwarding.service
+        mode: "0644"
+      notify:
+        - Reload systemd
+
+    - name: Enable service
+      ansible.builtin.systemd:
+        name: tailscale-forwarding.service
+        state: started
+        enabled: true

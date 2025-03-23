@@ -1,0 +1,17 @@
+[Unit]
+Description=Tailscale Forwarding Configuration
+After=network.target tailscaled.service
+Requires=tailscaled.service
+
+[Service]
+Type=oneshot
+ExecStart=/bin/sh -c '\
+    ip route del 100.64.0.0/10 dev tailscale0 2>/dev/null || true && \
+    ip route add 100.64.0.0/10 dev tailscale0 && \
+    iptables -A FORWARD -i br0 -o tailscale0 -j ACCEPT && \
+    iptables -A FORWARD -i tailscale0 -o br0 -j ACCEPT && \
+    iptables -t nat -A POSTROUTING -o tailscale0 -j MASQUERADE'
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

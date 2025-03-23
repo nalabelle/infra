@@ -17,6 +17,8 @@
         { 'archive.md' = ['upstream.1']},
         { 'archive.ph' = ['upstream.1']},
         { 'archive.vn' = ['upstream.1']},
+        { '*.ts.net' = ['upstream.2']},
+        { '*.ostrich-vector.ts.net' = ['upstream.2']},
       ]
 
 [upstream]
@@ -32,4 +34,10 @@
     bootstrap_ip = '8.8.8.8'
     type = 'doh3'
     endpoint = 'https://dns.google/dns-query'
+    timeout = 5000
+
+  [upstream.2]
+    # Tailscale
+    type = 'legacy'
+    endpoint = '100.100.100.100'
     timeout = 5000
