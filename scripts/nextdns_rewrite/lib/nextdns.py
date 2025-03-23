@@ -71,7 +71,11 @@ class Tracker:
             possible_matches = [r for r in self.rewrites if r.name == rewrite.name]
             if possible_matches:
                 match = None
-                if rewrite.type == "AAAA":
+                if rewrite.type == "CNAME":
+                    match = [r for r in possible_matches if r.type == "CNAME"]
+                    if match:
+                        match = match[0]
+                elif rewrite.type == "AAAA":
                     match = [r for r in possible_matches if r.type == "AAAA"]
                     if match:
                         match = match[0]
@@ -81,12 +85,12 @@ class Tracker:
                     if match:
                         match = match[0]
                 if not match or match.content != rewrite.content:
-                    logger.info(f"Updating rewrite for {rewrite.name}")
+                    logger.info(f"Updating rewrite for {rewrite.name} ({rewrite.type})")
                     self.create_rewrite(rewrite)
                 else:
                     match.seen = True
             else:
-                logger.info(f"Creating rewrite for {rewrite.name}")
+                logger.info(f"Creating rewrite for {rewrite.name} ({rewrite.type})")
                 self.create_rewrite(rewrite)
         unseen = [rewrite for rewrite in self.rewrites if not rewrite.seen]
         for rewrite in unseen:
@@ -143,7 +147,7 @@ class Tracker:
             if results["errors"][0]:
                 error = results["errors"][0]
                 if error["code"] == "conflict" and error["source"]["pointer"] == "name":
-                    logger.error(f"Error: {reqCreate.text}")
+                    logger.debug(f"Error: {reqCreate.text}")
                     self.delete_rewrite(host.name)
                     return self.create_rewrite(host)
             else:
@@ -189,7 +193,18 @@ class Tracker:
             if len(parts) == 2:
                 ip, hostname = parts
                 # Determine record type based on IP format
-                record_type = "AAAA" if ":" in ip else "A"
+                # Determine record type based on IP address format
+                if ":" in ip:
+                    # IPv6 addresses contain colons
+                    record_type = "AAAA"
+                elif all(part.isdigit() for part in ip.split(".")):
+                    # IPv4 addresses are dot-separated numbers
+                    record_type = "A"
+                else:
+                    # Assume it's a hostname/CNAME if not IPv4 or IPv6
+                    record_type = "CNAME"
+                if record_type is None:
+                    raise ValueError(f"Invalid IP format: {line}")
                 rewrites.append(
                     Rewrite(
                         id="",  # ID will be set when created in NextDNS
