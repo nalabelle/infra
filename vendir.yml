@@ -51,7 +51,7 @@ directories:
         # https://github.com/natrontech/pbs-exporter
         githubRelease:
           slug: natrontech/pbs-exporter
-          tag: v0.6.5
+          tag: v0.6.6
           # Can't sync checksums with variable release tags...
           disableAutoChecksumValidation: true
           assetNames:
