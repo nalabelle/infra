@@ -113,67 +113,67 @@
         }
       }
     },
-    "ansible@2.18.3": {
-      "last_modified": "2025-03-20T07:39:01Z",
-      "resolved": "github:NixOS/nixpkgs/7344a3b78128f7b1765dba89060b015fb75431a7#ansible",
+    "ansible@2.18.4": {
+      "last_modified": "2025-04-07T13:23:10Z",
+      "resolved": "github:NixOS/nixpkgs/b0b4b5f8f621bfe213b8b21694bab52ecfcbf30b#ansible",
       "source": "devbox-search",
-      "version": "2.18.3",
+      "version": "2.18.4",
       "systems": {
         "aarch64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/2xdvhlpjsgbcp52c78z2ccaxpzcr7pyv-python3.12-ansible-core-2.18.3",
+              "path": "/nix/store/5j974spdkax8k4h02pinmqnp1xnmyl07-python3.12-ansible-core-2.18.4",
               "default": true
             },
             {
               "name": "dist",
-              "path": "/nix/store/df66jdjnmn1c3774znx3bg19b173flv2-python3.12-ansible-core-2.18.3-dist"
+              "path": "/nix/store/mvg4ngldx2l1ikjnqy77kdficiswhz31-python3.12-ansible-core-2.18.4-dist"
             }
           ],
-          "store_path": "/nix/store/2xdvhlpjsgbcp52c78z2ccaxpzcr7pyv-python3.12-ansible-core-2.18.3"
+          "store_path": "/nix/store/5j974spdkax8k4h02pinmqnp1xnmyl07-python3.12-ansible-core-2.18.4"
         },
         "aarch64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/yg9b8czd2bayakav48izv10qfm7vfdc1-python3.12-ansible-core-2.18.3",
+              "path": "/nix/store/r0zdyq734q6q9vhbswn0k7f98n3s90wz-python3.12-ansible-core-2.18.4",
               "default": true
             },
             {
               "name": "dist",
-              "path": "/nix/store/z2zp6pmnzcbk7fd5k4nkn50mi6chy6kr-python3.12-ansible-core-2.18.3-dist"
+              "path": "/nix/store/bl66axkrjxgq3ki7qbbhv8kw6cr15rih-python3.12-ansible-core-2.18.4-dist"
             }
           ],
-          "store_path": "/nix/store/yg9b8czd2bayakav48izv10qfm7vfdc1-python3.12-ansible-core-2.18.3"
+          "store_path": "/nix/store/r0zdyq734q6q9vhbswn0k7f98n3s90wz-python3.12-ansible-core-2.18.4"
         },
         "x86_64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/6xx7ym3v297kc4wflvwvpa0lqdvbqxyp-python3.12-ansible-core-2.18.3",
+              "path": "/nix/store/wcaa4j76ia8fbqc596b2nh9gzalk0p0a-python3.12-ansible-core-2.18.4",
               "default": true
             },
             {
               "name": "dist",
-              "path": "/nix/store/b4zn3qly3scf3415fr9fzak6pg9mrmg8-python3.12-ansible-core-2.18.3-dist"
+              "path": "/nix/store/jys0gif7y7ap9l4l13slsnclrbrfwdh0-python3.12-ansible-core-2.18.4-dist"
             }
           ],
-          "store_path": "/nix/store/6xx7ym3v297kc4wflvwvpa0lqdvbqxyp-python3.12-ansible-core-2.18.3"
+          "store_path": "/nix/store/wcaa4j76ia8fbqc596b2nh9gzalk0p0a-python3.12-ansible-core-2.18.4"
         },
         "x86_64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/711c2h6k9gxbrrzz2602261rng6s2s9s-python3.12-ansible-core-2.18.3",
+              "path": "/nix/store/m814jivygiq72l57xlb35c0cm2s6zl5f-python3.12-ansible-core-2.18.4",
               "default": true
             },
             {
               "name": "dist",
-              "path": "/nix/store/8s5cd1fh5b5h24yrd1ys2a3va93ywcfg-python3.12-ansible-core-2.18.3-dist"
+              "path": "/nix/store/rs35h25n901qv7yb59sykzwdxdiyj2ck-python3.12-ansible-core-2.18.4-dist"
             }
           ],
-          "store_path": "/nix/store/711c2h6k9gxbrrzz2602261rng6s2s9s-python3.12-ansible-core-2.18.3"
+          "store_path": "/nix/store/m814jivygiq72l57xlb35c0cm2s6zl5f-python3.12-ansible-core-2.18.4"
         }
       }
     },
@@ -300,51 +300,51 @@
         }
       }
     },
-    "nodePackages.prettier@3.5.2": {
-      "last_modified": "2025-03-11T17:52:14Z",
-      "resolved": "github:NixOS/nixpkgs/0d534853a55b5d02a4ababa1d71921ce8f0aee4c#nodePackages.prettier",
+    "nodePackages.prettier@3.5.3": {
+      "last_modified": "2025-03-23T05:31:05Z",
+      "resolved": "github:NixOS/nixpkgs/dd613136ee91f67e5dba3f3f41ac99ae89c5406b#nodePackages.prettier",
       "source": "devbox-search",
-      "version": "3.5.2",
+      "version": "3.5.3",
       "systems": {
         "aarch64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/fchnppwy0d7hjjfjxr6gxscgh0vs9ffa-prettier-3.5.2",
+              "path": "/nix/store/ri1x9kwnv6a38lycpx03fm8g1xx5r41s-prettier-3.5.3",
               "default": true
             }
           ],
-          "store_path": "/nix/store/fchnppwy0d7hjjfjxr6gxscgh0vs9ffa-prettier-3.5.2"
+          "store_path": "/nix/store/ri1x9kwnv6a38lycpx03fm8g1xx5r41s-prettier-3.5.3"
         },
         "aarch64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/raz43q27gv3ra4l1ywfdaqzxal8p096n-prettier-3.5.2",
+              "path": "/nix/store/dl78racfdkxxmmx971k7malgqyvncdjk-prettier-3.5.3",
               "default": true
             }
           ],
-          "store_path": "/nix/store/raz43q27gv3ra4l1ywfdaqzxal8p096n-prettier-3.5.2"
+          "store_path": "/nix/store/dl78racfdkxxmmx971k7malgqyvncdjk-prettier-3.5.3"
         },
         "x86_64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/laz8sikvqydspmkiy105h11gwi8z53z9-prettier-3.5.2",
+              "path": "/nix/store/wnra1n75bxjh1bvhpf3wq9mrm9kgn3j5-prettier-3.5.3",
               "default": true
             }
           ],
-          "store_path": "/nix/store/laz8sikvqydspmkiy105h11gwi8z53z9-prettier-3.5.2"
+          "store_path": "/nix/store/wnra1n75bxjh1bvhpf3wq9mrm9kgn3j5-prettier-3.5.3"
         },
         "x86_64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/qc57vgkvs7dl8zzzk8cibc2wjgl2v3w2-prettier-3.5.2",
+              "path": "/nix/store/q8pacnp434vblp7vh5b769fxdismk2qj-prettier-3.5.3",
               "default": true
             }
           ],
-          "store_path": "/nix/store/qc57vgkvs7dl8zzzk8cibc2wjgl2v3w2-prettier-3.5.2"
+          "store_path": "/nix/store/q8pacnp434vblp7vh5b769fxdismk2qj-prettier-3.5.3"
         }
       }
     },
@@ -572,106 +572,106 @@
           "outputs": [
             {
               "name": "20241116-lib",
-              "path": "/nix/store/6kbrc4ca98srlfpgyaayl2q9zpg1gys6-gcc-14-20241116-lib",
+              "path": "/tmp/containerbase/cache/nix/store/8mf12l7yl2izxffhbljz8xwr3af4hss0-gcc-14-20241116-lib",
               "default": true
             }
           ]
         }
       }
     },
-    "uv@0.6.6": {
-      "last_modified": "2025-03-13T11:38:39Z",
-      "resolved": "github:NixOS/nixpkgs/573c650e8a14b2faa0041645ab18aed7e60f0c9a#uv",
+    "uv@0.6.14": {
+      "last_modified": "2025-04-10T20:20:34Z",
+      "resolved": "github:NixOS/nixpkgs/d19cf9dfc633816a437204555afeb9e722386b76#uv",
       "source": "devbox-search",
-      "version": "0.6.6",
+      "version": "0.6.14",
       "systems": {
         "aarch64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/lqnkdyvl5zll2fq5a5ph17mqznms78xy-uv-0.6.6",
+              "path": "/nix/store/9f492dxkf4qkvkr0n950xphmqjh29pwk-uv-0.6.14",
               "default": true
             }
           ],
-          "store_path": "/nix/store/lqnkdyvl5zll2fq5a5ph17mqznms78xy-uv-0.6.6"
+          "store_path": "/nix/store/9f492dxkf4qkvkr0n950xphmqjh29pwk-uv-0.6.14"
         },
         "aarch64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/lspam7dhns0rh2q7gsyq40z8ly76gmcb-uv-0.6.6",
+              "path": "/nix/store/ana816flfaf6sh76h9xswphq9lyb0iv6-uv-0.6.14",
               "default": true
             }
           ],
-          "store_path": "/nix/store/lspam7dhns0rh2q7gsyq40z8ly76gmcb-uv-0.6.6"
+          "store_path": "/nix/store/ana816flfaf6sh76h9xswphq9lyb0iv6-uv-0.6.14"
         },
         "x86_64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/nf8isgl8kgny907z7461xbm76lwqn5lc-uv-0.6.6",
+              "path": "/nix/store/z6mxd485vrkyxdw57zlldmsqahpqfsi6-uv-0.6.14",
               "default": true
             }
           ],
-          "store_path": "/nix/store/nf8isgl8kgny907z7461xbm76lwqn5lc-uv-0.6.6"
+          "store_path": "/nix/store/z6mxd485vrkyxdw57zlldmsqahpqfsi6-uv-0.6.14"
         },
         "x86_64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/w2r38hkwz7f9h0f3pdyzfb2ds7z9sygs-uv-0.6.6",
+              "path": "/nix/store/z4ld2kivcl6hmj4k8i5x7wbfmmsfyvm2-uv-0.6.14",
               "default": true
             }
           ],
-          "store_path": "/nix/store/w2r38hkwz7f9h0f3pdyzfb2ds7z9sygs-uv-0.6.6"
+          "store_path": "/nix/store/z4ld2kivcl6hmj4k8i5x7wbfmmsfyvm2-uv-0.6.14"
         }
       }
     },
-    "vendir@0.43.0": {
-      "last_modified": "2025-03-11T17:52:14Z",
-      "resolved": "github:NixOS/nixpkgs/0d534853a55b5d02a4ababa1d71921ce8f0aee4c#vendir",
+    "vendir@0.43.2": {
+      "last_modified": "2025-04-09T00:06:13Z",
+      "resolved": "github:NixOS/nixpkgs/6a39c6e495eefabc935d8ddf66aa45d85b85fa3f#vendir",
       "source": "devbox-search",
-      "version": "0.43.0",
+      "version": "0.43.2",
       "systems": {
         "aarch64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/p1adiafkqwshbwp8zdzpd5dmlfw9y165-vendir-0.43.0",
+              "path": "/nix/store/54lggzpqzxxd41zwa1q84kgkcp4mknfh-vendir-0.43.2",
               "default": true
             }
           ],
-          "store_path": "/nix/store/p1adiafkqwshbwp8zdzpd5dmlfw9y165-vendir-0.43.0"
+          "store_path": "/nix/store/54lggzpqzxxd41zwa1q84kgkcp4mknfh-vendir-0.43.2"
         },
         "aarch64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/avsr7cvslylsdszpnijcg5miyinn8cgc-vendir-0.43.0",
+              "path": "/nix/store/ffda46hv6bn11jncbw9r01p3crch3hr2-vendir-0.43.2",
               "default": true
             }
           ],
-          "store_path": "/nix/store/avsr7cvslylsdszpnijcg5miyinn8cgc-vendir-0.43.0"
+          "store_path": "/nix/store/ffda46hv6bn11jncbw9r01p3crch3hr2-vendir-0.43.2"
         },
         "x86_64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/1gz5s0vvwf12282ahxyzsk9lad5hm8q6-vendir-0.43.0",
+              "path": "/nix/store/c4d41hm0pi6ksd6fwcnnyp500ha8lywk-vendir-0.43.2",
               "default": true
             }
           ],
-          "store_path": "/nix/store/1gz5s0vvwf12282ahxyzsk9lad5hm8q6-vendir-0.43.0"
+          "store_path": "/nix/store/c4d41hm0pi6ksd6fwcnnyp500ha8lywk-vendir-0.43.2"
         },
         "x86_64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/9yla6bsgypyvwkzggagpznzwn9v2b8ql-vendir-0.43.0",
+              "path": "/nix/store/zlj8801abpr47p295sdar6y9ci9cwvjs-vendir-0.43.2",
               "default": true
             }
           ],
-          "store_path": "/nix/store/9yla6bsgypyvwkzggagpznzwn9v2b8ql-vendir-0.43.0"
+          "store_path": "/nix/store/zlj8801abpr47p295sdar6y9ci9cwvjs-vendir-0.43.2"
         }
       }
     }
