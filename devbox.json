@@ -11,7 +11,7 @@
     "vendir@0.43.2",
     "nodePackages.prettier@3.5.3",
     "glibcLocales@latest",
-    "uv@0.6.14",
+    "uv@0.7.2",
     "stdenv.cc.cc.lib"
   ]
 }
