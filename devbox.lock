@@ -1,51 +1,51 @@
 {
   "lockfile_version": "1",
   "packages": {
-    "_1password-cli@2.30.3": {
-      "last_modified": "2025-03-11T17:52:14Z",
-      "resolved": "github:NixOS/nixpkgs/0d534853a55b5d02a4ababa1d71921ce8f0aee4c#_1password-cli",
+    "_1password-cli@2.31.0": {
+      "last_modified": "2025-05-12T14:38:58Z",
+      "resolved": "github:NixOS/nixpkgs/eaeed9530c76ce5f1d2d8232e08bec5e26f18ec1#_1password-cli",
       "source": "devbox-search",
-      "version": "2.30.3",
+      "version": "2.31.0",
       "systems": {
         "aarch64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/n0jgflq9hkylgfvxfrc9ris4lgbza738-1password-cli-2.30.3",
+              "path": "/nix/store/swdvw6da1r8xr37w5h0vfy96xj6kb5zm-1password-cli-2.31.0",
               "default": true
             }
           ],
-          "store_path": "/nix/store/n0jgflq9hkylgfvxfrc9ris4lgbza738-1password-cli-2.30.3"
+          "store_path": "/nix/store/swdvw6da1r8xr37w5h0vfy96xj6kb5zm-1password-cli-2.31.0"
         },
         "aarch64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/w2qm1zj4hip9xijsnvjin2fiwqx4kdz9-1password-cli-2.30.3",
+              "path": "/nix/store/15wvrc6jflxp8l89dg95a7fgvklgfm6y-1password-cli-2.31.0",
               "default": true
             }
           ],
-          "store_path": "/nix/store/w2qm1zj4hip9xijsnvjin2fiwqx4kdz9-1password-cli-2.30.3"
+          "store_path": "/nix/store/15wvrc6jflxp8l89dg95a7fgvklgfm6y-1password-cli-2.31.0"
         },
         "x86_64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/c00fjp4hykbgy2ddpqg8rgpc3k1mjc3z-1password-cli-2.30.3",
+              "path": "/nix/store/xi1fps3wlkkqvj5blf0599nbw54qd7fp-1password-cli-2.31.0",
               "default": true
             }
           ],
-          "store_path": "/nix/store/c00fjp4hykbgy2ddpqg8rgpc3k1mjc3z-1password-cli-2.30.3"
+          "store_path": "/nix/store/xi1fps3wlkkqvj5blf0599nbw54qd7fp-1password-cli-2.31.0"
         },
         "x86_64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/dl9afsjn3qqzdd90k15l4qvkrqyca08y-1password-cli-2.30.3",
+              "path": "/nix/store/fpqppdgfh4lii2ijvbrp0carhpdh8ypr-1password-cli-2.31.0",
               "default": true
             }
           ],
-          "store_path": "/nix/store/dl9afsjn3qqzdd90k15l4qvkrqyca08y-1password-cli-2.30.3"
+          "store_path": "/nix/store/fpqppdgfh4lii2ijvbrp0carhpdh8ypr-1password-cli-2.31.0"
         }
       }
     },
@@ -579,51 +579,51 @@
         }
       }
     },
-    "uv@0.7.2": {
-      "last_modified": "2025-05-06T08:06:31Z",
-      "resolved": "github:NixOS/nixpkgs/1cb1c02a6b1b7cf67e3d7731cbbf327a53da9679#uv",
+    "uv@0.7.3": {
+      "last_modified": "2025-05-12T14:38:58Z",
+      "resolved": "github:NixOS/nixpkgs/eaeed9530c76ce5f1d2d8232e08bec5e26f18ec1#uv",
       "source": "devbox-search",
-      "version": "0.7.2",
+      "version": "0.7.3",
       "systems": {
         "aarch64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/rr5ifwjvxfbdx7vmalp63hrm7yn9i7pf-uv-0.7.2",
+              "path": "/nix/store/mhg8xl8373ywkkq3hv47qp45xyyaz6sb-uv-0.7.3",
               "default": true
             }
           ],
-          "store_path": "/nix/store/rr5ifwjvxfbdx7vmalp63hrm7yn9i7pf-uv-0.7.2"
+          "store_path": "/nix/store/mhg8xl8373ywkkq3hv47qp45xyyaz6sb-uv-0.7.3"
         },
         "aarch64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/mvb76p7h7a011xh2gi628j36lwas2a65-uv-0.7.2",
+              "path": "/nix/store/vgahysp2mzsc3gdfnwhqxf52x6pm320w-uv-0.7.3",
               "default": true
             }
           ],
-          "store_path": "/nix/store/mvb76p7h7a011xh2gi628j36lwas2a65-uv-0.7.2"
+          "store_path": "/nix/store/vgahysp2mzsc3gdfnwhqxf52x6pm320w-uv-0.7.3"
         },
         "x86_64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/hyfckmfmb13gaskj8q4fznyal7c2cg6n-uv-0.7.2",
+              "path": "/nix/store/6h4qcgb1mvrv31bsmbjg9lb656bbq8g5-uv-0.7.3",
               "default": true
             }
           ],
-          "store_path": "/nix/store/hyfckmfmb13gaskj8q4fznyal7c2cg6n-uv-0.7.2"
+          "store_path": "/nix/store/6h4qcgb1mvrv31bsmbjg9lb656bbq8g5-uv-0.7.3"
         },
         "x86_64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/1w2x9cmwvf8zq5ipxg2c59vyqdbl34xj-uv-0.7.2",
+              "path": "/nix/store/ps81mnrc47b19q9pn9dfadl9pcdcmls0-uv-0.7.3",
               "default": true
             }
           ],
-          "store_path": "/nix/store/1w2x9cmwvf8zq5ipxg2c59vyqdbl34xj-uv-0.7.2"
+          "store_path": "/nix/store/ps81mnrc47b19q9pn9dfadl9pcdcmls0-uv-0.7.3"
         }
       }
     },

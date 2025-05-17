@@ -7,11 +7,11 @@
     "shellcheck@0.10.0",
     "shfmt@3.11.0",
     "gnumake@4.4.1",
-    "_1password-cli@2.30.3",
+    "_1password-cli@2.31.0",
     "vendir@0.43.2",
     "nodePackages.prettier@3.5.3",
     "glibcLocales@latest",
-    "uv@0.7.2",
+    "uv@0.7.3",
     "stdenv.cc.cc.lib"
   ]
 }
