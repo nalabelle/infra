@@ -579,99 +579,99 @@
         }
       }
     },
-    "uv@0.7.3": {
-      "last_modified": "2025-05-12T14:38:58Z",
-      "resolved": "github:NixOS/nixpkgs/eaeed9530c76ce5f1d2d8232e08bec5e26f18ec1#uv",
+    "uv@0.7.6": {
+      "last_modified": "2025-05-20T08:00:33Z",
+      "resolved": "github:NixOS/nixpkgs/2f9173bde1d3fbf1ad26ff6d52f952f9e9da52ea#uv",
       "source": "devbox-search",
-      "version": "0.7.3",
+      "version": "0.7.6",
       "systems": {
         "aarch64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/mhg8xl8373ywkkq3hv47qp45xyyaz6sb-uv-0.7.3",
+              "path": "/nix/store/ld22lal9a6498g22j84sb6jzydlrablf-uv-0.7.6",
               "default": true
             }
           ],
-          "store_path": "/nix/store/mhg8xl8373ywkkq3hv47qp45xyyaz6sb-uv-0.7.3"
+          "store_path": "/nix/store/ld22lal9a6498g22j84sb6jzydlrablf-uv-0.7.6"
         },
         "aarch64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/vgahysp2mzsc3gdfnwhqxf52x6pm320w-uv-0.7.3",
+              "path": "/nix/store/23a4i8ryfl5lnckrajif7d5gaaq90l3x-uv-0.7.6",
               "default": true
             }
           ],
-          "store_path": "/nix/store/vgahysp2mzsc3gdfnwhqxf52x6pm320w-uv-0.7.3"
+          "store_path": "/nix/store/23a4i8ryfl5lnckrajif7d5gaaq90l3x-uv-0.7.6"
         },
         "x86_64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/6h4qcgb1mvrv31bsmbjg9lb656bbq8g5-uv-0.7.3",
+              "path": "/nix/store/8niy70xbnr66bwwc826r4z1h6jlrp6ry-uv-0.7.6",
               "default": true
             }
           ],
-          "store_path": "/nix/store/6h4qcgb1mvrv31bsmbjg9lb656bbq8g5-uv-0.7.3"
+          "store_path": "/nix/store/8niy70xbnr66bwwc826r4z1h6jlrp6ry-uv-0.7.6"
         },
         "x86_64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/ps81mnrc47b19q9pn9dfadl9pcdcmls0-uv-0.7.3",
+              "path": "/nix/store/zh7c411m600dxh8y2mbmzcpaszr8rgb3-uv-0.7.6",
               "default": true
             }
           ],
-          "store_path": "/nix/store/ps81mnrc47b19q9pn9dfadl9pcdcmls0-uv-0.7.3"
+          "store_path": "/nix/store/zh7c411m600dxh8y2mbmzcpaszr8rgb3-uv-0.7.6"
         }
       }
     },
-    "vendir@0.43.2": {
-      "last_modified": "2025-04-09T00:06:13Z",
-      "resolved": "github:NixOS/nixpkgs/6a39c6e495eefabc935d8ddf66aa45d85b85fa3f#vendir",
+    "vendir@0.44.0": {
+      "last_modified": "2025-05-16T20:19:48Z",
+      "resolved": "github:NixOS/nixpkgs/12a55407652e04dcf2309436eb06fef0d3713ef3#vendir",
       "source": "devbox-search",
-      "version": "0.43.2",
+      "version": "0.44.0",
       "systems": {
         "aarch64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/54lggzpqzxxd41zwa1q84kgkcp4mknfh-vendir-0.43.2",
+              "path": "/nix/store/aalannf6731gfwlkam2w58xm790ylyg5-vendir-0.44.0",
               "default": true
             }
           ],
-          "store_path": "/nix/store/54lggzpqzxxd41zwa1q84kgkcp4mknfh-vendir-0.43.2"
+          "store_path": "/nix/store/aalannf6731gfwlkam2w58xm790ylyg5-vendir-0.44.0"
         },
         "aarch64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/ffda46hv6bn11jncbw9r01p3crch3hr2-vendir-0.43.2",
+              "path": "/nix/store/jy6xl2mprj6d887ba6zk475bm5v3hr1n-vendir-0.44.0",
               "default": true
             }
           ],
-          "store_path": "/nix/store/ffda46hv6bn11jncbw9r01p3crch3hr2-vendir-0.43.2"
+          "store_path": "/nix/store/jy6xl2mprj6d887ba6zk475bm5v3hr1n-vendir-0.44.0"
         },
         "x86_64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/c4d41hm0pi6ksd6fwcnnyp500ha8lywk-vendir-0.43.2",
+              "path": "/nix/store/61f318rigqq7wxmk2249d2dhf515h80w-vendir-0.44.0",
               "default": true
             }
           ],
-          "store_path": "/nix/store/c4d41hm0pi6ksd6fwcnnyp500ha8lywk-vendir-0.43.2"
+          "store_path": "/nix/store/61f318rigqq7wxmk2249d2dhf515h80w-vendir-0.44.0"
         },
         "x86_64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/zlj8801abpr47p295sdar6y9ci9cwvjs-vendir-0.43.2",
+              "path": "/nix/store/w16p7d9bwkbyshy0970mlspqvxxm42ki-vendir-0.44.0",
               "default": true
             }
           ],
-          "store_path": "/nix/store/zlj8801abpr47p295sdar6y9ci9cwvjs-vendir-0.43.2"
+          "store_path": "/nix/store/w16p7d9bwkbyshy0970mlspqvxxm42ki-vendir-0.44.0"
         }
       }
     }
