@@ -10,8 +10,6 @@
     "_1password-cli@2.31.0",
     "vendir@0.44.0",
     "nodePackages.prettier@3.5.3",
-    "glibcLocales@latest",
-    "uv@0.7.6",
-    "stdenv.cc.cc.lib"
+    "uv@0.7.6"
   ]
 }
