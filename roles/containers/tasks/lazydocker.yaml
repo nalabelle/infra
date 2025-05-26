@@ -1,0 +1,107 @@
+---
+- name: Install lazydocker
+  block:
+    - name: Determine system architecture
+      ansible.builtin.set_fact:
+        lazydocker_arch: "{{ ansible_architecture }}"
+      check_mode: false
+
+    - name: Map architecture to lazydocker naming convention
+      ansible.builtin.set_fact:
+        lazydocker_arch: >-
+          {% if ansible_architecture == 'i386' or ansible_architecture == 'i686' %}x86
+          {% elif ansible_architecture.startswith('armv6') %}armv6
+          {% elif ansible_architecture.startswith('armv7') %}armv7
+          {% elif ansible_architecture == 'aarch64' %}arm64
+          {% else %}{{ ansible_architecture }}{% endif %}
+      check_mode: false
+
+    - name: Get latest lazydocker release version
+      ansible.builtin.uri:
+        url: https://api.github.com/repos/jesseduffield/lazydocker/releases/latest
+        return_content: true
+      register: lazydocker_release_info
+      retries: 3
+      delay: 5
+      until: lazydocker_release_info.status == 200
+      check_mode: false
+
+    - name: Set latest lazydocker version details
+      ansible.builtin.set_fact:
+        latest_lazydocker_tag: "{{ lazydocker_release_info.json.tag_name }}"
+        latest_lazydocker_version_clean: "{{ lazydocker_release_info.json.tag_name | replace('v', '') }}"
+      check_mode: false
+      when: lazydocker_release_info.status == 200
+
+    - name: Check if lazydocker is installed
+      ansible.builtin.stat:
+        path: /usr/local/bin/lazydocker
+      register: lazydocker_binary
+
+    - name: Get installed lazydocker version command output
+      ansible.builtin.command: /usr/local/bin/lazydocker --version
+      register: lazydocker_installed_version_cmd_output
+      changed_when: false
+      failed_when: false
+      when: lazydocker_binary.stat.exists
+
+    - name: Extract installed lazydocker version string
+      ansible.builtin.set_fact:
+        # Extracts X.Y.Z from a line like "Version: X.Y.Z"
+        current_installed_version_str: "{{ lazydocker_installed_version_cmd_output.stdout | regex_search('Version:\\s*([\\d\\.]+)', '\\1') | first | default('') }}"
+      when: lazydocker_installed_version_cmd_output.stdout is defined and lazydocker_installed_version_cmd_output.stdout != ""
+      check_mode: false
+
+    - name: Debug version comparison
+      ansible.builtin.debug:
+        msg: |
+          GitHub API call status: {{ lazydocker_release_info.status | default('N/A') }}
+          Lazydocker binary exists: {{ lazydocker_binary.stat.exists }}
+          Latest tag: {{ latest_lazydocker_tag | default('N/A') }}
+          Latest clean version: {{ latest_lazydocker_version_clean | default('N/A') }}
+          Installed command output: {{ lazydocker_installed_version_cmd_output.stdout | default('N/A') }}
+          Extracted installed version: {{ current_installed_version_str | default('N/A') }}
+          Condition to install/update: {{ lazydocker_release_info.status == 200 and (not lazydocker_binary.stat.exists or (lazydocker_binary.stat.exists and (current_installed_version_str | default('') != latest_lazydocker_version_clean))) }}
+      check_mode: false
+
+    - name: Install or Update lazydocker
+      when: >
+        lazydocker_release_info.status == 200 and
+        (not lazydocker_binary.stat.exists or
+        (lazydocker_binary.stat.exists and (current_installed_version_str | default('') != latest_lazydocker_version_clean)))
+      block:
+        - name: Create temporary directory for lazydocker installation
+          ansible.builtin.tempfile:
+            state: directory
+            suffix: lazydocker
+          register: lazydocker_temp_dir
+
+        - name: Set lazydocker download URL
+          ansible.builtin.set_fact:
+            lazydocker_file: "lazydocker_{{ latest_lazydocker_version_clean }}_{{ ansible_system }}_{{ lazydocker_arch }}.tar.gz"
+            lazydocker_url: "https://github.com/jesseduffield/lazydocker/releases/download/{{ latest_lazydocker_tag }}/lazydocker_{{ latest_lazydocker_version_clean }}_{{ ansible_system }}_{{ lazydocker_arch }}.tar.gz"
+          check_mode: false
+
+        - name: Download lazydocker
+          ansible.builtin.get_url:
+            url: "{{ lazydocker_url }}"
+            dest: "{{ lazydocker_temp_dir.path }}/lazydocker.tar.gz"
+            mode: "0644"
+
+        - name: Extract lazydocker
+          ansible.builtin.unarchive:
+            src: "{{ lazydocker_temp_dir.path }}/lazydocker.tar.gz"
+            dest: "{{ lazydocker_temp_dir.path }}"
+            remote_src: true
+
+        - name: Install lazydocker to /usr/local/bin
+          ansible.builtin.copy:
+            src: "{{ lazydocker_temp_dir.path }}/lazydocker"
+            dest: /usr/local/bin/lazydocker
+            mode: "0755"
+            remote_src: true
+
+        - name: Clean up temporary directory
+          ansible.builtin.file:
+            path: "{{ lazydocker_temp_dir.path }}"
+            state: absent

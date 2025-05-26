@@ -53,3 +53,7 @@
   ansible.builtin.import_tasks:
     file: redir.yaml
   when: containers__redir_enabled is defined and containers__redir_enabled
+
+- name: Lazydocker
+  ansible.builtin.import_tasks:
+    file: lazydocker.yaml
