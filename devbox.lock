@@ -536,51 +536,51 @@
         }
       }
     },
-    "uv@0.7.12": {
-      "last_modified": "2025-06-08T07:56:50Z",
-      "resolved": "github:NixOS/nixpkgs/8207ad0d501dd3590e0e81a7c56b386a5c4342c9#uv",
+    "uv@0.7.14": {
+      "last_modified": "2025-06-25T00:36:27Z",
+      "resolved": "github:NixOS/nixpkgs/992f916556fcfaa94451ebc7fc6e396134bbf5b1#uv",
       "source": "devbox-search",
-      "version": "0.7.12",
+      "version": "0.7.14",
       "systems": {
         "aarch64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/41kasvh1nn3b8s46s5vf3jri8x693vzk-uv-0.7.12",
+              "path": "/nix/store/fx0lpl0b307ylmgqhzqxd3cykyp5i5za-uv-0.7.14",
               "default": true
             }
           ],
-          "store_path": "/nix/store/41kasvh1nn3b8s46s5vf3jri8x693vzk-uv-0.7.12"
+          "store_path": "/nix/store/fx0lpl0b307ylmgqhzqxd3cykyp5i5za-uv-0.7.14"
         },
         "aarch64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/5l7cl2k59s7aaqsjah15id4c36amxg56-uv-0.7.12",
+              "path": "/nix/store/mgryvjw3a026l2cbyq7l31jzw0b2njzz-uv-0.7.14",
               "default": true
             }
           ],
-          "store_path": "/nix/store/5l7cl2k59s7aaqsjah15id4c36amxg56-uv-0.7.12"
+          "store_path": "/nix/store/mgryvjw3a026l2cbyq7l31jzw0b2njzz-uv-0.7.14"
         },
         "x86_64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/qbp4xvsgnkriysl2h9bs2a2jafn2hnx2-uv-0.7.12",
+              "path": "/nix/store/05d59akaa74zj9jlqsi4aynb8ls22vvp-uv-0.7.14",
               "default": true
             }
           ],
-          "store_path": "/nix/store/qbp4xvsgnkriysl2h9bs2a2jafn2hnx2-uv-0.7.12"
+          "store_path": "/nix/store/05d59akaa74zj9jlqsi4aynb8ls22vvp-uv-0.7.14"
         },
         "x86_64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/27akw8xb1q5hf86cn37y0vnj6pdnca0w-uv-0.7.12",
+              "path": "/nix/store/khwps69g927zs27pan1bvzk91dssch7q-uv-0.7.14",
               "default": true
             }
           ],
-          "store_path": "/nix/store/27akw8xb1q5hf86cn37y0vnj6pdnca0w-uv-0.7.12"
+          "store_path": "/nix/store/khwps69g927zs27pan1bvzk91dssch7q-uv-0.7.14"
         }
       }
     },
