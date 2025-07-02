@@ -2,10 +2,10 @@ apiVersion: vendir.k14s.io/v1alpha1
 directories:
 - contents:
   - git:
-      commitTitle: Release 10.7.1.
-      sha: 7b92d8487893502ea030b518414984dba1fb2d36
+      commitTitle: Release 11.0.0.
+      sha: 5da06a75aa69938062b46ede9497ec0734292fe0
       tags:
-      - 10.7.1
+      - 11.0.0
     path: community.general
   path: vendor/ansible_collection
 - contents:
