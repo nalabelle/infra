@@ -1,17 +1,27 @@
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+    rev: v5.0.0
     hooks:
+      - id: fix-byte-order-marker
+      - id: check-case-conflict
+      - id: check-executables-have-shebangs
+      - id: check-json
       - id: check-yaml
         args: [--allow-multiple-documents]
       - id: end-of-file-fixer
+      - id: mixed-line-ending
+      - id: requirements-txt-fixer
       - id: trailing-whitespace
       - id: check-merge-conflict
-      - id: check-executables-have-shebangs
       - id: check-shebang-scripts-are-executable
       - id: check-symlinks
       - id: check-toml
-  - repo: https://github.com/Jarmos-san/shellcheck-precommit
-    rev: v0.1.0
+      - id: check-xml
+  - repo: https://github.com/jumanjihouse/pre-commit-hooks
+    rev: 3.0.0
     hooks:
-      - id: shellcheck-system
+      - id: forbid-binary
+      - id: script-must-have-extension
+        exclude: \.envrc$
+      - id: script-must-not-have-extension
+      - id: shellcheck
