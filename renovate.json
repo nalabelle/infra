@@ -1,4 +1,25 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["github>nalabelle/dotfiles//git/renovate/default.json5"]
+  "extends": ["github>nalabelle/dotfiles//git/renovate/default.json5"],
+  "regexManagers": [
+    {
+      "fileMatch": ["^vendir\\.yml$"],
+      "matchStrings": [
+        "slug: natrontech/pbs-exporter\\s+tag: (?<currentValue>v[0-9]+\\.[0-9]+\\.[0-9]+)"
+      ],
+      "depNameTemplate": "natrontech/pbs-exporter",
+      "datasourceTemplate": "github-releases",
+      "extractVersionTemplate": "^v(?<version>.*)$"
+    },
+    {
+      "fileMatch": ["^vendir\\.yml$"],
+      "matchStrings": [
+        "slug: natrontech/pbs-exporter[\\s\\S]*?path: \"pbs-exporter_v(?<currentValue>[0-9]+\\.[0-9]+\\.[0-9]+)_linux_amd64\\.tar\\.gz\""
+      ],
+      "depNameTemplate": "natrontech/pbs-exporter-path",
+      "packageNameTemplate": "natrontech/pbs-exporter",
+      "datasourceTemplate": "github-releases",
+      "extractVersionTemplate": "^(?<version>.*)$"
+    }
+  ]
 }

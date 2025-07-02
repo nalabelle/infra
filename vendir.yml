@@ -8,11 +8,6 @@ directories:
           url: https://github.com/ansible-collections/community.general
           ref: 10.7.1
           depth: 1
-      - path: hetzner.cloud
-        git:
-          url: https://github.com/ansible-collections/hetzner.hcloud
-          ref: 4.3.0
-          depth: 1
   - path: vendor/ansible_roles
     contents:
       - path: unattended_upgrades
@@ -57,7 +52,7 @@ directories:
           assetNames:
             - "pbs-exporter_v*_linux_amd64.tar.gz"
           unpackArchive:
-            path: "pbs-exporter_v0.6.4_linux_amd64.tar.gz"
+            path: "pbs-exporter_v0.6.7_linux_amd64.tar.gz"
       - path: kopia-exporter
         # https://github.com/nalabelle/kopia-exporter
         githubRelease:
@@ -71,9 +66,9 @@ directories:
             path: "kopia-exporter_null_x86_64-unknown-linux-musl.tar.gz"
   - path: .pulumi/bin
     contents:
-    # Download pulumi through vendir because nix/devbox versions have problems:
-    # Warnings about using plugins from $PATH
-    # Can't write import cache files because /nix is immutable
+      # Download pulumi through vendir because nix/devbox versions have problems:
+      # Warnings about using plugins from $PATH
+      # Can't write import cache files because /nix is immutable
       - path: .
         http:
           url: https://get.pulumi.com/releases/sdk/pulumi-v3.156.0-linux-x64.tar.gz

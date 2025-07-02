@@ -2,17 +2,11 @@ apiVersion: vendir.k14s.io/v1alpha1
 directories:
 - contents:
   - git:
-      commitTitle: Release 10.4.0.
-      sha: 205e28d2fe0c8ee1bc4add83a39e07beecadf11f
+      commitTitle: Release 10.7.1.
+      sha: 7b92d8487893502ea030b518414984dba1fb2d36
       tags:
-      - 10.4.0
+      - 10.7.1
     path: community.general
-  - git:
-      commitTitle: 'chore(main): release 4.2.2 (#571)...'
-      sha: 098883454c45a5b644a2e86890c04fb3c7beef29
-      tags:
-      - 4.2.2
-    path: hetzner.cloud
   path: vendor/ansible_collection
 - contents:
   - git:
@@ -32,28 +26,24 @@ directories:
   path: vendor/pve-nag-buster
 - contents:
   - git:
-      commitTitle: Prepare release 3.5.2 (#322)
-      sha: 094b8366fa1f2402b3c9b42c58cfc6bb3bfe7a80
+      commitTitle: Prepare release 3.5.5
+      sha: da192f5ab1538db129943c2c9c7984a53b3b340b
       tags:
-      - v3.5.2
+      - v3.5.5
     path: pve_exporter
   - git:
       commitTitle: '[yum.sh] Explicitly disable "running kernel"-check (#232)...'
       sha: b36a2eadfc88f711588085b83f0ecbdbc5f288c3
     path: textfile-collector-scripts
   - githubRelease:
-      tag: v0.6.4
-      url: https://api.github.com/repos/natrontech/pbs-exporter/releases/192583796
+      tag: v0.6.7
+      url: https://api.github.com/repos/natrontech/pbs-exporter/releases/212407028
     path: pbs-exporter
   - githubRelease:
-      tag: v0.3.37
-      url: https://api.github.com/repos/nalabelle/kopia-exporter/releases/200517223
+      tag: v0.3.43
+      url: https://api.github.com/repos/nalabelle/kopia-exporter/releases/220786716
     path: kopia-exporter
   path: vendor/exporters
-- contents:
-  - http: {}
-    path: .
-  path: .vendir/pulumi/bin
 - contents:
   - http: {}
     path: .
