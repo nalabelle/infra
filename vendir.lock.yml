@@ -10,10 +10,10 @@ directories:
   path: vendor/ansible_collection
 - contents:
   - git:
-      commitTitle: Update CHANGELOG.md...
-      sha: 86cf2f1f48d46396d655a0eb337de15fcc7bc749
+      commitTitle: Release version 6.0.1
+      sha: 731befd21a0c3a318160fb93a60aa2af849e34ae
       tags:
-      - v5.3.0
+      - v6.0.1
     path: unattended_upgrades
   path: vendor/ansible_roles
 - contents:
