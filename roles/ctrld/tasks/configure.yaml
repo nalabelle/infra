@@ -1,0 +1,7 @@
+---
+- name: Config file
+  ansible.builtin.template:
+    src: etc/controld/ctrld.toml.j2
+    dest: "{{ ctrld__config_file }}"
+    mode: "0644"
+  notify: Restart ctrld

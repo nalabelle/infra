@@ -1,6 +1,9 @@
 [service]
   cache_enable = true
   cache_size = 4096
+  cache_ttl_override = 120
+  cache_serve_stale = true
+  cache_flush_domains = ['flush.oops.run']
 
 [listener]
   [listener.0]
@@ -18,7 +21,6 @@
         { 'archive.ph' = ['upstream.1']},
         { 'archive.vn' = ['upstream.1']},
         { '*.ts.net' = ['upstream.2']},
-        { '*.ostrich-vector.ts.net' = ['upstream.2']},
       ]
 
 [upstream]
@@ -38,6 +40,6 @@
 
   [upstream.2]
     # Tailscale
-    type = 'legacy'
+    type = 'doh3'
     endpoint = '100.100.100.100'
     timeout = 5000
