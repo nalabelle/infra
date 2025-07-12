@@ -1,35 +1,38 @@
-- name: Config tool
+- name: Template configure script
   ansible.builtin.template:
     src: data/wireguard/configure.j2
     dest: /data/wireguard/configure
     mode: "0755"
-
-- name: Config
-  ansible.builtin.copy:
-    content: "{{ wireguard__config_wgsrv1 }}"
-    dest: /data/wireguard/wgsrv1.conf
-    mode: "0600"
   notify:
     - Configure Wireguard
 
-- name: Install service
+- name: Copy systemd service files
   ansible.builtin.copy:
     src: etc/systemd/system/wireguard-config.service
     dest: /etc/systemd/system/wireguard-config.service
     mode: "0644"
   notify:
     - Reload systemd
+    - Restart wireguard-config
 
-- name: Install timer
+- name: Copy systemd timer file
   ansible.builtin.copy:
     src: etc/systemd/system/wireguard-config.timer
     dest: /etc/systemd/system/wireguard-config.timer
     mode: "0644"
   notify:
     - Reload systemd
+    - Restart wireguard-config
 
-- name: Enable timer
+- name: Enable and start wireguard-config timer
   ansible.builtin.systemd:
     name: wireguard-config.timer
     state: started
     enabled: true
+    daemon_reload: true
+
+- name: Create WireGuard interface
+  ansible.builtin.command:
+    cmd: "wg-quick up {{ wireguard__interface }}"
+  failed_when: false
+  changed_when: false

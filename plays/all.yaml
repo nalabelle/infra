@@ -1,3 +1,20 @@
+# Network
+- name: Router
+  hosts: unifi
+  tags: router
+  roles:
+    - role: ctrld
+      when: ctrld__enabled | default(false)
+      tags:
+        - ctrld
+    - role: wireguard
+      when: wireguard__enabled | default(false)
+      tags:
+        - wireguard
+    - role: unifi
+      tags:
+        - unifi
+
 ## BASIC
 - name: Basic Setup
   hosts: proxmox_nodes servers proxmox_all_qemu proxmox_all_lxc
@@ -20,13 +37,13 @@
   tags: nextdns
   roles:
     - role: nextdns
-      when: nextdns__enabled is defined and nextdns__enabled
+      when: nextdns__enabled | default(false)
 - name: Ctrld
   hosts: servers
   tags: ctrld
   roles:
     - role: ctrld
-      when: ctrld__enabled is defined and ctrld__enabled
+      when: ctrld__enabled | default(false)
 - name: Wireguard
   hosts: servers
   tags: wireguard
@@ -35,7 +52,6 @@
 - name: Tailscale
   hosts:
     - servers
-    - service_compose
   tags: tailscale
   roles:
     - role: tailscale
@@ -57,13 +73,7 @@
     - unattended-upgrades
   roles:
     - role: unattended_upgrades
-- name: unifi
-  hosts: unifi
-  tags:
-    - unifi
-    - wireguard
-  roles:
-    - role: unifi
+
 - name: zfs
   hosts: service_zpool
   tags:

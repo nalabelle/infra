@@ -1,13 +1,35 @@
 wireguard__op_vault: "Applications"
-wireguard__op_key: "{{ 'WIREGUARD_' + inventory_hostname }}"
+wireguard__interface: "wg0"
 wireguard__port: 51820
-wireguard__config_wg0: |
+
+# Feature flags
+wireguard__enable_firewall: true # Setup UFW firewall rules
+wireguard__enable_config_management: false # Enable custom config script + timer + IPv6 sync
+
+# Derived variables
+wireguard__op_key_suffix: "{{ '_' + wireguard__interface.upper() }}"
+wireguard__config_key: "{{ 'WIREGUARD_' + inventory_hostname + wireguard__op_key_suffix }}"
+wireguard__config_path: "{{ '/etc/wireguard/' + wireguard__interface + '.conf' }}"
+
+# Configuration content
+wireguard__config: |
   {{
       lookup(
         'community.general.onepassword',
-        'WIREGUARD_' + inventory_hostname + '_WG0',
+        wireguard__config_key,
         vault=wireguard__op_vault,
         field='notesPlain'
       )
   | from_markdown | very_mandatory
+  }}
+
+# IPv6 configuration (for config management mode)
+wireguard__ipv6: |-
+  {{
+      lookup(
+        'community.general.onepassword',
+        wireguard__config_key,
+        vault=wireguard__op_vault,
+        field='ipv6'
+      ) | very_mandatory if wireguard__enable_config_management else ''
   }}

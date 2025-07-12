@@ -5,21 +5,29 @@
     state: present
     update_cache: true
     cache_valid_time: 3600
+  when: not wireguard__enable_config_management | bool
 
 - name: Firewall
   ansible.builtin.import_tasks:
     file: firewall.yaml
+  when: wireguard__enable_firewall | bool
 
-- name: Config
+- name: Config management setup
+  ansible.builtin.import_tasks:
+    file: config_management.yaml
+  when: wireguard__enable_config_management | bool
+
+- name: Configure Wireguard
   ansible.builtin.copy:
-    content: "{{ wireguard__config_wg0 }}"
-    dest: /etc/wireguard/wg0.conf
+    content: "{{ wireguard__config }}"
+    dest: "{{ wireguard__config_path }}"
     mode: "0600"
   notify:
-    - Restart Wireguard
+    - "{{ 'Configure Wireguard' if wireguard__enable_config_management | bool else 'Restart Wireguard' }}"
 
 - name: Enable and start Wireguard service
   ansible.builtin.service:
-    name: wg-quick@wg0
+    name: "wg-quick@{{ wireguard__interface }}"
     state: started
     enabled: true
+  when: not wireguard__enable_config_management | bool

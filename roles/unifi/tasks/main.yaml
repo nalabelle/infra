@@ -1,7 +1,3 @@
-- name: Wireguard
-  ansible.builtin.import_tasks:
-    file: wireguard.yaml
-
 - name: Controld Config
   ansible.builtin.template:
     # TODO: Fix this hack. I want this template in both roles
@@ -10,7 +6,6 @@
     mode: "0644"
   notify:
     - Restart ctrld
-
 
 - name: Tailscale Forwarding
   block:

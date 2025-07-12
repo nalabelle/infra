@@ -1,4 +1,16 @@
 - name: Restart Wireguard
   ansible.builtin.service:
-    name: wg-quick@wg0
+    name: wg-quick@{{ wireguard__interface }}
+    state: restarted
+
+- name: Configure Wireguard
+  ansible.builtin.command: /data/wireguard/configure
+
+- name: Reload systemd
+  ansible.builtin.systemd:
+    daemon_reload: yes
+
+- name: Restart wireguard-config
+  ansible.builtin.systemd_service:
+    name: wireguard-config.timer
     state: restarted

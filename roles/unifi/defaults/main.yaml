@@ -1,25 +1,3 @@
-wireguard__op_vault: "Applications"
-wireguard__port: 51820
-wireguard__config_wgsrv1: |
-  {{
-      lookup(
-        'community.general.onepassword',
-        'WIREGUARD_' + inventory_hostname + '_WGSRV1',
-        vault=wireguard__op_vault,
-        field='notesPlain'
-      )
-  | from_markdown | very_mandatory
-  }}
-# Special field for unifi
-wireguard__ipv6: |-
-  {{
-      lookup(
-        'community.general.onepassword',
-        'WIREGUARD_' + inventory_hostname + '_WGSRV1',
-        vault=wireguard__op_vault,
-        field='ipv6'
-      ) | very_mandatory
-  }}
 # ctrld runs behind dnsmasq on unifi
 ctrld__port: 5354
 ctrld__nextdns_prefix: |-
@@ -27,7 +5,7 @@ ctrld__nextdns_prefix: |-
       lookup(
         'community.general.onepassword',
         'NextDNS',
-        vault=wireguard__op_vault,
+        vault="Applications",
         field='prefix'
       ) | very_mandatory
   }}

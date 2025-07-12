@@ -1,2 +1,9 @@
 ---
 ctrld_config_file: /data/controld/ctrld.toml
+
+# WireGuard configuration for UniFi hosts
+wireguard__enabled: true
+wireguard__interface: "wgsrv1"
+wireguard__enable_firewall: false
+wireguard__enable_config_management: true
+wireguard__config_path: "{{ '/data/wireguard/' + wireguard__interface + '.conf' }}"

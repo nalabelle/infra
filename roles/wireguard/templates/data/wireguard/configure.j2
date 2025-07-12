@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+set -eu
+set -o pipefail
+
+config_file="{{ wireguard__config_path }}"
+
+set_config() {
+  echo "Setting wireguard config to $config_file"
+  wg setconf {{ wireguard__interface }} "$config_file"
+
+  ip6=$(ip -o -6 addr show {{ wireguard__interface }} scope global | awk '{split($4,ip,"/"); print ip[1]}')
+
+  if [ -z "$ip6" ]; then
+    ip -6 addr add "{{ wireguard__ipv6 }}" dev {{ wireguard__interface }}
+  fi
+}
+
+check_peers() {
+  local active_peers expected_peers
+  active_peers=$(wg show {{ wireguard__interface }} peers | wc -l)
+  expected_peers=$(grep -c 'PublicKey' "$config_file")
+
+  if [ "$active_peers" -ne "$expected_peers" ]; then
+    set_config
+  fi
+}
+
+check_peers
