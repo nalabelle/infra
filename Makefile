@@ -39,7 +39,7 @@ $(ANSIBLE_CACHE)/hosts:
 clean-vendor:
 	rm -rf vendor
 vendor: vendir.yml vendir.lock.yml
-	@vendir sync -d vendor
+	@vendir sync
 
 .PHONY: lintfix
 lintfix:

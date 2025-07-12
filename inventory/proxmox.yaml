@@ -1,4 +1,4 @@
-plugin: community.general.proxmox
+plugin: community.proxmox.proxmox
 cache: true
 cache_connection: .ansible-cache/proxmox-inventory/
 cache_prefix: ""
