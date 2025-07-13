@@ -90,5 +90,5 @@
 
 - name: Enable ctrld service
   ansible.builtin.command:
-    cmd: "{{ ctrld__install_dir }}/ctrld service start --config {{ ctrld__config_file }}"
+    cmd: "{{ ctrld__install_dir }}/ctrld start --config {{ ctrld__config_file }}"
     creates: /etc/systemd/system/ctrld.service
