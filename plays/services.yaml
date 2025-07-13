@@ -1,0 +1,35 @@
+---
+- name: Fileserver
+  hosts: service_files
+  roles:
+    - role: zfs
+      tags: zfs
+    - role: fileserver
+      tags: fileserver
+    - role: syncthing
+      tags: syncthing
+    - role: kopia_client
+      tags:
+        - kopia-client
+        - kopia
+- name: Proxmox Backup Server
+  hosts: service_proxmox_backup_server
+  roles:
+    - role: zfs
+      tags: zfs
+    - role: proxmox_backup_server
+      tags: proxmox-backup-server
+- name: Kopia Backup Server
+  hosts: service_kopia
+  roles:
+    - role: zfs
+      tags: zfs
+    - role: kopia_server
+      tags:
+        - kopia-server
+        - kopia
+- name: Plex
+  hosts: service_plex
+  roles:
+    - role: plex
+      tags: plex

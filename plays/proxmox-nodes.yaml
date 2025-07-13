@@ -1,0 +1,10 @@
+---
+- name: Proxmox Nodes
+  hosts: proxmox_nodes
+  roles:
+    - role: basic
+      tags: basic
+    - role: proxmox
+      tags: proxmox
+    - role: unattended_upgrades
+      tags: unattended-upgrades

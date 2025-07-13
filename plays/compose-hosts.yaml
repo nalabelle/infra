@@ -1,0 +1,8 @@
+---
+- name: Compose Hosts
+  hosts: service_compose
+  roles:
+    - role: containers
+      tags: containers
+    - role: 1password
+      tags: 1password

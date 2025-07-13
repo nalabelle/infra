@@ -1,0 +1,28 @@
+- name: Networking
+  hosts: unifi
+  tags: router
+  roles:
+    - role: ctrld
+      tags: ctrld
+    - role: tailscale
+      tags: tailscale
+
+- name: Bastion
+  hosts: bastion
+  tags: bastion
+  roles:
+    - role: basic
+      tags: basic
+    - role: nextdns
+      tags: nextdns
+      when: nextdns__enabled | default(false)
+    - role: ctrld
+      tags: ctrld
+      when: ctrld__enabled | default(false)
+    - role: wireguard
+      tags: wireguard
+      when: wireguard__enabled | default(false)
+    - role: tailscale
+      tags: tailscale
+    - role: unattended_upgrades
+      tags: unattended-upgrades
