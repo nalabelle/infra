@@ -13,7 +13,7 @@
   ansible.builtin.file:
     path: "{{ item }}"
     state: "directory"
-    mode: "0775"
+    mode: "02775"
   loop: "{{ fileserver__export_binds | fstab_extract_mounts | list }}"
 
 - name: Copy export binds
