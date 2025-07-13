@@ -50,7 +50,7 @@
   ansible.builtin.file:
     path: /var/backups
     state: "directory"
-    mode: "0775"
+    mode: "02775"
     owner: backup
     group: backup
 
