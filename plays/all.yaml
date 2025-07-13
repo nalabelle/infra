@@ -4,8 +4,6 @@
   roles:
     - role: ctrld
       tags: ctrld
-    - role: wireguard
-      tags: wireguard
     - role: tailscale
       tags: tailscale
 
