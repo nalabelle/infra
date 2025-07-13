@@ -1,0 +1,2 @@
+# Deploy hook configuration
+certbot__deploy_hook_proxmox: false

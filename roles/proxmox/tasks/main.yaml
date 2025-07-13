@@ -47,25 +47,6 @@
         dest: /usr/local/bin/
         mode: "755"
 
-- name: Install certbot
-  ansible.builtin.apt:
-    pkg:
-      - certbot
-      - python3-certbot-dns-cloudflare
-    state: present
-
-- name: Configure certbot cloudflare credentials
-  ansible.builtin.template:
-    src: etc/letsencrypt/cloudflare.ini.j2
-    dest: /etc/letsencrypt/cloudflare.ini
-    mode: "0600"
-
-- name: Configure certbot deploy hook
-  ansible.builtin.copy:
-    src: etc/letsencrypt/renewal-hooks/deploy/proxmox-proxy
-    dest: /etc/letsencrypt/renewal-hooks/deploy/proxmox-proxy
-    mode: "0755"
-
 - name: Include Exporters
   ansible.builtin.import_tasks: exporters.yaml
   when: proxmox__enable_exporters
