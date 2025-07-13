@@ -6,8 +6,8 @@ unattended_remove_unused_dependencies: true
 unattended_update_package_list: 7
 unattended_automatic_reboot: true
 unattended_clean_interval: 30
-unattended_apt_daily_oncalendar: "Fri *-*-* 09:00"
-unattended_apt_daily_upgrade_oncalendar: "Fri *-*-* 15:00"
+unattended_apt_daily_oncalendar: "Sat *-*-* 02:00 America/Los_Angeles"
+unattended_apt_daily_upgrade_oncalendar: "Sat *-*-1..7 09:00 America/Los_Angeles"
 unattended_apt_daily_randomizeddelaysec: "30m"
 unattended_apt_daily_upgrade_randomizeddelaysec: "2h"
 unattended_systemd_timer_override: true
