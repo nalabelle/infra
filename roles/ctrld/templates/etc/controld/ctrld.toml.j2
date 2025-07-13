@@ -20,7 +20,7 @@
         { 'archive.md' = ['upstream.1']},
         { 'archive.ph' = ['upstream.1']},
         { 'archive.vn' = ['upstream.1']},
-        { '*.ts.net' = ['upstream.2']},
+        { '*.ts.net' = ['upstream.2']}
       ]
 
 [upstream]
@@ -40,6 +40,6 @@
 
   [upstream.2]
     # Tailscale
-    type = 'doh3'
+    type = 'legacy'
     endpoint = '100.100.100.100'
     timeout = 5000

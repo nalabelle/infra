@@ -1,23 +1,35 @@
-# Network
 - name: Router
   hosts: unifi
   tags: router
   roles:
-    - role: ctrld
-      when: ctrld__enabled | default(false)
-      tags:
-        - ctrld
-    - role: wireguard
-      when: wireguard__enabled | default(false)
-      tags:
-        - wireguard
     - role: unifi
-      tags:
-        - unifi
+      tags: unifi
+    - role: ctrld
+      tags: ctrld
+      when: ctrld__enabled | default(false)
+    - role: wireguard
+      tags: wireguard
+      when: wireguard__enabled | default(false)
+
+- name: Bastion
+  hosts: wells
+  tags: bastion
+  roles:
+    - role: basic
+      tags: basic
+    - role: nextdns
+      tags: nextdns
+      when: nextdns__enabled | default(false)
+    - role: ctrld
+      tags: ctrld
+      when: ctrld__enabled | default(false)
+    - role: wireguard
+      tags: wireguard
+      when: wireguard__enabled | default(false)
 
 ## BASIC
 - name: Basic Setup
-  hosts: proxmox_nodes servers proxmox_all_qemu proxmox_all_lxc
+  hosts: proxmox_nodes proxmox_all_qemu proxmox_all_lxc
   roles:
     - role: basic
       tags: basic
@@ -32,23 +44,6 @@
         state: present
         update_cache: true
         cache_valid_time: 3600
-- name: NextDNS
-  hosts: servers
-  tags: nextdns
-  roles:
-    - role: nextdns
-      when: nextdns__enabled | default(false)
-- name: Ctrld
-  hosts: servers
-  tags: ctrld
-  roles:
-    - role: ctrld
-      when: ctrld__enabled | default(false)
-- name: Wireguard
-  hosts: servers
-  tags: wireguard
-  roles:
-    - role: wireguard
 - name: Tailscale
   hosts:
     - servers

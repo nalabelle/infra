@@ -1,12 +1,94 @@
 ---
-- name: Install
-  ansible.builtin.include_tasks:
-    file: install.yaml
-  tags:
-    - ctrld_install
+- name: Determine ctrld architecture
+  ansible.builtin.set_fact:
+    ctrld_arch: >-
+      {% if ansible_architecture == 'x86_64' %}linux_amd64
+      {% elif ansible_architecture == 'aarch64' %}linux_arm64
+      {% else %}linux_{{ ansible_architecture }}{% endif %}
 
-- name: Configure
-  ansible.builtin.include_tasks:
-    file: configure.yaml
-  tags:
-    - ctrld_configure
+- name: Check if ctrld binary exists
+  ansible.builtin.stat:
+    path: "{{ ctrld__install_dir }}/ctrld"
+  register: ctrld_binary
+
+- name: Get installed ctrld version
+  ansible.builtin.command: "{{ ctrld__install_dir }}/ctrld --version"
+  register: ctrld_installed_version
+  changed_when: false
+  failed_when: false
+  when: ctrld_binary.stat.exists
+
+- name: Extract installed version number
+  ansible.builtin.set_fact:
+    current_ctrld_version: "{{ ctrld_installed_version.stdout | regex_search('v([0-9]+\\.[0-9]+\\.[0-9]+)', '\\1') | first | default('') }}"
+  when:
+    - ctrld_binary.stat.exists
+    - ctrld_installed_version.stdout is defined
+
+- name: Download and install ctrld
+  when: >
+    not ctrld_binary.stat.exists or
+    (current_ctrld_version | default('') != ctrld__version)
+  block:
+    - name: Create temporary directory for ctrld installation
+      ansible.builtin.tempfile:
+        state: directory
+        suffix: ctrld
+      register: ctrld_temp_dir
+
+    - name: Set ctrld download details
+      ansible.builtin.set_fact:
+        ctrld_archive: "ctrld_{{ ctrld__version }}_{{ ctrld_arch }}.tar.gz"
+        ctrld_url: "https://github.com/Control-D-Inc/ctrld/releases/download/v{{ ctrld__version }}/ctrld_{{ ctrld__version }}_{{ ctrld_arch }}.tar.gz"
+
+    - name: Download ctrld archive
+      ansible.builtin.get_url:
+        url: "{{ ctrld_url }}"
+        dest: "{{ ctrld_temp_dir.path }}/{{ ctrld_archive }}"
+        mode: "0644"
+
+    - name: Extract ctrld archive
+      ansible.builtin.unarchive:
+        src: "{{ ctrld_temp_dir.path }}/{{ ctrld_archive }}"
+        dest: "{{ ctrld_temp_dir.path }}"
+        remote_src: true
+
+    - name: Ensure install directory exists
+      ansible.builtin.file:
+        path: "{{ ctrld__install_dir }}"
+        state: directory
+        mode: "0755"
+
+    - name: Install ctrld binary
+      ansible.builtin.copy:
+        src: "{{ ctrld_temp_dir.path }}/ctrld"
+        dest: "{{ ctrld__install_dir }}/ctrld"
+        mode: "0755"
+        owner: root
+        group: root
+        remote_src: true
+      notify: Restart ctrld
+
+    - name: Clean up temporary directory
+      ansible.builtin.file:
+        path: "{{ ctrld_temp_dir.path }}"
+        state: absent
+
+- name: Disable builtin resolver
+  ansible.builtin.systemd_service:
+    name: systemd-resolved.service
+    enabled: false
+    state: stopped
+  when: ctrld__disable_resolver | bool
+
+- name: Config file
+  ansible.builtin.template:
+    src: etc/controld/ctrld.toml.j2
+    dest: "{{ ctrld__config_file }}"
+    mode: "0644"
+  notify: Restart ctrld
+
+- name: Enable ctrld service
+  ansible.builtin.command:
+    cmd: "{{ ctrld__install_dir }}/ctrld service start --config {{ ctrld__config_file }}"
+    creates: /etc/systemd/system/ctrld.service

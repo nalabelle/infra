@@ -1,5 +1,16 @@
+# Version management for Renovate
+ctrld__version: "1.3.11"
+
+# Control whether to disable the builtin resolver
+ctrld__disable_resolver: true
+
+# Installation paths (customizable for UniFi)
+ctrld__install_dir: "/usr/local/bin"
+
+# Vault configuration
 ctrld__op_vault: "Applications"
 
+# Service configuration
 ctrld__config_file: /etc/controld/ctrld.toml
 ctrld__manage_user: true
 ctrld__port: 53

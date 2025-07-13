@@ -10,6 +10,15 @@
       ],
       "datasourceTemplate": "github-releases",
       "autoReplaceStringTemplate": "          slug: {{depName}}\n          tag: {{newValue}}$1            path: \"pbs-exporter_{{newValue}}_linux_amd64.tar.gz\""
+    },
+    {
+      "customType": "regex",
+      "fileMatch": ["^roles/ctrld/defaults/main\\.yaml$"],
+      "matchStrings": [
+        "ctrld__version: \"(?<currentValue>[0-9]+\\.[0-9]+\\.[0-9]+)\""
+      ],
+      "depNameTemplate": "Control-D-Inc/ctrld",
+      "datasourceTemplate": "github-releases"
     }
   ],
   "packageRules": [
