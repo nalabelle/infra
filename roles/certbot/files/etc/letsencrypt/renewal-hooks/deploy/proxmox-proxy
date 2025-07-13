@@ -1,9 +1,0 @@
-#!/bin/bash
-set -eu
-set -o pipefail
-
-NODE=$(hostname)
-cp "$RENEWED_LINEAGE/fullchain.pem" "/etc/pve/nodes/${NODE}/pveproxy-ssl.pem"
-cp "$RENEWED_LINEAGE/privkey.pem" "/etc/pve/nodes/${NODE}/pveproxy-ssl.key"
-chmod 640 "/etc/pve/nodes/${NODE}"/pveproxy-ssl.{key,pem}
-systemctl reload pveproxy.service

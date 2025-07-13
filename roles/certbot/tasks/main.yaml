@@ -5,15 +5,35 @@
       - python3-certbot-dns-cloudflare
     state: present
 
+- name: Ensure letsencrypt directory exists
+  ansible.builtin.file:
+    path: /etc/letsencrypt
+    state: directory
+    mode: "0755"
+
 - name: Configure certbot cloudflare credentials
   ansible.builtin.template:
     src: etc/letsencrypt/cloudflare.ini.j2
     dest: /etc/letsencrypt/cloudflare.ini
     mode: "0600"
 
-- name: Configure certbot deploy hook
-  ansible.builtin.copy:
-    src: etc/letsencrypt/renewal-hooks/deploy/proxmox-proxy
-    dest: /etc/letsencrypt/renewal-hooks/deploy/proxmox-proxy
-    mode: "0755"
-  when: certbot__deploy_hook_proxmox | bool
+- name: Issue wildcard certificate
+  ansible.builtin.command:
+    cmd: >-
+      certbot certonly
+      --non-interactive
+      --agree-tos
+      --email {{ certbot__email }}
+      --dns-cloudflare
+      --dns-cloudflare-credentials /etc/letsencrypt/cloudflare.ini
+      --dns-cloudflare-propagation-seconds 60
+      -d {{ certbot__domain }}
+      -d *.{{ certbot__domain }}
+    creates: /etc/letsencrypt/live/{{ certbot__domain }}/fullchain.pem
+
+- name: Enable certbot timer for auto-renewal
+  ansible.builtin.systemd:
+    name: certbot.timer
+    enabled: true
+    state: started
+  when: certbot__auto_renewal | bool

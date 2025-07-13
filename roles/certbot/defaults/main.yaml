@@ -1,2 +1,24 @@
-# Deploy hook configuration
-certbot__deploy_hook_proxmox: false
+# Certificate configuration
+certbot__domain: |-
+  {{
+      lookup(
+        'community.general.onepassword',
+        'ansible',
+        vault='Applications',
+        field='domain'
+      )
+  }}
+certbot__email: "postmaster@{{ certbot__domain }}"
+# CloudFlare DNS challenge configuration
+certbot__cloudflare_api_token: |-
+  {{
+      lookup(
+        'community.general.onepassword',
+        'CF_DNS_API_TOKEN',
+        vault='Applications',
+        field='password'
+      )
+  }}
+
+# Auto-renewal configuration
+certbot__auto_renewal: true
