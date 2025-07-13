@@ -1,0 +1,35 @@
+---
+# This task file fixes expired 1Password GPG signing keys that cause APT cache update failures.
+#
+# Problem: 1Password GPG keys can expire, causing errors like:
+#   "EXPKEYSIG AC2D62742012EA22 Code signing for 1Password <codesign@1password.com>"
+#   "Failed to update apt cache after 5 retries"
+#
+# Solution: Download and install the latest GPG keys from 1Password's official servers.
+#
+# Usage: Include this task file when APT failures occur due to 1Password key issues:
+#   ansible-playbook -l <affected_hosts> --tags 1password-gpg-fix
+#
+# Or run manually:
+#   ansible <host> -m include_tasks -a "file=roles/1password/tasks/refresh-gpg-key.yaml"
+
+- name: Check if 1Password repository exists
+  ansible.builtin.stat:
+    path: /etc/apt/sources.list.d/1password.list
+  register: onepassword_repo
+
+- name: Refresh 1Password GPG key
+  ansible.builtin.shell: |
+    curl -sS https://downloads.1password.com/linux/keys/1password.asc | \
+    gpg --dearmor --batch --yes --output /tmp/1password-archive-keyring.gpg && \
+    sudo mv /tmp/1password-archive-keyring.gpg /usr/share/keyrings/1password-archive-keyring.gpg
+  when: onepassword_repo.stat.exists
+  changed_when: true
+
+- name: Refresh 1Password debsig GPG key
+  ansible.builtin.shell: |
+    curl -sS https://downloads.1password.com/linux/keys/1password.asc | \
+    gpg --dearmor --batch --yes --output /tmp/debsig.gpg && \
+    sudo mv /tmp/debsig.gpg /usr/share/debsig/keyrings/AC2D62742012EA22/debsig.gpg
+  when: onepassword_repo.stat.exists
+  changed_when: true

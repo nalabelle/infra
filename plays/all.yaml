@@ -26,6 +26,8 @@
       when: wireguard__enabled | default(false)
     - role: tailscale
       tags: tailscale
+    - role: unattended_upgrades
+      tags: unattended-upgrades
 
 ## BASIC
 - name: Basic Setup
@@ -58,7 +60,7 @@
   roles:
     - role: proxmox
 - name: Unattended Upgrades
-  hosts: proxmox_all_qemu proxmox_nodes proxmox_all_lxc servers
+  hosts: proxmox_all_qemu proxmox_nodes proxmox_all_lxc
   tags:
     - unattended-upgrades
   roles:
