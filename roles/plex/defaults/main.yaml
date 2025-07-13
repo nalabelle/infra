@@ -28,3 +28,17 @@ plex__cloudflare_api_token: |-
         field='cloudflare_api_token'
       ) | very_mandatory
   }}
+
+# Certificate configuration
+plex__enable_certbot_hook: true
+plex__cert_password: |-
+  {%- if plex__enable_certbot_hook | bool -%}
+  {{
+      lookup(
+        'community.general.onepassword',
+        plex__op_key,
+        vault=plex__op_vault,
+        field='cert_password'
+      ) | very_mandatory
+  }}
+  {%- endif -%}

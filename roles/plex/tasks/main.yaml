@@ -8,7 +8,7 @@
   ansible.builtin.file:
     path: "/media/{{ item }}"
     state: directory
-    mode: "0775"
+    mode: "02775"
   loop:
     - internet
     - movies
@@ -42,6 +42,32 @@
     state: present
     update_cache: true
 
+- name: Configure Plex certificate management
+  when: plex__enable_certbot_hook | bool
+  block:
+    - name: Ensure letsencrypt directories exist
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        mode: "0755"
+      loop:
+        - /etc/letsencrypt
+        - /etc/letsencrypt/renewal-hooks
+        - /etc/letsencrypt/renewal-hooks/deploy
+
+    - name: Configure Plex certificate password file
+      ansible.builtin.template:
+        src: etc/letsencrypt/plex-cert-password.j2
+        dest: /etc/letsencrypt/plex-cert-password
+        mode: "0600"
+
+    - name: Configure certbot deployment hook for Plex
+      ansible.builtin.template:
+        src: etc/letsencrypt/renewal-hooks/deploy/plex-cert.j2
+        dest: /etc/letsencrypt/renewal-hooks/deploy/plex-cert
+        mode: "0755"
+
 - name: Install Caddy
   ansible.builtin.include_tasks:
     file: caddy.yaml
+  when: not (plex__enable_certbot_hook | bool)
