@@ -2,14 +2,12 @@
   hosts: unifi
   tags: router
   roles:
-    - role: unifi
-      tags: unifi
     - role: ctrld
       tags: ctrld
-      when: ctrld__enabled | default(false)
     - role: wireguard
       tags: wireguard
-      when: wireguard__enabled | default(false)
+    - role: tailscale
+      tags: tailscale
 
 - name: Bastion
   hosts: wells
@@ -26,6 +24,8 @@
     - role: wireguard
       tags: wireguard
       when: wireguard__enabled | default(false)
+    - role: tailscale
+      tags: tailscale
 
 ## BASIC
 - name: Basic Setup
@@ -44,12 +44,7 @@
         state: present
         update_cache: true
         cache_valid_time: 3600
-- name: Tailscale
-  hosts:
-    - servers
-  tags: tailscale
-  roles:
-    - role: tailscale
+
 - name: Compose Hosts
   hosts: service_compose
   roles:

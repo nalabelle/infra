@@ -1,0 +1,19 @@
+---
+# Standard Tailscale installation
+tailscale_install: true
+tailscale_udp_config: true
+tailscale_ufw_config: true
+
+# Tailscale UDM installation
+tailscale_udm_install: false
+tailscale_udm_version: "2.7.0"
+tailscale_udm_package_root: "/data/tailscale"
+
+# Tailscale version for UDM installation (optional)
+# tailscale_version: ""
+
+# Additional flags for tailscaled (optional)
+# tailscaled_flags: ""
+
+# Tailscale forwarding
+tailscale_forwarding_enabled: false
