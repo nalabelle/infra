@@ -13,7 +13,7 @@
     },
     {
       "customType": "regex",
-      "fileMatch": ["^roles/ctrld/defaults/main\\.yaml$"],
+      "managerFilePatterns": ["/^roles/ctrld/defaults/main\\.yaml$/"],
       "matchStrings": [
         "ctrld__version: \"(?<currentValue>[0-9]+\\.[0-9]+\\.[0-9]+)\""
       ],
