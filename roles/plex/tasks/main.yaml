@@ -45,15 +45,11 @@
 - name: Configure Plex certificate management
   when: plex__enable_certbot_hook | bool
   block:
-    - name: Ensure letsencrypt directories exist
+    - name: Ensure letsencrypt hook directory exists
       ansible.builtin.file:
-        path: "{{ item }}"
+        path: /etc/letsencrypt/renewal-hooks/deploy
         state: directory
         mode: "0755"
-      loop:
-        - /etc/letsencrypt
-        - /etc/letsencrypt/renewal-hooks
-        - /etc/letsencrypt/renewal-hooks/deploy
 
     - name: Configure Plex certificate password file
       ansible.builtin.template:
@@ -67,7 +63,12 @@
         dest: /etc/letsencrypt/renewal-hooks/deploy/plex-cert
         mode: "0755"
 
+    - name: Configure certbot deployment hook for Caddy reload
+      ansible.builtin.template:
+        src: etc/letsencrypt/renewal-hooks/deploy/caddy-reload.j2
+        dest: /etc/letsencrypt/renewal-hooks/deploy/caddy-reload
+        mode: "0755"
+
 - name: Install Caddy
   ansible.builtin.include_tasks:
     file: caddy.yaml
-  when: not (plex__enable_certbot_hook | bool)

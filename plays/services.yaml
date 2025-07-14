@@ -30,6 +30,9 @@
         - kopia
 - name: Plex
   hosts: service_plex
+  tags: service-plex
   roles:
+    - role: certbot
+      tags: certbot
     - role: plex
       tags: plex

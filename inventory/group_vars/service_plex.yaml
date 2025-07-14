@@ -1,0 +1,10 @@
+# Override certbot to use Plex domain for certificate issuance
+certbot__domain: |-
+  {{
+      lookup(
+        'community.general.onepassword',
+        'Plex',
+        vault='Applications',
+        field='domain'
+      )
+  }}

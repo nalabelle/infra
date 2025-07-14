@@ -1,23 +1,24 @@
 #!/bin/bash
+# Run:
+# RENEWED_LINEAGE="/etc/letsencrypt/live/${domain}" /etc/letsencrypt/renewal-hooks/deploy/plex-cert
 set -eu
 set -o pipefail
 
-# Plex certificate paths
-PLEX_CONFIG_DIR="/var/lib/plexmediaserver/Library/Application Support/Plex Media Server"
-CERT_DIR="${PLEX_CONFIG_DIR}/cert"
+# Plex certificate path
+CERT_DIR="/etc/plex"
 
 # Create certificate directory if it doesn't exist
 mkdir -p "${CERT_DIR}"
 
 # Create PKCS #12 bundle for Plex with password from file
-openssl pkcs12 -export -out "${CERT_DIR}/cert.p12" \
+openssl pkcs12 -export -out "${CERT_DIR}/tls.p12" \
     -inkey "$RENEWED_LINEAGE/privkey.pem" \
     -in "$RENEWED_LINEAGE/fullchain.pem" \
     -passout file:/etc/letsencrypt/plex-cert-password
 
 # Set proper ownership and permissions for Plex
 chown -R plex:plex "${CERT_DIR}"
-chmod 600 "${CERT_DIR}/cert.p12"
+chmod 600 "${CERT_DIR}/tls.p12"
 
 # Restart Plex to pick up new certificates
 systemctl restart plexmediaserver.service

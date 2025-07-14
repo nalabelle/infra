@@ -1,7 +1,13 @@
 *.{{ plex__domain }} {
+{%- if plex__enable_certbot_hook | bool %}
+	# Use certbot-issued certificates
+	tls /etc/letsencrypt/live/{{ plex__domain }}/fullchain.pem /etc/letsencrypt/live/{{ plex__domain }}/privkey.pem
+{%- else %}
+	# Use Caddy's built-in ACME with CloudFlare DNS
 	tls {
-		dns cloudflare  {{ plex__cloudflare_api_token }}
+		dns cloudflare {{ plex__cloudflare_api_token }}
 	}
+{%- endif %}
 
 	@plex host plex.{{ plex__domain }}
 	handle @plex {
