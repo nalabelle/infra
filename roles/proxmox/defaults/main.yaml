@@ -1,6 +1,7 @@
 proxmox__enable_exporters: true
 proxmox__enable_pcie: false
 proxmox__enable_sanoid: false
+proxmox__enable_certbot_hook: true
 
 proxmox__op_vault: "Applications"
 proxmox__op_key: "PROXMOX"

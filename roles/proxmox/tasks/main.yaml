@@ -47,6 +47,21 @@
         dest: /usr/local/bin/
         mode: "755"
 
+- name: Configure certbot deployment hook for Proxmox
+  when: proxmox__enable_certbot_hook | bool
+  block:
+    - name: Ensure letsencrypt hook directory exists
+      ansible.builtin.file:
+        path: /etc/letsencrypt/renewal-hooks/deploy
+        state: directory
+        mode: "0755"
+
+    - name: Deploy Proxmox certbot hook
+      ansible.builtin.copy:
+        src: etc/letsencrypt/renewal-hooks/deploy/proxmox-proxy
+        dest: /etc/letsencrypt/renewal-hooks/deploy/proxmox-proxy
+        mode: "0755"
+
 - name: Include Exporters
   ansible.builtin.import_tasks: exporters.yaml
   when: proxmox__enable_exporters
