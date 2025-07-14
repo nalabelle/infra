@@ -46,8 +46,8 @@ directories:
       url: https://api.github.com/repos/natrontech/pbs-exporter/releases/212407028
     path: pbs-exporter
   - githubRelease:
-      tag: v0.3.43
-      url: https://api.github.com/repos/nalabelle/kopia-exporter/releases/220786716
+      tag: v0.3.44
+      url: https://api.github.com/repos/nalabelle/kopia-exporter/releases/229321496
     path: kopia-exporter
   path: vendor/exporters
 - contents:
