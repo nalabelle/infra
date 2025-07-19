@@ -6,12 +6,12 @@ directories:
       - path: community/general
         git:
           url: https://github.com/ansible-collections/community.general
-          ref: 11.0.0
+          ref: 11.1.0
           depth: 1
       - path: community/proxmox
         git:
           url: https://github.com/ansible-collections/community.proxmox
-          ref: 1.1.0
+          ref: 1.2.0
           depth: 1
   - path: vendor/ansible_roles
     contents:
@@ -51,7 +51,7 @@ directories:
         # https://github.com/natrontech/pbs-exporter
         githubRelease:
           slug: natrontech/pbs-exporter
-          tag: v0.6.7
+          tag: v0.7.0
           # Can't sync checksums with variable release tags...
           disableAutoChecksumValidation: true
           assetNames:
