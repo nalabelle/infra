@@ -62,7 +62,7 @@ directories:
         # https://github.com/nalabelle/kopia-exporter
         githubRelease:
           slug: nalabelle/kopia-exporter
-          tag: v0.3.44
+          tag: v0.3.45
           # I should really add these..
           disableAutoChecksumValidation: true
           assetNames:

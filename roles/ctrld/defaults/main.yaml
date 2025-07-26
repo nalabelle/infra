@@ -1,5 +1,5 @@
 # Version management for Renovate
-ctrld__version: "1.4.4"
+ctrld__version: "1.4.5"
 
 # Control whether to disable the builtin resolver
 ctrld__disable_resolver: true
