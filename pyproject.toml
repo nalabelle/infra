@@ -1,9 +1,54 @@
 [project]
-name = "ansible"
+name = "infra"
 version = "0.1.0"
-description = "Add your description here"
-requires-python = ">=3.12"
+description = "Infrastructure"
+requires-python = ">=3.13"
 dependencies = [
-    "pulumi>=3.0.0,<4.0.0",
-    "pulumi-tailscale>=0.18.0",
+    "requests>=2.32.4",
+    "types-pyyaml>=6.0.12.20250516",
 ]
+
+[dependency-groups]
+dev = [
+    "mypy>=1.17.0",
+    "ruff>=0.12.5",
+    "types-requests>=2.32.4.20250611",
+]
+
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "C4", "UP", "RUF", "PGH003", "ANN"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = ["ANN201"]
+
+[tool.ruff.format]
+
+[tool.mypy]
+python_version = "3.13"
+exclude = "vendor/.*"
+
+show_error_codes = true
+show_column_numbers = true
+pretty = true
+
+check_untyped_defs = true
+disallow_incomplete_defs = true
+disallow_untyped_decorators = true
+disallow_untyped_defs = true
+no_implicit_optional = true
+strict = true
+strict_equality = true
+strict_optional = true
+warn_no_return = true
+warn_redundant_casts = true
+warn_return_any = true
+warn_unreachable = true
+warn_unused_configs = true
+warn_unused_ignores = true
+
+namespace_packages = true
+explicit_package_bases = true

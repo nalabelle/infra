@@ -6,7 +6,7 @@
       "customType": "regex",
       "managerFilePatterns": ["^vendir\\.yml$"],
       "matchStrings": [
-        "\\s+slug: (?<depName>natrontech/pbs-exporter)\\s*\\n\\s+tag: (?<currentValue>v[0-9]+\\.[0-9]+\\.[0-9]+)([\\s\\S]*?)\\s+path: \"pbs-exporter_v[0-9]+\\.[0-9]+\\.[0-9]+_linux_amd64\\.tar\\.gz\""
+        "\\s*slug: (?<depName>natrontech/pbs-exporter)\\s*\\n\\s*tag: (?<currentValue>v[0-9]+\\.[0-9]+\\.[0-9]+)([\\s\\S]*?)\\s*path: \"pbs-exporter_v[0-9]+\\.[0-9]+\\.[0-9]+_linux_amd64\\.tar\\.gz\""
       ],
       "datasourceTemplate": "github-releases",
       "autoReplaceStringTemplate": "          slug: {{depName}}\n          tag: {{newValue}}$1            path: \"pbs-exporter_{{newValue}}_linux_amd64.tar.gz\""

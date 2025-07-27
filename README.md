@@ -2,7 +2,7 @@
 
 ## Overview
 
-This repository contains infrastructure management tools, including Ansible playbooks, roles, and configurations for managing a comprehensive home infrastructure environment. The project uses Ansible for configuration management and Pulumi for infrastructure as code, with integration to various services like Proxmox, Tailscale, and 1Password for secrets management.
+This repository contains infrastructure management tools, including Ansible playbooks, roles, and configurations for managing a comprehensive home infrastructure environment. The project uses Ansible for configuration management and Pulumi for infrastructure as code, with integration to various services like Proxmox and 1Password for secrets management.
 
 ```mermaid
 graph TD
@@ -16,7 +16,7 @@ graph TD
     B --> H[Media Services]
     B --> I[Backup Solutions]
 
-    C --> J[Pulumi - Tailscale]
+    C --> J[Pulumi - Proxmox]
 
     D --> K[1Password Integration]
 
@@ -44,7 +44,7 @@ graph TD
 
 ### Network Services
 
-- **Tailscale**: Secure mesh VPN for connecting all devices across the infrastructure. Managed both through Ansible roles and Pulumi for ACL configuration.
+- **Tailscale**: Secure mesh VPN for connecting all devices across the infrastructure. Managed through Ansible roles.
 - **Wireguard**: Alternative VPN solution for secure networking.
 - **NextDNS**: DNS filtering and security service.
 - **Ctrld**: DNS-based security and filtering solution.
@@ -141,10 +141,14 @@ Roles are structured to provide specific functionality:
 
 ### Pulumi Integration
 
-The repository includes Pulumi code (Python) for managing infrastructure components that are better suited to IaC approaches:
+The [`pulumi/`](pulumi/) directory contains Pulumi code (Python) for managing infrastructure components that are better suited to IaC approaches:
 
-- **Tailscale ACL**: Manages access control lists for the Tailscale network
-- **Device Tags**: Configures tags for Tailscale devices
+- **Proxmox VM Provisioning**: Manages virtual machines across multiple Proxmox servers
+- **Proxmox LXC Containers**: Provisions and configures LXC containers
+- **Multi-Server Support**: Supports multiple independent Proxmox servers
+- **Resource Import**: Facilitates importing existing VMs and containers into Pulumi management
+
+See [`pulumi/README.md`](pulumi/README.md) for setup instructions and [`pulumi/PROXMOX_IMPORT_GUIDE.md`](pulumi/PROXMOX_IMPORT_GUIDE.md) for detailed instructions on importing existing Proxmox guests.
 
 ## Secret Management
 

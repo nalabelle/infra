@@ -2,16 +2,16 @@ apiVersion: vendir.k14s.io/v1alpha1
 directories:
 - contents:
   - git:
-      commitTitle: Release 11.0.0.
-      sha: 5da06a75aa69938062b46ede9497ec0734292fe0
+      commitTitle: Release 11.1.0.
+      sha: 10f1f690e49c7083fe889595628cebf08f5bcde3
       tags:
-      - 11.0.0
+      - 11.1.0
     path: community/general
   - git:
-      commitTitle: Render CHANGELOGS for releasee 1.1.0
-      sha: a42b12bc0d12c5a5fbec69352ccde5c3ab57e959
+      commitTitle: Release 1.2.0 (#134)
+      sha: 52994169ee20f7934e4294c69ae7c227c8d6300b
       tags:
-      - 1.1.0
+      - 1.2.0
     path: community/proxmox
   path: vendor/ansible_collections
 - contents:
@@ -38,20 +38,16 @@ directories:
       - v3.5.5
     path: pve_exporter
   - git:
-      commitTitle: '[yum.sh] Explicitly disable "running kernel"-check (#232)...'
-      sha: b36a2eadfc88f711588085b83f0ecbdbc5f288c3
+      commitTitle: Spelling fix (makes codespell happy) (#244)...
+      sha: 7ef6216b1acced3e1bd6bca9165586981deeaaff
     path: textfile-collector-scripts
   - githubRelease:
-      tag: v0.6.7
-      url: https://api.github.com/repos/natrontech/pbs-exporter/releases/212407028
+      tag: v0.7.0
+      url: https://api.github.com/repos/natrontech/pbs-exporter/releases/232235964
     path: pbs-exporter
   - githubRelease:
-      tag: v0.3.44
-      url: https://api.github.com/repos/nalabelle/kopia-exporter/releases/229321496
+      tag: v0.3.45
+      url: https://api.github.com/repos/nalabelle/kopia-exporter/releases/233673409
     path: kopia-exporter
   path: vendor/exporters
-- contents:
-  - http: {}
-    path: .
-  path: .pulumi/bin
 kind: LockConfig

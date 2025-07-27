@@ -5,7 +5,7 @@
 /.vendir
 /vendor
 
-/.pulumi
+.pulumi
 
 .env.secrets
 /.secrets
