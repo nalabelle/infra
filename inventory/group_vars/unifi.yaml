@@ -21,3 +21,4 @@ tailscale_udp_config: false
 tailscale_ufw_config: false
 tailscale_udm_install: true # Use UDM-specific installation
 tailscale_forwarding_enabled: true
+tailscaled_flags: --state=/data/tailscale/tailscaled.state --socket=/var/run/tailscale/tailscaled.sock
