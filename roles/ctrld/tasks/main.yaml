@@ -18,17 +18,16 @@
   failed_when: false
   when: ctrld_binary.stat.exists
 
-- name: Extract installed version number
+- name: Determine if ctrld should be installed
   ansible.builtin.set_fact:
-    current_ctrld_version: "{{ ctrld_installed_version.stdout | regex_search('v([0-9]+\\.[0-9]+\\.[0-9]+)', '\\1') | first | default('') }}"
-  when:
-    - ctrld_binary.stat.exists
-    - ctrld_installed_version.stdout is defined
+    should_install_ctrld: >-
+      {{ not ctrld_binary.stat.exists or
+         (ctrld_installed_version.stdout is defined and
+          not ctrld_installed_version.stdout is regex('dev-.*') and
+          ctrld_installed_version.stdout != ctrld__version) }}
 
 - name: Download and install ctrld
-  when: >
-    not ctrld_binary.stat.exists or
-    (current_ctrld_version | default('') != ctrld__version)
+  when: should_install_ctrld | bool
   block:
     - name: Create temporary directory for ctrld installation
       ansible.builtin.tempfile:
