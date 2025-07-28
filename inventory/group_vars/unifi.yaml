@@ -7,18 +7,3 @@ ctrld__config_file: /data/controld/ctrld.toml
 ctrld__port: 5354
 # Don't disable resolver on UniFi devices
 ctrld__disable_resolver: false
-
-# WireGuard configuration for UniFi hosts
-wireguard__enabled: true
-wireguard__interface: "wgsrv1"
-wireguard__enable_firewall: false
-wireguard__enable_config_management: true
-wireguard__config_path: "{{ '/data/wireguard/' + wireguard__interface + '.conf' }}"
-
-# Tailscale configuration for UniFi hosts
-tailscale_install: false # Don't use standard installation on UniFi
-tailscale_udp_config: false
-tailscale_ufw_config: false
-tailscale_udm_install: true # Use UDM-specific installation
-tailscale_forwarding_enabled: true
-tailscaled_flags: --state=/data/tailscale/tailscaled.state --socket=/var/run/tailscale/tailscaled.sock

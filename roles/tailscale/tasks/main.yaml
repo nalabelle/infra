@@ -7,42 +7,47 @@
 # --advertise-routes=192.168.210.0/24
 # ansible servers -a "tailscale up --accept-dns=false --accept-routes=false"
 
-- name: Check if tailscaled is installed
-  ansible.builtin.command:
-    cmd: which tailscaled
-  register: tailscaled_exists
-  failed_when: false
-  changed_when: false
+- name: Set up keyring
+  ansible.builtin.apt_key:
+    url: https://pkgs.tailscale.com/stable/ubuntu/noble.noarmor.gpg
+    keyring: /etc/apt/keyrings/tailscale-archive-keyring.gpg
 
-- name: Install Tailscale
-  when: tailscale_install | default(true) and tailscaled_exists.rc != 0
+- name: Set up apt sources
+  ansible.builtin.apt_repository:
+    repo: "deb [signed-by=/etc/apt/keyrings/tailscale-archive-keyring.gpg] https://pkgs.tailscale.com/stable/ubuntu noble main"
+    filename: tailscale
+
+- name: Install packages
+  ansible.builtin.apt:
+    update_cache: true
+    pkg:
+      - tailscale
+    state: present
+
+- name: Set up Routing
+  when: tailscale_routing
   block:
-    - name: Set up keyring
-      ansible.builtin.apt_key:
-        url: https://pkgs.tailscale.com/stable/ubuntu/noble.noarmor.gpg
-        keyring: /etc/apt/keyrings/tailscale-archive-keyring.gpg
-
-    - name: Set up apt sources
-      ansible.builtin.apt_repository:
-        repo: "deb [signed-by=/etc/apt/keyrings/tailscale-archive-keyring.gpg] https://pkgs.tailscale.com/stable/ubuntu noble main"
-        filename: tailscale
-
-    - name: Install packages
+    - name: Install ethtool
       ansible.builtin.apt:
-        update_cache: true
-        pkg:
-          - tailscale
+        name: ethtool
         state: present
 
-- name: Configure UDP
-  when: tailscale_udp_config | default(true)
-  ansible.builtin.copy:
-    src: etc/networkd-dispatcher/routable.d/50-tailscale
-    dest: /etc/networkd-dispatcher/routable.d/50-tailscale
-    mode: "0755"
+    - name: Configure UDP
+      ansible.builtin.copy:
+        src: etc/networkd-dispatcher/routable.d/50-tailscale
+        dest: /etc/networkd-dispatcher/routable.d/50-tailscale
+        mode: "0755"
+      notify: Restart networkd-dispatcher
+
+    - name: Configure Forwarding
+      ansible.builtin.copy:
+        src: etc/sysctl.d/99-tailscale.conf
+        dest: /etc/sysctl.d/99-tailscale.conf
+        mode: "0644"
+      notify: Reload sysctl
 
 - name: Configure UFW
-  when: tailscale_ufw_config | default(true)
+  when: tailscale_ufw_config
   block:
     - name: Check if ufw is installed
       shell: command -v ufw
@@ -56,80 +61,3 @@
         proto: any
         interface_in: "tailscale0"
       when: ufw_installed.rc == 0
-
-- name: Install Tailscale UDM
-  when: tailscale_udm_install | default(false) and tailscaled_exists.rc != 0
-  block:
-    - name: Set Tailscale UDM version
-      ansible.builtin.set_fact:
-        tailscale_udm_version: "{{ tailscale_udm_version | default('latest') }}"
-        tailscale_udm_package_url: "{{ tailscale_udm_version | default('latest') | ternary('https://github.com/SierraSoftworks/tailscale-udm/releases/latest/download/tailscale-udm.tgz', 'https://github.com/SierraSoftworks/tailscale-udm/releases/download/' + tailscale_udm_version + '/tailscale-udm.tgz') }}"
-
-    - name: Create temporary directory
-      ansible.builtin.tempfile:
-        state: directory
-        suffix: tailscale
-      register: tailscale_temp_dir
-
-    - name: Download Tailscale UDM package
-      ansible.builtin.get_url:
-        url: "{{ tailscale_udm_package_url }}"
-        dest: "{{ tailscale_temp_dir.path }}/tailscale.tgz"
-        mode: "0644"
-
-    - name: Extract Tailscale UDM package
-      ansible.builtin.unarchive:
-        src: "{{ tailscale_temp_dir.path }}/tailscale.tgz"
-        dest: "{{ tailscale_udm_package_root | dirname }}"
-        remote_src: yes
-
-    - name: Update tailscale-env if TAILSCALED_FLAGS is defined
-      ansible.builtin.lineinfile:
-        path: "{{ tailscale_udm_package_root }}/tailscale-env"
-        line: 'TAILSCALED_FLAGS="{{ tailscaled_flags }}"'
-        regexp: "^TAILSCALED_FLAGS="
-        state: present
-      when: tailscaled_flags is defined
-
-    - name: Install Tailscale UDM
-      ansible.builtin.command:
-        cmd: "{{ tailscale_udm_package_root }}/manage.sh install {{ tailscale_version | default('') }}"
-      register: install_result
-      changed_when: >
-        install_result.rc == 0 and
-        "Tailscale is already installed and running" not in install_result.stdout
-      failed_when: >
-        install_result.rc != 0 or
-        "Tailscale is already installed and running" in install_result.stdout
-      when: tailscaled_exists.rc != 0
-
-    - name: Start Tailscale daemon
-      ansible.builtin.command:
-        cmd: "{{ tailscale_udm_package_root }}/manage.sh start"
-      register: start_result
-      changed_when: >
-        start_result.rc == 0 and
-        "Tailscaled started successfully" in start_result.stdout
-
-    - name: Clean up temporary directory
-      ansible.builtin.file:
-        path: "{{ tailscale_temp_dir.path }}"
-        state: absent
-      when: tailscale_temp_dir is defined
-
-- name: Tailscale Forwarding
-  when: tailscale_forwarding_enabled | default(false)
-  block:
-    - name: Install forwarding service
-      ansible.builtin.copy:
-        src: etc/systemd/system/tailscale-forwarding.service
-        dest: /etc/systemd/system/tailscale-forwarding.service
-        mode: "0644"
-      notify:
-        - Reload systemd
-
-    - name: Enable forwarding service
-      ansible.builtin.systemd:
-        name: tailscale-forwarding.service
-        state: started
-        enabled: true
