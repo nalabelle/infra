@@ -1,0 +1,5 @@
+tailscale_udm_version: 2.7.0
+tailscale_udm_package_url: "https://github.com/SierraSoftworks/tailscale-udm/releases/download/v{{ tailscale_udm_version }}/tailscale-udm.tgz"
+tailscale_udm_data: /data/tailscale
+tailscale_udm_download: "{{ tailscale_udm_data }}/tailscale-{{ tailscale_udm_version }}.tgz"
+tailscale_udm_forwarding_enabled: false

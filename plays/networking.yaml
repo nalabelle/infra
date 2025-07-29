@@ -4,6 +4,8 @@
   roles:
     - role: ctrld
       tags: ctrld
+    - role: udm_tailscale
+      tags: tailscale
 
 - name: Bastion
   hosts: bastion
@@ -20,17 +22,6 @@
     - role: wireguard
       tags: wireguard
       when: wireguard__enabled | default(false)
-    - role: tailscale
-      tags: tailscale
-    - role: unattended_upgrades
-      tags: unattended-upgrades
-
-- name: Tailscale Routers
-  hosts: service_tailscale
-  tags: tailscale-routers
-  roles:
-    - role: basic
-      tags: basic
     - role: tailscale
       tags: tailscale
     - role: unattended_upgrades

@@ -1,0 +1,116 @@
+- name: Create Tailscale data folder
+  ansible.builtin.file:
+    path: "{{ tailscale_udm_data }}"
+    state: directory
+
+- name: Check if package download exists
+  ansible.builtin.stat:
+    path: "{{ tailscale_udm_download }}"
+  register: download_path
+
+- name: Download Tailscale UDM package
+  ansible.builtin.get_url:
+    url: "{{ tailscale_udm_package_url }}"
+    dest: "{{ tailscale_udm_download }}"
+    mode: "0644"
+  when: not download_path.stat.exists
+
+- name: Check if manage script exists
+  ansible.builtin.stat:
+    path: "{{ tailscale_udm_data }}/manage.sh"
+  register: manage_path
+
+- name: Extract Tailscale UDM package
+  ansible.builtin.unarchive:
+    src: "{{ tailscale_udm_download }}"
+    dest: "{{ tailscale_udm_data | dirname }}"
+    remote_src: yes
+  when: not manage_path.stat.exists
+
+- name: Check tailscale status
+  ansible.builtin.command:
+    cmd: "{{ tailscale_udm_data }}/manage.sh status"
+  register: tailscale_status
+  changed_when: false
+  failed_when: >
+    tailscale_status.rc != 0 and
+    "Tailscale is not installed" not in tailscale_status.stdout
+
+- name: Update tailscale-env
+  ansible.builtin.copy:
+    src: data/tailscale/tailscale-env
+    dest: "{{ tailscale_udm_data }}/tailscale-env"
+    mode: "0644"
+  register: tailscale_env
+
+- name: Force reinstall tailscale
+  when: >
+    tailscale_env.changed and
+    "Tailscaled is not installed" not in tailscale_status.stdout
+  block:
+    - name: Stop tailscale
+      ansible.builtin.command: "{{ tailscale_udm_data }}/manage.sh stop"
+      changed_when: true
+      when: >
+        "Tailscaled is running" in tailscale_status.stdout
+
+    - name: Force install Tailscale UDM
+      ansible.builtin.command:
+        cmd: "{{ tailscale_udm_data }}/manage.sh install!"
+      register: install_result
+      changed_when: >
+        install_result.rc == 0
+      failed_when: >
+        install_result.rc != 0
+
+    - name: Start tailscale
+      ansible.builtin.command: "{{ tailscale_udm_data }}/manage.sh start"
+      register: start_result
+      changed_when: >
+        start_result.rc == 0
+      failed_when: >
+        start_result.rc != 0 or
+        "Tailscaled failed to start" in start_result.stdout
+      when: >
+        "Tailscaled is running" in tailscale_status.stdout
+
+- name: Install Tailscale UDM
+  ansible.builtin.command:
+    cmd: "{{ tailscale_udm_data }}/manage.sh install"
+  register: install_result
+  changed_when: >
+    install_result.rc == 0 and
+    "Tailscale is already installed and running" not in install_result.stdout
+  failed_when: >
+    install_result.rc != 0 or
+    "Tailscale is already installed and running" in install_result.stdout
+  when: >
+    "Tailscale is not installed" in tailscale_status.stdout
+
+- name: Start Tailscale daemon
+  ansible.builtin.command:
+    cmd: "{{ tailscale_udm_data }}/manage.sh start"
+  register: start_result
+  changed_when: >
+    start_result.rc == 0 and
+    "Tailscaled started successfully" in start_result.stdout
+  when: >
+    "Tailscale is not running" in tailscale_status.stdout or
+    install_result.changed
+
+- name: Tailscale Forwarding
+  when: tailscale_udm_forwarding_enabled
+  block:
+    - name: Install forwarding service
+      ansible.builtin.copy:
+        src: etc/systemd/system/tailscale-forwarding.service
+        dest: /etc/systemd/system/tailscale-forwarding.service
+        mode: "0644"
+      notify:
+        - Reload systemd
+
+    - name: Enable forwarding service
+      ansible.builtin.systemd:
+        name: tailscale-forwarding.service
+        state: started
+        enabled: true
