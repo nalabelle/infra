@@ -50,24 +50,3 @@ fileserver__exports: |-
       )
   | from_markdown | very_mandatory
   }}
-fileserver__sanoid_config: |-
-  {{
-      lookup(
-        'community.general.onepassword',
-        'FILESERVER_SANOID',
-        vault=fileserver__op_vault,
-        field='notesPlain'
-      )
-  | from_markdown | very_mandatory
-  }}
-
-fileserver__syncoid_config: |-
-  {{
-      lookup(
-        'community.general.onepassword',
-        'FILESERVER_SYNCOID',
-        vault=fileserver__op_vault,
-        field='notesPlain'
-      )
-  | very_mandatory | from_markdown | from_yaml | list
-  }}

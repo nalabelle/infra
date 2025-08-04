@@ -10,6 +10,11 @@
   ansible.builtin.include_tasks:
     file: exporter.yaml
 
+- name: Ensure renewal hook directory exists
+  ansible.builtin.file:
+    path: /etc/letsencrypt/renewal-hooks/deploy
+    state: directory
+
 - name: Set up cert renewal hooks
   ansible.builtin.copy:
     src: etc/letsencrypt/renewal-hooks/deploy/proxmox-proxy

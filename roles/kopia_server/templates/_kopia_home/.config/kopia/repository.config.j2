@@ -2,21 +2,21 @@
   "storage": {
     "type": "filesystem",
     "config": {
-      "path": "/mnt/backup/kopia/repository",
+      "path": "{{ kopia_server__repository_path }}",
       "fileMode": 384,
       "dirMode": 448,
       "dirShards": null
     }
   },
   "caching": {
-    "cacheDirectory": "/mnt/backup/kopia/cache",
+    "cacheDirectory": "{{ kopia_server__cache_path }}",
     "maxCacheSize": 5242880000,
     "maxMetadataCacheSize": 5242880000,
     "maxListCacheDuration": 30
   },
   "hostname": "{{ ansible_hostname }}",
   "username": "kopia",
-  "description": "Repository in Filesystem: /mnt/backup/kopia/repository",
+  "description": "Repository in Filesystem: {{ kopia_server__repository_path }}",
   "enableActions": false,
   "formatBlobCacheDuration": 900000000000
 }

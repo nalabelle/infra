@@ -1,0 +1,15 @@
+# Vault configuration for retrieving syncoid configuration
+syncoid__op_vault: "Applications"
+syncoid__op_key: "{{ inventory_hostname }}"
+
+# Syncoid configuration - commands to run
+syncoid__config: |-
+  {{
+      lookup(
+        'community.general.onepassword',
+        syncoid__op_key,
+        vault=syncoid__op_vault,
+        field='syncoid_config'
+      )
+  | very_mandatory
+  }}

@@ -65,3 +65,14 @@
 - name: Include Exporters
   ansible.builtin.import_tasks: exporters.yaml
   when: proxmox__enable_exporters
+
+- name: Disable HA
+  when: not proxmox__enable_ha
+  ansible.builtin.systemd_service:
+    name: "{{ item }}"
+    enabled: false
+    state: stopped
+  loop:
+    - pve-ha-lrm
+    - pve-ha-crm
+    - corosync

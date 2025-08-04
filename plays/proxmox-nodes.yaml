@@ -8,3 +8,8 @@
       tags: proxmox
     - role: unattended_upgrades
       tags: unattended-upgrades
+    - role: proxmox_datacenter_manager
+      tags:
+        - pdm
+        - proxmox-datacenter-manager
+      when: proxmox_datacenter_manager__enabled | default(false)

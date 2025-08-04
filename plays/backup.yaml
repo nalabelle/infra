@@ -1,0 +1,33 @@
+- name: Backup Hosts
+  hosts: backup
+  tags: backup
+  roles:
+    - role: basic
+      tags: basic
+    - role: zfs
+      tags: zfs
+    - role: certbot
+      tags: certbot
+    - role: unattended_upgrades
+      tags: unattended-upgrades
+    - role: syncoid
+      tags: syncoid
+- name: Proxmox Backup Server
+  hosts: backup
+  roles:
+    - role: proxmox_backup_server
+      tags: proxmox-backup-server
+- name: Kopia Backup Server
+  hosts: backup
+  roles:
+    - role: kopia_server
+      tags:
+        - kopia-server
+        - kopia
+- name: Kopia Client
+  hosts: backup
+  roles:
+    - role: kopia_client
+      tags:
+        - kopia-client
+        - kopia

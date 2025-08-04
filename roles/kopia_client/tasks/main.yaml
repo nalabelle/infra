@@ -1,76 +1,60 @@
-- name: Kopia Client
-  block:
-    - name: Set up Kopia keyring
-      ansible.builtin.apt_key:
-        url: https://kopia.io/signing-key
-        keyring: /etc/apt/keyrings/kopia-keyring.gpg
+- name: Include kopia role
+  ansible.builtin.include_role:
+    name: kopia
 
-    - name: Set up Kopia apt sources
-      ansible.builtin.apt_repository:
-        repo:
-          "deb [signed-by=/etc/apt/keyrings/kopia-keyring.gpg] http://packages.kopia.io/apt/ stable
-          main"
-        filename: kopia
+- name: Ensure config path exists
+  ansible.builtin.file:
+    path: /etc/kopia
+    state: "directory"
+    mode: "0755"
 
-    - name: Install kopia packages
-      ansible.builtin.apt:
-        pkg:
-          - kopia
-        state: present
+- name: Ensure kopia cache path exists
+  ansible.builtin.file:
+    path: /var/cache/kopia
+    state: "directory"
+    mode: "0755"
 
-    - name: Ensure config path exists
-      ansible.builtin.file:
-        path: /etc/kopia
-        state: "directory"
-        mode: "0755"
+- name: Copy kopia repository config
+  ansible.builtin.template:
+    src: etc/kopia/repository.config.j2
+    dest: /etc/kopia/repository.config
+    mode: "0644"
+    owner: "backup"
 
-    - name: Ensure kopia cache path exists
-      ansible.builtin.file:
-        path: /var/cache/kopia
-        state: "directory"
-        mode: "0755"
+- name: Set kopia repository password
+  ansible.builtin.copy:
+    content: "{{ kopia_client__password | b64encode }}"
+    dest: /etc/kopia/repository.config.kopia-password
+    mode: "0644"
+    owner: "backup"
 
-    - name: Copy kopia repository config
-      ansible.builtin.template:
-        src: etc/kopia/repository.config.j2
-        dest: /etc/kopia/repository.config
-        mode: "0644"
-        owner: "backup"
+- name: Set config path in profile
+  ansible.builtin.lineinfile:
+    path: /etc/environment
+    line: "export KOPIA_CONFIG_PATH=/etc/kopia/repository.config"
+    create: true
+    mode: "0644"
 
-    - name: Set kopia repository password
-      ansible.builtin.copy:
-        content: "{{ kopia_client__password | b64encode }}"
-        dest: /etc/kopia/repository.config.kopia-password
-        mode: "0644"
-        owner: "backup"
+- name: Copy kopia-snapshot script
+  ansible.builtin.template:
+    src: usr/local/bin/kopia-snapshot.j2
+    dest: /usr/local/bin/kopia-snapshot
+    mode: "0755"
 
-    - name: Set config path in profile
-      ansible.builtin.lineinfile:
-        path: /etc/environment
-        line: "export KOPIA_CONFIG_PATH=/etc/kopia/repository.config"
-        create: true
-        mode: "0644"
+- name: Copy kopia-snapshot service
+  ansible.builtin.copy:
+    src: etc/systemd/system/kopia-snapshot.service
+    dest: /etc/systemd/system/kopia-snapshot.service
+    mode: "0644"
 
-    - name: Copy kopia-snapshot script
-      ansible.builtin.template:
-        src: usr/local/bin/kopia-snapshot.j2
-        dest: /usr/local/bin/kopia-snapshot
-        mode: "0755"
+- name: Copy kopia-snapshot timer
+  ansible.builtin.template:
+    src: etc/systemd/system/kopia-snapshot.timer.j2
+    dest: /etc/systemd/system/kopia-snapshot.timer
+    mode: "0644"
 
-    - name: Copy kopia-snapshot service
-      ansible.builtin.copy:
-        src: etc/systemd/system/kopia-snapshot.service
-        dest: /etc/systemd/system/kopia-snapshot.service
-        mode: "0644"
-
-    - name: Copy kopia-snapshot timer
-      ansible.builtin.template:
-        src: etc/systemd/system/kopia-snapshot.timer.j2
-        dest: /etc/systemd/system/kopia-snapshot.timer
-        mode: "0644"
-
-    - name: Enable kopia-snapshot timer
-      ansible.builtin.systemd_service:
-        name: kopia-snapshot.timer
-        enabled: true
-        state: started
+- name: Enable kopia-snapshot timer
+  ansible.builtin.systemd_service:
+    name: kopia-snapshot.timer
+    enabled: true
+    state: started

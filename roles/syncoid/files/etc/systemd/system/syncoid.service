@@ -1,12 +1,11 @@
 [Unit]
-Description=Kopia Snapshots
+Description=Syncoid Snapshots
 After=network-online.target
-Wants=network-online.target
+Wants=network-online.target zfs.target
 
 [Service]
 Type=simple
-Environment=KOPIA_CONFIG_PATH=/etc/kopia/repository.config
-ExecStart=/usr/local/bin/kopia-snapshot
+ExecStart=/usr/local/bin/syncoid-snapshot
 # Prevent multiple instances from running simultaneously
 RemainAfterExit=no
 Restart=no

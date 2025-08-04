@@ -1,0 +1,29 @@
+- name: Install syncoid package
+  ansible.builtin.apt:
+    pkg:
+      - sanoid # Syncoid is part of the sanoid package
+    state: present
+
+- name: Copy syncoid script
+  ansible.builtin.template:
+    src: usr/local/bin/syncoid-snapshot.j2
+    dest: /usr/local/bin/syncoid-snapshot
+    mode: "0755"
+
+- name: Copy syncoid service
+  ansible.builtin.copy:
+    src: etc/systemd/system/syncoid.service
+    dest: /etc/systemd/system/syncoid.service
+    mode: "0644"
+
+- name: Copy syncoid timer
+  ansible.builtin.copy:
+    src: etc/systemd/system/syncoid.timer
+    dest: /etc/systemd/system/syncoid.timer
+    mode: "0644"
+
+- name: Enable syncoid timer
+  ansible.builtin.systemd_service:
+    name: syncoid.timer
+    enabled: true
+    state: started

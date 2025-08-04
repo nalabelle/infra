@@ -1,17 +1,5 @@
-{{ fileserver__sanoid_config }}
+{{ sanoid__config | default("") }}
 
-# These are backed up by Kopia as well
-[template_apps]
-  frequently = 2
-  hourly = 6
-  daily = 6
-  monthly = 6
-  yearly = 0
-  autosnap = yes
-  autoprune = yes
-
-# Files is standard storage pool config
-# Generally these are also covered by Kopia, but it's not guaranteed
 [template_files]
   frequently = 2
   hourly = 3

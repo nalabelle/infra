@@ -1,0 +1,25 @@
+- name: Add repo
+  ansible.builtin.deb822_repository:
+    name: pdm-test
+    uris: http://download.proxmox.com/debian/pdm
+    suites: bookworm
+    components: pdm-test
+    signed_by: https://enterprise.proxmox.com/debian/proxmox-release-bookworm.gpg
+
+- name: Install
+  ansible.builtin.apt:
+    pkg:
+      - proxmox-datacenter-manager
+      - proxmox-datacenter-manager-ui
+    state: present
+    update_cache: true
+
+# Doesn't seem to be reliably running yet, getting a wasm load error?
+- name: Stop services
+  ansible.builtin.systemd_service:
+    name: "{{ item }}"
+    enabled: false
+    state: stopped
+  loop:
+    - proxmox-datacenter-api
+    - proxmox-datacenter-privileged-api

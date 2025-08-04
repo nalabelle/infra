@@ -1,14 +1,10 @@
-- name: Install kopia
-  ansible.builtin.include_tasks:
-    file: install.yaml
-
-- name: Certbot
-  ansible.builtin.include_tasks:
-    file: certbot.yaml
+- name: Include kopia role
+  ansible.builtin.include_role:
+    name: kopia
 
 - name: Kopia config directory
   ansible.builtin.file:
-    path: /var/backups/.config/kopia
+    path: "{{ kopia_server__home }}/.config/kopia"
     state: "directory"
     mode: "0755"
     owner: backup
@@ -16,16 +12,16 @@
 
 - name: Kopia config
   ansible.builtin.template:
-    src: var/backups/.config/kopia/repository.config.j2
-    dest: /var/backups/.config/kopia/repository.config
+    src: _kopia_home/.config/kopia/repository.config.j2
+    dest: "{{ kopia_server__home }}/.config/kopia/repository.config"
     mode: "0600"
     owner: backup
     group: backup
 
 - name: Kopia encryption key
   ansible.builtin.template:
-    src: var/backups/.config/kopia/repository.config.kopia-password.j2
-    dest: /var/backups/.config/kopia/repository.config.kopia-password
+    src: _kopia_home/.config/kopia/repository.config.kopia-password.j2
+    dest: "{{ kopia_server__home }}/.config/kopia/repository.config.kopia-password"
     mode: "0600"
     owner: backup
     group: backup
@@ -46,9 +42,9 @@
     mode: "0644"
   notify: Reload systemd
 
-- name: Allow user to write to /var/backups
+- name: Allow user to write to kopia home directory
   ansible.builtin.file:
-    path: /var/backups
+    path: "{{ kopia_server__home }}"
     state: "directory"
     mode: "02775"
     owner: backup
@@ -87,6 +83,36 @@
     - kopia-sync.path
     - kopia-server.service
   notify: Reload systemd
+
+- name: Deploy Let's Encrypt renewal hook for Kopia
+  ansible.builtin.template:
+    src: etc/letsencrypt/renewal-hooks/deploy/kopia-server.j2
+    dest: /etc/letsencrypt/renewal-hooks/deploy/kopia-server
+    mode: "0755"
+  register: renewal_hook_deployed
+
+- name: Create SSL directory for Kopia
+  ansible.builtin.file:
+    path: "{{ kopia_server__home }}/ssl"
+    state: "directory"
+    mode: "0750"
+    owner: backup
+    group: backup
+
+- name: Check if certificate files exist
+  ansible.builtin.stat:
+    path: "{{ kopia_server__home }}/ssl/fullchain.pem"
+  register: cert_file
+
+- name: Run renewal hook to copy certificates
+  ansible.builtin.command:
+    cmd: /etc/letsencrypt/renewal-hooks/deploy/kopia-server
+  environment:
+    RENEWED_LINEAGE: "/etc/letsencrypt/live/{{ kopia_server__domain }}"
+  when: not cert_file.stat.exists or renewal_hook_deployed is changed
+  register: renewal_hook_result
+  changed_when: renewal_hook_result.rc == 0
+  failed_when: renewal_hook_result.rc != 0
 
 - name: Node collector
   ansible.builtin.include_tasks:

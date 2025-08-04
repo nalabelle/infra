@@ -1,0 +1,15 @@
+# Vault configuration for retrieving sanoid configuration
+sanoid__op_vault: "Applications"
+sanoid__op_key: "{{ inventory_hostname }}"
+
+# Sanoid configuration
+sanoid__config: |-
+  {{
+      lookup(
+        'community.general.onepassword',
+        sanoid__op_key,
+        vault=sanoid__op_vault,
+        field='sanoid_config'
+      )
+  | very_mandatory
+  }}

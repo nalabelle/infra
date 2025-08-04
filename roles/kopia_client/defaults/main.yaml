@@ -1,13 +1,14 @@
 kopia_client__op_vault: "Applications"
-kopia_client__op_key: "{{ 'KOPIA_' + inventory_hostname }}"
+kopia_client__op_key: "{{ inventory_hostname }}"
 kopia_client__hostname: |-
   {{
       lookup(
         'community.general.onepassword',
         kopia_client__op_key,
         vault=kopia_client__op_vault,
+        section="kopia",
         field='hostname'
-      )
+      ) | very_mandatory
   }}
 kopia_client__backup_schedule: |-
   {{
@@ -15,8 +16,9 @@ kopia_client__backup_schedule: |-
         'community.general.onepassword',
         kopia_client__op_key,
         vault=kopia_client__op_vault,
-        field='OnCalendar'
-      )
+        section="kopia",
+        field='schedule'
+      ) | very_mandatory
   }}
 kopia_client__backup_destination: |-
   {{
@@ -24,8 +26,9 @@ kopia_client__backup_destination: |-
         'community.general.onepassword',
         kopia_client__op_key,
         vault=kopia_client__op_vault,
+        section="kopia",
         field='destination'
-      )
+      ) | very_mandatory
   }}
 kopia_client__username: |-
   {{
@@ -33,8 +36,9 @@ kopia_client__username: |-
         'community.general.onepassword',
         kopia_client__op_key,
         vault=kopia_client__op_vault,
+        section="kopia",
         field='username'
-      )
+      ) | very_mandatory
   }}
 kopia_client__password: |-
   {{
@@ -42,8 +46,9 @@ kopia_client__password: |-
         'community.general.onepassword',
         kopia_client__op_key,
         vault=kopia_client__op_vault,
+        section="kopia",
         field='password'
-      )
+      ) | very_mandatory
   }}
 kopia_client__snapshot_command: |-
   {{
@@ -51,6 +56,7 @@ kopia_client__snapshot_command: |-
         'community.general.onepassword',
         kopia_client__op_key,
         vault=kopia_client__op_vault,
+        section="kopia",
         field='snapshot-command'
-      )
+      ) | very_mandatory
   }}

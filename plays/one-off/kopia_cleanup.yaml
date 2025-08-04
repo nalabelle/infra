@@ -1,0 +1,39 @@
+---
+# To also uninstall kopia package (optional)
+# ansible-playbook plays/one-off/kopia_cleanup.yaml -e "uninstall_kopia=true" -l host
+- name: Kopia Repository Cleanup
+  hosts: all
+  become: true
+  vars:
+    uninstall_kopia: false # Set to true to uninstall kopia package
+  tasks:
+    - name: Remove old kopia apt source files
+      ansible.builtin.file:
+        path: "/etc/apt/sources.list.d/{{ item }}"
+        state: absent
+      loop:
+        - "kopia.list"
+        - "kopia.sources"
+      ignore_errors: true
+
+    - name: Remove old kopia keyring files
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - "/etc/apt/keyrings/kopia-keyring.gpg"
+        - "/etc/apt/keyrings/kopia.asc"
+      ignore_errors: true
+
+    - name: Update apt cache after cleanup
+      ansible.builtin.apt:
+        update_cache: true
+      ignore_errors: true
+
+    - name: Uninstall kopia package
+      ansible.builtin.apt:
+        name: kopia
+        state: absent
+        purge: true
+      when: uninstall_kopia | bool
+      ignore_errors: true

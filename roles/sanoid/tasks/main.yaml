@@ -1,0 +1,25 @@
+- name: Install sanoid packages
+  ansible.builtin.apt:
+    pkg:
+      - sanoid
+    state: present
+
+- name: Ensure sanoid config directory exists
+  ansible.builtin.file:
+    path: /etc/sanoid
+    state: "directory"
+    mode: "0755"
+
+- name: Copy sanoid config
+  ansible.builtin.template:
+    src: etc/sanoid/sanoid.conf.j2
+    dest: /etc/sanoid/sanoid.conf
+    mode: "0644"
+
+# The sanoid timer runs every 15 minutes (at minutes 0, 15, 30, and 45 of every hour)
+# as configured in the upstream package with "OnCalendar=*:0/15"
+- name: Enable sanoid timer
+  ansible.builtin.systemd_service:
+    name: sanoid.timer
+    enabled: true
+    state: started

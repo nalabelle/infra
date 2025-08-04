@@ -91,3 +91,9 @@ kopia_server__letsencrypt_email: |-
         field='email'
       ) | very_mandatory
   }}
+
+# Paths for kopia storage
+kopia_server__home: "/var/backups"
+kopia_server__repository_path: "/mnt/kopia/repository"
+kopia_server__cache_path: "/mnt/kopia/cache"
+kopia_server__config_path: "/mnt/kopia/config"

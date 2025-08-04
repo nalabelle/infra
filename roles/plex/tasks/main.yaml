@@ -42,6 +42,10 @@
     state: present
     update_cache: true
 
+- name: Install Caddy
+  ansible.builtin.include_tasks:
+    file: caddy.yaml
+
 - name: Configure Plex certificate management
   when: plex__enable_certbot_hook | bool
   block:
@@ -63,12 +67,32 @@
         dest: /etc/letsencrypt/renewal-hooks/deploy/plex-cert
         mode: "0755"
 
-    - name: Configure certbot deployment hook for Caddy reload
+    - name: Configure certbot deployment hook for Caddy
       ansible.builtin.template:
-        src: etc/letsencrypt/renewal-hooks/deploy/caddy-reload.j2
-        dest: /etc/letsencrypt/renewal-hooks/deploy/caddy-reload
+        src: etc/letsencrypt/renewal-hooks/deploy/caddy-cert.j2
+        dest: /etc/letsencrypt/renewal-hooks/deploy/caddy-cert
         mode: "0755"
+      register: caddy_hook_deployed
 
-- name: Install Caddy
-  ansible.builtin.include_tasks:
-    file: caddy.yaml
+    - name: Create SSL directory for Caddy
+      ansible.builtin.file:
+        path: "{{ plex__caddy_home }}/ssl"
+        state: "directory"
+        mode: "0750"
+        owner: caddy
+        group: caddy
+
+    - name: Check if certificate files exist for Caddy
+      ansible.builtin.stat:
+        path: "{{ plex__caddy_home }}/ssl/fullchain.pem"
+      register: caddy_cert_file
+
+    - name: Run renewal hook to copy certificates for Caddy
+      ansible.builtin.command:
+        cmd: /etc/letsencrypt/renewal-hooks/deploy/caddy-cert
+      environment:
+        RENEWED_LINEAGE: "/etc/letsencrypt/live/{{ plex__domain }}"
+      when: not caddy_cert_file.stat.exists or caddy_hook_deployed is changed
+      register: caddy_renewal_hook_result
+      changed_when: caddy_renewal_hook_result.rc == 0
+      failed_when: caddy_renewal_hook_result.rc != 0

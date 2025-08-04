@@ -42,3 +42,6 @@ plex__cert_password: |-
       ) | very_mandatory
   }}
   {%- endif -%}
+
+# Paths for Caddy
+plex__caddy_home: "/var/lib/caddy"
