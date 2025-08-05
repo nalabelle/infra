@@ -385,7 +385,7 @@
         }
       }
     },
-    "python313@latest": {
+    "python313@3.13.3": {
       "last_modified": "2025-05-16T20:19:48Z",
       "plugin_version": "0.0.4",
       "resolved": "github:NixOS/nixpkgs/12a55407652e04dcf2309436eb06fef0d3713ef3#python313",
