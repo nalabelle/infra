@@ -11,7 +11,7 @@
     "vendir@0.44.0",
     "nodePackages.prettier@3.5.3",
     "uv@0.8.2",
-    "python313@latest"
+    "python313@3.13.3"
   ],
   "shell": {"init_hook": [". $VENV_DIR/bin/activate"]}
 }
