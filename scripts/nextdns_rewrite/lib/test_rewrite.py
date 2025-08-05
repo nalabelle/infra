@@ -1,11 +1,12 @@
 import unittest
-from unittest.mock import patch, Mock
-from lib.nextdns import Tracker, Rewrite
+from unittest.mock import Mock, patch
+
+from lib.nextdns import Rewrite, Tracker
 from lib.nextdns_config import NextDNSConfig
 
 
 class TestNextDNSRewriteTool(unittest.TestCase):
-    def setUp(self):
+    def setUp(self) -> None:
         # Mock the NextDNS API responses
         mock_response = Mock()
         mock_response.json.return_value = {"data": []}
@@ -24,7 +25,7 @@ class TestNextDNSRewriteTool(unittest.TestCase):
         ):
             self.tracker = Tracker(mock_config)
 
-    def test_read_rewrites(self):
+    def test_read_rewrites(self) -> None:
         # Test data mimicking the format in the rewrites file
         mock_file_content = """
 # Comment

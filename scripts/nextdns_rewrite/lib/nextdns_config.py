@@ -4,16 +4,16 @@ from lib.onepassword import OnePasswordClient
 class NextDNSConfig:
     """Client for retrieving NextDNS configuration from 1Password."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         onepassword = OnePasswordClient()
         # Get DNS rewrites
-        self._dns_rewrites = onepassword.get_field("DNS Rewrites", "notesPlain")
+        self._dns_rewrites: str = onepassword.get_field("DNS Rewrites", "notesPlain")
 
         # Get NextDNS credentials
-        values = onepassword.get_fields("NextDNS", ["prefix", "email", "password"])
-        self._id = values["prefix"]
-        self._email = values["email"]
-        self._password = values["password"]
+        values: dict[str, str] = onepassword.get_fields("NextDNS", ["prefix", "email", "password"])
+        self._id: str = values["prefix"]
+        self._email: str = values["email"]
+        self._password: str = values["password"]
 
     @property
     def email(self) -> str:

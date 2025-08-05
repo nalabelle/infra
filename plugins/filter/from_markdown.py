@@ -1,4 +1,8 @@
-def from_markdown(a, msg=None) -> str:
+from collections.abc import Callable
+from typing import Any
+
+
+def from_markdown(a: str, msg: str | None = None) -> str:
     """Strip formatting tags from markdown text. This makes it easier to edit in 1password."""
 
     if a.startswith("```"):
@@ -13,7 +17,7 @@ def from_markdown(a, msg=None) -> str:
     return a
 
 
-def fstab_extract_mounts(a) -> list[str]:
+def fstab_extract_mounts(a: str) -> list[str]:
     mounts = []
     # In fstab format, the second field is the mount point
     for row in a.split("\n"):
@@ -23,8 +27,8 @@ def fstab_extract_mounts(a) -> list[str]:
     return mounts
 
 
-class FilterModule(object):
-    def filters(self):
+class FilterModule:
+    def filters(self) -> dict[str, Callable[..., Any]]:
         return {
             "from_markdown": from_markdown,
             "fstab_extract_mounts": fstab_extract_mounts,

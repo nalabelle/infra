@@ -1,11 +1,12 @@
 import unittest
 from unittest.mock import Mock, patch
-from lib.onepassword import OnePasswordClient
+
 from lib.nextdns_config import NextDNSConfig
+from lib.onepassword import OnePasswordClient
 
 
 class TestNextDNSConfig(unittest.TestCase):
-    def test_init_loads_all_values(self):
+    def test_init_loads_all_values(self) -> None:
         # Mock the 1Password responses
         mock_credentials = {
             "prefix": "test_id",
@@ -29,12 +30,8 @@ server1.example.com       app1.example.com
             config = NextDNSConfig()
 
             # Verify correct calls were made
-            mock_onepassword.get_field.assert_called_once_with(
-                "DNS Rewrites", "notesPlain"
-            )
-            mock_onepassword.get_fields.assert_called_once_with(
-                "NextDNS", ["prefix", "email", "password"]
-            )
+            mock_onepassword.get_field.assert_called_once_with("DNS Rewrites", "notesPlain")
+            mock_onepassword.get_fields.assert_called_once_with("NextDNS", ["prefix", "email", "password"])
 
             # Check credentials
             self.assertEqual(config.email, "test@example.com")

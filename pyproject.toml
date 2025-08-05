@@ -7,12 +7,16 @@ dependencies = [
     "requests>=2.32.4",
 ]
 
+[tool.setuptools]
+packages = ["plugins", "scripts"]
+
 [dependency-groups]
 dev = [
     "mypy>=1.17.0",
     "ruff>=0.12.5",
     "types-requests>=2.32.4.20250611",
     "types-pyyaml>=6.0.12.20250516",
+    "pytest>=7.4.0",
 ]
 
 
@@ -24,12 +28,14 @@ select = ["E", "F", "W", "I", "B", "C4", "UP", "RUF", "PGH003", "ANN"]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**/*.py" = ["ANN201"]
+"stubs/**/*.py" = ["ANN401"]
+"stubs/**/*.pyi" = ["ANN401"]
 
 [tool.ruff.format]
 
 [tool.mypy]
 python_version = "3.13"
-exclude = "vendor/.*"
+exclude = "vendor/.*|roles/.*"
 
 show_error_codes = true
 show_column_numbers = true
@@ -52,3 +58,9 @@ warn_unused_ignores = true
 
 namespace_packages = true
 explicit_package_bases = true
+mypy_path = "stubs:scripts:scripts/nextdns_rewrite"
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+disallow_untyped_defs = false
+disallow_incomplete_defs = false

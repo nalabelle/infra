@@ -1,13 +1,11 @@
-from dataclasses import dataclass
-import requests
 import logging
-from typing import Dict, List
+from dataclasses import dataclass
+
+import requests
 from lib.nextdns_config import NextDNSConfig
 
 # Configure logging
-logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-)
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
 nUrlLogin = "https://api.nextdns.io/accounts/@login"
@@ -24,29 +22,24 @@ class Rewrite:
     content: str
     seen: bool = False
 
-    def __eq__(self, other):
+    def __eq__(self, other: object) -> bool:
         if not isinstance(other, Rewrite):
             return False
-        return (
-            self.name == other.name
-            and self.type == other.type
-            and self.content == other.content
-        )
+        return self.name == other.name and self.type == other.type and self.content == other.content
 
-    def from_json(jsonValue: Dict[str, str]):
-        return Rewrite(
-            jsonValue["id"], jsonValue["name"], jsonValue["type"], jsonValue["content"]
-        )
+    @staticmethod
+    def from_json(jsonValue: dict[str, str]) -> "Rewrite":
+        return Rewrite(jsonValue["id"], jsonValue["name"], jsonValue["type"], jsonValue["content"])
 
 
 class Tracker:
     def __init__(
         self,
         config: NextDNSConfig,
-    ):
-        self.session = None
+    ) -> None:
+        self.session: requests.Session = requests.Session()  # Initialize first
+        self.session = self._login(config.email, config.password)  # Then login
         self.nextdns_id = config.id
-        self.session = self._login(config.email, config.password)
         self.rewrites = self.get_rewrites()
 
     def _login(
@@ -54,7 +47,7 @@ class Tracker:
         email: str,
         password: str,
     ) -> requests.Session:
-        if self.session is not None:
+        if hasattr(self.session, "cookies") and len(self.session.cookies) > 0:
             return self.session
         session = requests.Session()
         nextDNSCreds = {"email": email, "password": password}
@@ -64,31 +57,31 @@ class Tracker:
             raise Exception("Error: " + reqLogin.text)
         return session
 
-    def update_rewrites(self, rewrites: List[Rewrite] | None = None) -> None:
+    def update_rewrites(self, rewrites: list[Rewrite] | None = None) -> None:
         if not rewrites:
             rewrites = self.read_rewrites_from_file()
         for rewrite in rewrites:
             possible_matches = [r for r in self.rewrites if r.name == rewrite.name]
             if possible_matches:
-                match = None
+                matched_rewrite: Rewrite | None = None
                 if rewrite.type == "CNAME":
-                    match = [r for r in possible_matches if r.type == "CNAME"]
-                    if match:
-                        match = match[0]
+                    cname_matches = [r for r in possible_matches if r.type == "CNAME"]
+                    if cname_matches:
+                        matched_rewrite = cname_matches[0]
                 elif rewrite.type == "AAAA":
-                    match = [r for r in possible_matches if r.type == "AAAA"]
-                    if match:
-                        match = match[0]
+                    aaaa_matches = [r for r in possible_matches if r.type == "AAAA"]
+                    if aaaa_matches:
+                        matched_rewrite = aaaa_matches[0]
                 else:
                     # IPv4
-                    match = [r for r in possible_matches if r.type == "A"]
-                    if match:
-                        match = match[0]
-                if not match or match.content != rewrite.content:
+                    a_matches = [r for r in possible_matches if r.type == "A"]
+                    if a_matches:
+                        matched_rewrite = a_matches[0]
+                if not matched_rewrite or matched_rewrite.content != rewrite.content:
                     logger.info(f"Updating rewrite for {rewrite.name} ({rewrite.type})")
                     self.create_rewrite(rewrite)
                 else:
-                    match.seen = True
+                    matched_rewrite.seen = True
             else:
                 logger.info(f"Creating rewrite for {rewrite.name} ({rewrite.type})")
                 self.create_rewrite(rewrite)
@@ -96,10 +89,8 @@ class Tracker:
         for rewrite in unseen:
             self.delete_rewrite_by_id(rewrite.id)
 
-    def get_rewrites(self) -> List[Rewrite]:
-        reqRewrites = self.session.get(
-            nUrlSet.format(nextDNSId=self.nextdns_id), headers=nHeaders
-        )
+    def get_rewrites(self) -> list[Rewrite]:
+        reqRewrites = self.session.get(nUrlSet.format(nextDNSId=self.nextdns_id), headers=nHeaders)
         logger.debug("Get rewrites response: %s", reqRewrites.text)
         try:
             jsonValue = reqRewrites.json()
@@ -122,9 +113,7 @@ class Tracker:
             )
         else:
             logger.info("Deleting rewrite %s (not in db)", rewrite_id)
-        result = self.session.delete(
-            nUrlDel.format(nextDNSId=self.nextdns_id, rId=rewrite_id), headers=nHeaders
-        )
+        result = self.session.delete(nUrlDel.format(nextDNSId=self.nextdns_id, rId=rewrite_id), headers=nHeaders)
         for rewrite in my_rewrites:
             self.rewrites.remove(rewrite)
         if "errors" in result.text:
@@ -159,9 +148,20 @@ class Tracker:
             results["data"]["content"],
         )
 
-    def read_rewrites_from_file(
-        self, file_path: str | None = None, content: str | None = None
-    ) -> List[Rewrite]:
+    def read_rewrites_from_file(self, file_path: str | None = None, content: str | None = None) -> list[Rewrite]:
+        """Read and parse rewrites from file or content string.
+
+        Args:
+            file_path: Path to file containing rewrite rules
+            content: String containing rewrite rules
+
+        Returns:
+            List of parsed Rewrite objects
+
+        Raises:
+            ValueError: If neither file_path nor content provided
+                      If invalid IP format encountered
+        """
         """
         Read rewrites from a file.
 
@@ -179,7 +179,9 @@ class Tracker:
         elif content is not None:
             lines = content.splitlines()
         else:
-            with open(file_path, "r") as f:
+            # At this point, file_path cannot be None due to the check above
+            assert file_path is not None
+            with open(file_path) as f:
                 lines = f.readlines()
 
         logger.info("Processing %s rewrites", len(lines))

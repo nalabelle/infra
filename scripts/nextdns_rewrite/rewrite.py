@@ -1,14 +1,13 @@
 #!/usr/bin/env python3
 import argparse
-from lib.nextdns_config import NextDNSConfig
+
 from lib.nextdns import Tracker
+from lib.nextdns_config import NextDNSConfig
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser(description="Update NextDNS rewrites")
-    parser.add_argument(
-        "file", help="File containing rewrites", nargs="?", default=None
-    )
+    parser.add_argument("file", help="File containing rewrites", nargs="?", default=None)
     args = parser.parse_args()
 
     config = NextDNSConfig()

@@ -1,7 +1,6 @@
 import json
-import subprocess
 import logging
-from typing import Dict, List
+import subprocess
 
 logger = logging.getLogger(__name__)
 
@@ -9,7 +8,7 @@ logger = logging.getLogger(__name__)
 class OnePasswordClient:
     """Client for interacting with 1Password CLI."""
 
-    def __init__(self, vault: str = "Applications"):
+    def __init__(self, vault: str = "Applications") -> None:
         self.vault = vault
 
     def _strip_formatting(self, value: str) -> str:
@@ -67,7 +66,7 @@ class OnePasswordClient:
             logger.error(f"Failed to parse 1Password output as JSON: {e}")
             raise
 
-    def get_fields(self, item_name: str, field_names: List[str]) -> Dict[str, str]:
+    def get_fields(self, item_name: str, field_names: list[str]) -> dict[str, str]:
         """Get multiple fields from a 1Password item.
 
         Args:
@@ -96,13 +95,8 @@ class OnePasswordClient:
             )
             response = json.loads(result.stdout)
             if isinstance(response, list):
-                return {
-                    item["label"]: self._strip_formatting(item["value"])
-                    for item in response
-                }
-            raise ValueError(
-                f"Expected list response for multiple fields, got {type(response)}"
-            )
+                return {item["label"]: self._strip_formatting(item["value"]) for item in response}
+            raise ValueError(f"Expected list response for multiple fields, got {type(response)}")
         except subprocess.CalledProcessError as e:
             logger.error(f"Failed to get item {item_name} from 1Password: {e.stderr}")
             raise
