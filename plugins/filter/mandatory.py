@@ -7,15 +7,11 @@ from ansible.plugins.filter.core import mandatory
 
 
 def very_mandatory(a: str, msg: str | None = None) -> str:
-    """Make a variable mandatory and raise an error if it is not defined _or is empty string_."""
-
-    # Run ansible's mandatory filter
+    """Make a variable mandatory and raise an error if it is not defined, is None, or is empty string."""
+    # Run ansible's mandatory filter (raises on undefined)
     a = mandatory(a)
-    if a == "":
-        if msg is not None:
-            raise AnsibleFilterError(to_native(msg))
-        raise AnsibleFilterError("Mandatory variable is empty")
-
+    if a is None or a == "":
+        raise AnsibleFilterError(to_native(msg) if msg is not None else "Mandatory variable is empty")
     return a
 
 
