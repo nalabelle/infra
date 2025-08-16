@@ -159,9 +159,60 @@ Secrets are managed through 1Password integration:
 
 ## Development Environment
 
-The project includes several development tools:
+The project uses Nix flakes for reproducible development environments:
 
-- **Devbox**: For consistent development environments
-- **Pre-commit hooks**: For code quality checks
+```bash
+# Enter the development environment
+nix develop
+
+# Or use direnv for automatic activation (recommended)
+# Install direnv first: brew install direnv (macOS) or your package manager
+# Then enable direnv in your shell
+echo 'eval "$(direnv hook bash)"' >> ~/.bashrc  # or ~/.zshrc for zsh
+direnv allow
+```
+
+The development environment includes:
+- **Ansible**: Configuration management tool
 - **Ansible-lint**: For Ansible best practices enforcement
+- **Pre-commit hooks**: For code quality checks
+- **ShellCheck**: Shell script analysis
+- **shfmt**: Shell script formatter
+- **GNU Make**: Build automation
+- **1Password CLI**: Secrets management
 - **Vendir**: For vendoring external dependencies
+- **Prettier**: Code formatter
+- **UV**: Python package manager
+- **Python 3.13**: Python runtime
+
+### Setup Instructions
+
+1. **Using Nix Flake**:
+   ```bash
+   # Install Nix if not already installed
+   curl -L https://nixos.org/nix/install | sh
+   
+   # Enter development environment
+   nix develop
+   
+   # Or set up direnv for automatic activation
+   brew install direnv  # macOS
+   # or use your package manager for Linux
+   echo 'eval "$(direnv hook bash)"' >> ~/.bashrc
+   direnv allow
+   ```
+
+2. **Initialize Python environment**:
+   ```bash
+   # Create virtual environment
+   uv venv
+   source .venv/bin/activate
+   
+   # Install dependencies
+   uv pip install -r requirements.txt  # if exists
+   ```
+
+3. **Set up pre-commit hooks**:
+   ```bash
+   pre-commit install
+   ```
