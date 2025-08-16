@@ -2,24 +2,24 @@ apiVersion: vendir.k14s.io/v1alpha1
 directories:
 - contents:
   - git:
-      commitTitle: Release 11.1.0.
-      sha: 10f1f690e49c7083fe889595628cebf08f5bcde3
+      commitTitle: Release 11.2.0.
+      sha: 0b9abdf3de2f4354d2a282b0bdce7fd6f49fd876
       tags:
-      - 11.1.0
+      - 11.2.0
     path: community/general
   - git:
-      commitTitle: Release 1.2.0 (#134)
-      sha: 52994169ee20f7934e4294c69ae7c227c8d6300b
+      commitTitle: Release 1.3.0 (#157)
+      sha: 6d8406bd6c1991f94bcb48612452a0ebbcffceec
       tags:
-      - 1.2.0
+      - 1.3.0
     path: community/proxmox
   path: vendor/ansible_collections
 - contents:
   - git:
-      commitTitle: Release version 6.0.1
-      sha: 731befd21a0c3a318160fb93a60aa2af849e34ae
+      commitTitle: 'Merge pull request #461 from tobiashuste/prepare-6-1-1...'
+      sha: 94e72600001e2e483ab31d47d5a432c6a7acc672
       tags:
-      - v6.0.1
+      - v6.1.1
     path: unattended_upgrades
   path: vendor/ansible_roles
 - contents:
@@ -46,8 +46,8 @@ directories:
       url: https://api.github.com/repos/natrontech/pbs-exporter/releases/232235964
     path: pbs-exporter
   - githubRelease:
-      tag: v0.3.45
-      url: https://api.github.com/repos/nalabelle/kopia-exporter/releases/233673409
+      tag: v0.3.46
+      url: https://api.github.com/repos/nalabelle/kopia-exporter/releases/238761228
     path: kopia-exporter
   path: vendor/exporters
 kind: LockConfig
