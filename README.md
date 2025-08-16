@@ -191,10 +191,10 @@ The development environment includes:
    ```bash
    # Install Nix if not already installed
    curl -L https://nixos.org/nix/install | sh
-   
+
    # Enter development environment
    nix develop
-   
+
    # Or set up direnv for automatic activation
    brew install direnv  # macOS
    # or use your package manager for Linux
@@ -207,7 +207,7 @@ The development environment includes:
    # Create virtual environment
    uv venv
    source .venv/bin/activate
-   
+
    # Install dependencies
    uv pip install -r requirements.txt  # if exists
    ```
