@@ -1,7 +1,6 @@
 from __future__ import annotations
 
-import pytest
-from plugins.filter.format import format_list, FilterModule
+from plugins.filter.format import FilterModule, format_list
 
 
 def test_filters_registry_contains_format_list() -> None:

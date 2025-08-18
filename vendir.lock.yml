@@ -2,10 +2,10 @@ apiVersion: vendir.k14s.io/v1alpha1
 directories:
 - contents:
   - git:
-      commitTitle: Release 11.1.0.
-      sha: 10f1f690e49c7083fe889595628cebf08f5bcde3
+      commitTitle: Release 11.1.2.
+      sha: b3995081a20672c121c693d27da3a5df53f329a1
       tags:
-      - 11.1.0
+      - 11.1.2
     path: community/general
   - git:
       commitTitle: Release 1.2.0 (#134)

@@ -2,7 +2,8 @@ from __future__ import annotations
 
 import pytest
 from ansible.errors import AnsibleFilterError
-from plugins.filter.mandatory import very_mandatory, FilterModule
+
+from plugins.filter.mandatory import FilterModule, very_mandatory
 
 
 def test_filters_registry_contains_very_mandatory() -> None:

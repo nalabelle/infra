@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 import pytest
-from plugins.filter.from_markdown import from_markdown, fstab_extract_mounts, FilterModule
+
+from plugins.filter.from_markdown import FilterModule, from_markdown, fstab_extract_mounts
 
 
 def test_filters_registry_contains_from_markdown() -> None:
