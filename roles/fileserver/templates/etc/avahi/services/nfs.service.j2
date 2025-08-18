@@ -1,0 +1,29 @@
+<?xml version="1.0" standalone='no'?><!--*-nxml-*-->
+<!DOCTYPE service-group SYSTEM "avahi-service.dtd">
+<service-group>
+  <name replace-wildcards="yes">%h</name>
+  <service>
+    <type>_nfs._tcp</type>
+    <port>2049</port>
+  </service>
+  <service>
+    <type>_mountd._tcp</type>
+    <port>32767</port>
+  </service>
+  <service>
+    <type>_rpcbind._tcp</type>
+    <port>111</port>
+  </service>
+  <service>
+    <type>_nfs._udp</type>
+    <port>2049</port>
+  </service>
+  <service>
+    <type>_mountd._udp</type>
+    <port>32767</port>
+  </service>
+  <service>
+    <type>_rpcbind._udp</type>
+    <port>111</port>
+  </service>
+</service-group>

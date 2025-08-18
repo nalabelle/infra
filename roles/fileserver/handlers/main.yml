@@ -15,3 +15,8 @@
       - mount
       - -a
   changed_when: false
+
+- name: Restart avahi
+  ansible.builtin.systemd_service:
+    name: avahi-daemon
+    state: restarted

@@ -5,6 +5,10 @@
     group: "{{ item.group }}"
   loop: "{{ fileserver__users | community.general.remove_keys(target='password') }}"
 
+- name: Avahi
+  ansible.builtin.include_tasks:
+    file: avahi.yaml
+
 - name: NFS
   ansible.builtin.include_tasks:
     file: nfs.yaml

@@ -1,0 +1,40 @@
+- name: Install avahi packages
+  ansible.builtin.apt:
+    pkg:
+      - avahi-daemon
+      - avahi-utils
+      - libnss-mdns
+    state: present
+
+- name: Create avahi configuration directory
+  ansible.builtin.file:
+    path: /etc/avahi/services
+    state: directory
+    mode: "0755"
+
+- name: Configure avahi daemon
+  ansible.builtin.template:
+    src: etc/avahi/avahi-daemon.conf.j2
+    dest: /etc/avahi/avahi-daemon.conf
+    mode: "0644"
+  notify: Restart avahi
+
+- name: Create Samba service for avahi
+  ansible.builtin.template:
+    src: etc/avahi/services/samba.service.j2
+    dest: /etc/avahi/services/samba.service
+    mode: "0644"
+  notify: Restart avahi
+
+- name: Create NFS service for avahi
+  ansible.builtin.template:
+    src: etc/avahi/services/nfs.service.j2
+    dest: /etc/avahi/services/nfs.service
+    mode: "0644"
+  notify: Restart avahi
+
+- name: Enable avahi services
+  ansible.builtin.systemd_service:
+    name: avahi-daemon.service
+    enabled: true
+    state: started
